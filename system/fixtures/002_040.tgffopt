@@ -1,7 +1,7 @@
 seed 0
 
 # Application label
-tg_label APPLICATION
+tg_label APP
 # Number of applications
 tg_cnt 1
 # Number of tasks per application +/- jitter
@@ -21,11 +21,11 @@ task_unique false
 # Write
 tg_write
 
-# Processor label
-table_label PROCESSOR
-# Number of processors
+# Core label
+table_label CORE
+# Number of cores
 table_cnt 2
-# Attributes of the tasks mapped on a particular processor
+# Attributes of the tasks mapped on a particular core
 type_attrib \
   dynamic_power 10 9 0 0.01, \
   execution_time 0.020 0.010 0 0.001
