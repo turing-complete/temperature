@@ -5,5 +5,6 @@ type App struct {
 }
 
 type Task struct {
-	Type uint32
+	Type     uint32
+	Children []*Task
 }

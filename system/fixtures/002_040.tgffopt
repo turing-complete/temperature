@@ -20,6 +20,7 @@ task_degree 3 4
 task_unique false
 # Write
 tg_write
+eps_write
 
 # Core label
 table_label CORE
