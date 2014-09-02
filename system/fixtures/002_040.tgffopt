@@ -1,10 +1,10 @@
 seed 0
 
-# Application label
-tg_label APP
-# Number of applications
+# Graph label
+tg_label GRAPH
+# Number of graphs
 tg_cnt 1
-# Number of tasks per application +/- jitter
+# Number of tasks per graph +/- jitter
 task_cnt 40 0.001
 # Number of different tasks
 task_type_cnt 20
