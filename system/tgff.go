@@ -101,7 +101,8 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 			return nil, err
 		}
 
-		a.Tasks[i].Children = append(a.Tasks[i].Children, &a.Tasks[j])
+		a.Tasks[i].Children = append(a.Tasks[i].Children, uint32(j))
+		a.Tasks[j].Parents = append(a.Tasks[j].Parents, uint32(i))
 	}
 
 	return a, nil

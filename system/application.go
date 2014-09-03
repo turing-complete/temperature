@@ -1,7 +1,7 @@
 package system
 
 // Application represents an application as a collection of dependent tasks.
-// The tasks are assumed to form a directed acyclic graph with a single root.
+// The tasks are assumed to form a directed acyclic graph.
 type Application struct {
 	Tasks []Task
 }
@@ -14,5 +14,34 @@ type Application struct {
 type Task struct {
 	ID       uint32
 	Type     uint32
-	Children []*Task
+	Parents  []uint32
+	Children []uint32
+}
+
+// Roots returns the IDs of the tasks without parents.
+func (a *Application) Roots() []uint32 {
+	size := len(a.Tasks)
+	roots := make([]uint32, 0, 1)
+
+	for i := 0; i < size; i++ {
+		if len(a.Tasks[i].Parents) == 0 {
+			roots = append(roots, uint32(i))
+		}
+	}
+
+	return roots
+}
+
+// Leafs returns the IDs of the tasks without children.
+func (a *Application) Leafs() []uint32 {
+	size := len(a.Tasks)
+	leafs := make([]uint32, 0, size/2+1)
+
+	for i := 0; i < size; i++ {
+		if len(a.Tasks[i].Children) == 0 {
+			leafs = append(leafs, uint32(i))
+		}
+	}
+
+	return leafs
 }

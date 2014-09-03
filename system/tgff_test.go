@@ -72,18 +72,8 @@ func TestLoadTGFF(t *testing.T) {
 	}
 
 	for i, task := range tasks {
-		assert.Equal(collectTaskIDs(app.Tasks[i].Children), task.children, t)
+		assert.Equal(app.Tasks[i].Children, task.children, t)
 	}
-}
-
-func collectTaskIDs(tasks []*Task) []uint32 {
-	ids := make([]uint32, len(tasks))
-
-	for i := range tasks {
-		ids[i] = tasks[i].ID
-	}
-
-	return ids
 }
 
 func TestExtractTaskNumber(t *testing.T) {
