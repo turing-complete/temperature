@@ -19,7 +19,7 @@ func TestLoadFromTGFF(t *testing.T) {
 	assert.Equal(len(app.Tasks), 40, t)
 	assert.Equal(len(platform.Cores), 2, t)
 
-	tasks := []struct{
+	tasks := []struct {
 		children []uint32
 	}{
 		{[]uint32{1}},
@@ -79,7 +79,7 @@ func TestLoadFromTGFF(t *testing.T) {
 func collectTaskIDs(tasks []*Task) []uint32 {
 	ids := make([]uint32, len(tasks))
 
-	for i := range(tasks) {
+	for i := range tasks {
 		ids[i] = tasks[i].ID
 	}
 
@@ -87,7 +87,7 @@ func collectTaskIDs(tasks []*Task) []uint32 {
 }
 
 func TestExtractTaskNumber(t *testing.T) {
-	scenarios := []struct{
+	scenarios := []struct {
 		name    string
 		total   uint32
 		result  uint32

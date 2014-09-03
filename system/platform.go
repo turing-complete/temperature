@@ -5,6 +5,7 @@ type Platform struct {
 }
 
 type Core struct {
+	ID    uint32
 	Time  []float64
 	Power []float64
 }

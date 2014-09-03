@@ -74,25 +74,31 @@ func loadApp(graphs []tgff.Graph) (App, error) {
 func loadPlatform(tables []tgff.Table) (Platform, error) {
 	p := Platform{}
 
-	if len(tables) == 0 {
+	size := len(tables)
+
+	if size == 0 {
 		return p, errors.New("need at least one table")
 	}
 
-	p.Cores = make([]Core, len(tables))
+	p.Cores = make([]Core, size)
 
 	var err error
 
-	for i := range tables {
-		p.Cores[i], err = loadCore(tables[i])
+	for _, table := range tables {
+		i := table.Number
+
+		if i >= uint32(size) {
+			return p, errors.New("unknown table indexing scheme")
+		}
+
+		p.Cores[i], err = loadCore(table)
 
 		if err != nil {
 			return p, err
 		}
+	}
 
-		if i == 0 {
-			continue
-		}
-
+	for i := 1; i < size; i++ {
 		if len(p.Cores[i-1].Time) != len(p.Cores[i].Time) {
 			return p, errors.New("inconsistent table data")
 		}
@@ -102,7 +108,9 @@ func loadPlatform(tables []tgff.Table) (Platform, error) {
 }
 
 func loadCore(table tgff.Table) (Core, error) {
-	c := Core{}
+	c := Core{
+		ID: table.Number,
+	}
 
 	var tycol, tmcol, pwcol *tgff.Column
 
