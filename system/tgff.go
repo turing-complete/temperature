@@ -9,37 +9,35 @@ import (
 )
 
 // LoadTGFF constructs a platform and an application based on a TGFF file.
-func LoadTGFF(path string) (Platform, Application, error) {
-	p, a := Platform{}, Application{}
-
+func LoadTGFF(path string) (*Platform, *Application, error) {
 	r, err := tgff.ParseFile(path)
 	if err != nil {
-		return p, a, err
+		return nil, nil, err
 	}
 
-	p, err = loadPlatform(r.Tables)
+	p, err := loadPlatform(r.Tables)
 	if err != nil {
-		return p, a, err
+		return nil, nil, err
 	}
 
-	a, err = loadApplication(r.Graphs)
+	a, err := loadApplication(r.Graphs)
 	if err != nil {
-		return p, a, err
+		return nil, nil, err
 	}
 
 	return p, a, nil
 }
 
-func loadPlatform(tables []tgff.Table) (Platform, error) {
-	p := Platform{}
-
+func loadPlatform(tables []tgff.Table) (*Platform, error) {
 	size := len(tables)
 
 	if size == 0 {
-		return p, errors.New("need at least one table")
+		return nil, errors.New("need at least one table")
 	}
 
-	p.Cores = make([]Core, size)
+	p := &Platform{
+		Cores: make([]Core, size),
+	}
 
 	var err error
 
@@ -47,13 +45,13 @@ func loadPlatform(tables []tgff.Table) (Platform, error) {
 		i := table.Number
 
 		if i >= uint32(size) {
-			return p, errors.New("unknown table indexing scheme")
+			return nil, errors.New("unknown table indexing scheme")
 		}
 
 		p.Cores[i], err = loadCore(table)
 
 		if err != nil {
-			return p, err
+			return nil, err
 		}
 	}
 
@@ -61,29 +59,29 @@ func loadPlatform(tables []tgff.Table) (Platform, error) {
 
 	for i := 1; i < size; i++ {
 		if rows != len(p.Cores[i].Time) {
-			return p, errors.New("inconsistent table data")
+			return nil, errors.New("inconsistent table data")
 		}
 	}
 
 	return p, nil
 }
 
-func loadApplication(graphs []tgff.Graph) (Application, error) {
-	a := Application{}
-
+func loadApplication(graphs []tgff.Graph) (*Application, error) {
 	if len(graphs) != 1 {
-		return a, errors.New("need exactly one task graph")
+		return nil, errors.New("need exactly one task graph")
 	}
 
 	size := uint32(len(graphs[0].Tasks))
 
-	a.Tasks = make([]Task, size)
+	a := &Application{
+		Tasks: make([]Task, size),
+	}
 
 	for _, task := range graphs[0].Tasks {
 		i, err := extractTaskID(task.Name, size)
 
 		if err != nil {
-			return a, err
+			return nil, err
 		}
 
 		a.Tasks[i].ID = i
@@ -94,13 +92,13 @@ func loadApplication(graphs []tgff.Graph) (Application, error) {
 		i, err := extractTaskID(arc.From, size)
 
 		if err != nil {
-			return a, err
+			return nil, err
 		}
 
 		j, err := extractTaskID(arc.To, size)
 
 		if err != nil {
-			return a, err
+			return nil, err
 		}
 
 		a.Tasks[i].Children = append(a.Tasks[i].Children, &a.Tasks[j])
