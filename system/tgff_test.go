@@ -29,7 +29,7 @@ func TestLoadTGFF(t *testing.T) {
 		{[]uint32{5, 6, 7, 8}},
 
 		{[]uint32{10, 11, 27}},
-		{[]uint32{}},
+		{nil},
 		{[]uint32{9}},
 		{[]uint32{9}},
 		{[]uint32{13, 14, 15}},
@@ -53,22 +53,22 @@ func TestLoadTGFF(t *testing.T) {
 		{[]uint32{30}},
 
 		{[]uint32{37, 38}},
-		{[]uint32{}},
+		{nil},
 		{[]uint32{33, 34}},
 		{[]uint32{29}},
-		{[]uint32{}},
+		{nil},
 
-		{[]uint32{}},
+		{nil},
 		{[]uint32{36}},
-		{[]uint32{}},
-		{[]uint32{}},
-		{[]uint32{}},
+		{nil},
+		{nil},
+		{nil},
 
-		{[]uint32{}},
-		{[]uint32{}},
-		{[]uint32{}},
+		{nil},
+		{nil},
+		{nil},
 		{[]uint32{39}},
-		{[]uint32{}},
+		{nil},
 	}
 
 	for i, task := range tasks {
