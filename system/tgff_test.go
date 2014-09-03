@@ -72,7 +72,7 @@ func TestLoadTGFF(t *testing.T) {
 	}
 
 	for i, task := range tasks {
-		assert.DeepEqual(collectTaskIDs(app.Tasks[i].Children), task.children, t)
+		assert.Equal(collectTaskIDs(app.Tasks[i].Children), task.children, t)
 	}
 }
 
