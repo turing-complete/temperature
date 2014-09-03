@@ -20,17 +20,70 @@ func TestLoadFromTGFF(t *testing.T) {
 	assert.Equal(len(platform.Cores), 2, t)
 
 	tasks := []struct{
-		children []uint
+		children []uint32
 	}{
-		{[]uint{1}},
-		{[]uint{2, 3, 32}},
-		{[]uint{9, 10, 26}},
-		{[]uint{5, 6, 7, 8}},
+		{[]uint32{1}},
+		{[]uint32{2, 3, 23, 32}},
+		{[]uint32{4, 10, 11, 12}},
+		{[]uint32{9, 10, 26}},
+		{[]uint32{5, 6, 7, 8}},
+
+		{[]uint32{10, 11, 27}},
+		{[]uint32{}},
+		{[]uint32{9}},
+		{[]uint32{9}},
+		{[]uint32{13, 14, 15}},
+
+		{[]uint32{12}},
+		{[]uint32{12, 31}},
+		{[]uint32{17, 18, 24}},
+		{[]uint32{16, 25}},
+		{[]uint32{36}},
+
+		{[]uint32{19, 20, 23, 29}},
+		{[]uint32{31}},
+		{[]uint32{22, 35}},
+		{[]uint32{21, 23}},
+		{[]uint32{20, 24}},
+
+		{[]uint32{24, 26}},
+		{[]uint32{27}},
+		{[]uint32{28, 29}},
+		{[]uint32{31}},
+		{[]uint32{30}},
+
+		{[]uint32{37, 38}},
+		{[]uint32{}},
+		{[]uint32{33, 34}},
+		{[]uint32{29}},
+		{[]uint32{}},
+
+		{[]uint32{}},
+		{[]uint32{36}},
+		{[]uint32{}},
+		{[]uint32{}},
+		{[]uint32{}},
+
+		{[]uint32{}},
+		{[]uint32{}},
+		{[]uint32{}},
+		{[]uint32{39}},
+		{[]uint32{}},
 	}
 
 	for i, task := range tasks {
-		assert.Equal(len(app.Tasks[i].Children), len(task.children), t)
+		assert.DeepEqual(collectTaskIDs(app.Tasks[i].Children), task.children, t)
 	}
+}
+
+func collectTaskIDs(tasks []*Task) []uint32 {
+	ids := make([]uint32, len(tasks))
+
+	for i := range(tasks) {
+		ids[i] = tasks[i].ID
+	}
+
+	return ids
 }
 
 func TestExtractTaskNumber(t *testing.T) {
@@ -49,7 +102,7 @@ func TestExtractTaskNumber(t *testing.T) {
 	}
 
 	for _, s := range scenarios {
-		result, err := extractTaskNumber(s.name, s.total)
+		result, err := extractTaskID(s.name, s.total)
 
 		if s.success {
 			assert.Success(err, t)

@@ -42,29 +42,30 @@ func loadApp(graphs []tgff.Graph) (App, error) {
 	a.Tasks = make([]Task, size)
 
 	for _, task := range graphs[0].Tasks {
-		i, err := extractTaskNumber(task.Name, size)
+		i, err := extractTaskID(task.Name, size)
 
 		if err != nil {
 			return a, err
 		}
 
+		a.Tasks[i].ID = i
 		a.Tasks[i].Type = task.Type
 	}
 
 	for _, arc := range graphs[0].Arcs {
-		i, err := extractTaskNumber(arc.From, size)
+		i, err := extractTaskID(arc.From, size)
 
 		if err != nil {
 			return a, err
 		}
 
-		j, err := extractTaskNumber(arc.To, size)
+		j, err := extractTaskID(arc.To, size)
 
 		if err != nil {
 			return a, err
 		}
 
-		i = i + j
+		a.Tasks[i].Children = append(a.Tasks[i].Children, &a.Tasks[j])
 	}
 
 	return a, nil
@@ -144,16 +145,16 @@ func loadCore(table tgff.Table) (Core, error) {
 	return c, nil
 }
 
-func extractTaskNumber(name string, total uint32) (uint32, error) {
+func extractTaskID(name string, total uint32) (uint32, error) {
 	if !strings.HasPrefix(name, "t0_") {
 		return 0, errors.New("unknown task naming scheme")
 	}
 
-	i, err := strconv.ParseInt(name[3:], 10, 0)
+	id, err := strconv.ParseInt(name[3:], 10, 0)
 
-	if err != nil || i < 0 || uint32(i) >= total {
+	if err != nil || id < 0 || uint32(id) >= total {
 		return 0, errors.New("unknown task indexing scheme")
 	}
 
-	return uint32(i), nil
+	return uint32(id), nil
 }
