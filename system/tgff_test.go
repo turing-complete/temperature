@@ -13,11 +13,11 @@ const (
 )
 
 func TestLoadTGFF(t *testing.T) {
-	app, platform, err := LoadTGFF(findFixture("002_040"))
+	plat, app, err := LoadTGFF(findFixture("002_040"))
 
 	assert.Success(err, t)
+	assert.Equal(len(plat.Cores), 2, t)
 	assert.Equal(len(app.Tasks), 40, t)
-	assert.Equal(len(platform.Cores), 2, t)
 
 	tasks := []struct {
 		children []uint32

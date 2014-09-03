@@ -1,6 +1,6 @@
 package system
 
-type App struct {
+type Application struct {
 	Tasks []Task
 }
 

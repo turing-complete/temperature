@@ -8,68 +8,26 @@ import (
 	"github.com/goesd/format/tgff"
 )
 
-// LoadTGFF constructs an application and a platform based on a TGFF file.
-func LoadTGFF(path string) (App, Platform, error) {
+// LoadTGFF constructs a platform and an application based on a TGFF file.
+func LoadTGFF(path string) (Platform, Application, error) {
+	p, a := Platform{}, Application{}
+
 	r, err := tgff.ParseFile(path)
-
 	if err != nil {
-		return App{}, Platform{}, err
+		return p, a, err
 	}
 
-	a, err := loadApp(r.Graphs)
-
+	p, err = loadPlatform(r.Tables)
 	if err != nil {
-		return App{}, Platform{}, err
+		return p, a, err
 	}
 
-	p, err := loadPlatform(r.Tables)
-
+	a, err = loadApplication(r.Graphs)
 	if err != nil {
-		return App{}, Platform{}, err
+		return p, a, err
 	}
 
-	return a, p, nil
-}
-
-func loadApp(graphs []tgff.Graph) (App, error) {
-	a := App{}
-
-	if len(graphs) != 1 {
-		return a, errors.New("need exactly one task graph")
-	}
-
-	size := uint32(len(graphs[0].Tasks))
-
-	a.Tasks = make([]Task, size)
-
-	for _, task := range graphs[0].Tasks {
-		i, err := extractTaskID(task.Name, size)
-
-		if err != nil {
-			return a, err
-		}
-
-		a.Tasks[i].ID = i
-		a.Tasks[i].Type = task.Type
-	}
-
-	for _, arc := range graphs[0].Arcs {
-		i, err := extractTaskID(arc.From, size)
-
-		if err != nil {
-			return a, err
-		}
-
-		j, err := extractTaskID(arc.To, size)
-
-		if err != nil {
-			return a, err
-		}
-
-		a.Tasks[i].Children = append(a.Tasks[i].Children, &a.Tasks[j])
-	}
-
-	return a, nil
+	return p, a, nil
 }
 
 func loadPlatform(tables []tgff.Table) (Platform, error) {
@@ -108,6 +66,47 @@ func loadPlatform(tables []tgff.Table) (Platform, error) {
 	}
 
 	return p, nil
+}
+
+func loadApplication(graphs []tgff.Graph) (Application, error) {
+	a := Application{}
+
+	if len(graphs) != 1 {
+		return a, errors.New("need exactly one task graph")
+	}
+
+	size := uint32(len(graphs[0].Tasks))
+
+	a.Tasks = make([]Task, size)
+
+	for _, task := range graphs[0].Tasks {
+		i, err := extractTaskID(task.Name, size)
+
+		if err != nil {
+			return a, err
+		}
+
+		a.Tasks[i].ID = i
+		a.Tasks[i].Type = task.Type
+	}
+
+	for _, arc := range graphs[0].Arcs {
+		i, err := extractTaskID(arc.From, size)
+
+		if err != nil {
+			return a, err
+		}
+
+		j, err := extractTaskID(arc.To, size)
+
+		if err != nil {
+			return a, err
+		}
+
+		a.Tasks[i].Children = append(a.Tasks[i].Children, &a.Tasks[j])
+	}
+
+	return a, nil
 }
 
 func loadCore(table tgff.Table) (Core, error) {
