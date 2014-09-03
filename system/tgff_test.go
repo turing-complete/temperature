@@ -12,8 +12,8 @@ const (
 	fixturePath = "fixtures"
 )
 
-func TestLoadFromTGFF(t *testing.T) {
-	app, platform, err := LoadFromTGFF(findFixture("002_040"))
+func TestLoadTGFF(t *testing.T) {
+	app, platform, err := LoadTGFF(findFixture("002_040"))
 
 	assert.Success(err, t)
 	assert.Equal(len(app.Tasks), 40, t)
@@ -114,11 +114,11 @@ func TestExtractTaskNumber(t *testing.T) {
 	}
 }
 
-func BenchmarkLoadFromTGFF(b *testing.B) {
+func BenchmarkLoadTGFF(b *testing.B) {
 	path := findFixture("002_040")
 
 	for i := 0; i < b.N; i++ {
-		LoadFromTGFF(path)
+		LoadTGFF(path)
 	}
 }
 

@@ -8,7 +8,8 @@ import (
 	"github.com/goesd/format/tgff"
 )
 
-func LoadFromTGFF(path string) (App, Platform, error) {
+// LoadTGFF constructs an application and a platform based on a TGFF file.
+func LoadTGFF(path string) (App, Platform, error) {
 	r, err := tgff.ParseFile(path)
 
 	if err != nil {
@@ -98,8 +99,10 @@ func loadPlatform(tables []tgff.Table) (Platform, error) {
 		}
 	}
 
+	rows := len(p.Cores[0].Time)
+
 	for i := 1; i < size; i++ {
-		if len(p.Cores[i-1].Time) != len(p.Cores[i].Time) {
+		if rows != len(p.Cores[i].Time) {
 			return p, errors.New("inconsistent table data")
 		}
 	}
