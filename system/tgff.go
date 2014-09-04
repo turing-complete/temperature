@@ -42,7 +42,7 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 	var err error
 
 	for _, table := range tables {
-		i := table.Number
+		i := table.ID
 
 		if i >= uint16(size) {
 			return nil, errors.New("unknown table indexing scheme")
@@ -110,7 +110,7 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 
 func loadCore(table tgff.Table) (Core, error) {
 	c := Core{
-		ID: table.Number,
+		ID: table.ID,
 	}
 
 	var tycol, tmcol, pwcol *tgff.Column
