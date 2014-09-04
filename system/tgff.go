@@ -44,7 +44,7 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 	for _, table := range tables {
 		i := table.Number
 
-		if i >= uint32(size) {
+		if i >= uint16(size) {
 			return nil, errors.New("unknown table indexing scheme")
 		}
 
@@ -71,7 +71,7 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 		return nil, errors.New("need exactly one task graph")
 	}
 
-	size := uint32(len(graphs[0].Tasks))
+	size := uint16(len(graphs[0].Tasks))
 
 	a := &Application{
 		Tasks: make([]Task, size),
@@ -101,8 +101,8 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 			return nil, err
 		}
 
-		a.Tasks[i].Children = append(a.Tasks[i].Children, uint32(j))
-		a.Tasks[j].Parents = append(a.Tasks[j].Parents, uint32(i))
+		a.Tasks[i].Children = append(a.Tasks[i].Children, uint16(j))
+		a.Tasks[j].Parents = append(a.Tasks[j].Parents, uint16(i))
 	}
 
 	return a, nil
@@ -154,16 +154,16 @@ func loadCore(table tgff.Table) (Core, error) {
 	return c, nil
 }
 
-func extractTaskID(name string, total uint32) (uint32, error) {
+func extractTaskID(name string, total uint16) (uint16, error) {
 	if !strings.HasPrefix(name, "t0_") {
 		return 0, errors.New("unknown task naming scheme")
 	}
 
 	id, err := strconv.ParseInt(name[3:], 10, 0)
 
-	if err != nil || id < 0 || uint32(id) >= total {
+	if err != nil || id < 0 || uint16(id) >= total {
 		return 0, errors.New("unknown task indexing scheme")
 	}
 
-	return uint32(id), nil
+	return uint16(id), nil
 }

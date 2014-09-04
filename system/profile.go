@@ -66,7 +66,7 @@ func CollectProfile(plat *Platform, app *Application) *Profile {
 	return p
 }
 
-func (p *Profile) propagateASAP(app *Application, i uint32, time float64) {
+func (p *Profile) propagateASAP(app *Application, i uint16, time float64) {
 	if p.ASAP[i] >= time {
 		return
 	}
@@ -79,7 +79,7 @@ func (p *Profile) propagateASAP(app *Application, i uint32, time float64) {
 	}
 }
 
-func (p *Profile) propagateALAP(app *Application, i uint32, time float64) {
+func (p *Profile) propagateALAP(app *Application, i uint16, time float64) {
 	if time > p.time[i] {
 		time = time - p.time[i]
 	} else {
