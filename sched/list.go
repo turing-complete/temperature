@@ -40,33 +40,46 @@ func (l *List) Schedule(priority []float64) *Schedule {
 	ctime := make([]float64, cc)
 	ttime := make([]float64, tc)
 
-	// Always kept sorted according to the priority.
-	pool := newPool(uint16(tc))
-	for _, tid := range l.roots {
-		pool.push(tid, priority[tid])
-		pushed[tid] = true
+	var i, j, cid, tid uint16
+	var ready bool
+
+	size := uint16(len(l.roots))
+
+	// According to the benchmarks, keeping it sorted is not worth it.
+	pool := make([]uint16, size, tc)
+	copy(pool, l.roots)
+
+	for i = 0; i < size; i++ {
+		pushed[pool[i]] = true
 	}
 
-	for len(pool) > 0 {
-		// Pull the task with the highest priority.
-		tid := pool.pop()
-
-		// Find the earliest available core for the task.
-		cid := uint16(0)
-		for i := uint16(1); i < cc; i++ {
+	for size > 0 {
+		// Find the earliest available core.
+		cid = 0
+		for i = 1; i < cc; i++ {
 			if ctime[i] < ctime[cid] {
 				cid = i
 			}
 		}
 
-		mapping[tid] = cid
+		// Find the highest priority task.
+		j, tid = 0, pool[0]
+		for i = 1; i < size; i++ {
+			if priority[pool[i]] < priority[tid] {
+				j, tid = i, pool[i]
+			}
+		}
 
+		// Remove the task from the pool.
+		copy(pool[j:], pool[j+1:])
+		pool = pool[:size-1]
+
+		mapping[tid] = cid
 		if ctime[cid] > ttime[tid] {
 			start[tid] = ctime[cid]
 		} else {
 			start[tid] = ttime[tid]
 		}
-
 		finish[tid] = start[tid] + cores[cid].Time[tasks[tid].Type]
 
 		scheduled[tid] = true
@@ -86,7 +99,7 @@ func (l *List) Schedule(priority []float64) *Schedule {
 
 			// Push the child into the pool if it has become ready for
 			// scheduling, that is, if all its parents have been scheduled.
-			ready := true
+			ready = true
 
 			for _, pid := range tasks[kid].Parents {
 				if !scheduled[pid] {
@@ -99,9 +112,11 @@ func (l *List) Schedule(priority []float64) *Schedule {
 				continue
 			}
 
-			pool.push(kid, priority[kid])
+			pool = append(pool, kid)
 			pushed[kid] = true
 		}
+
+		size = uint16(len(pool))
 	}
 
 	return &Schedule{
