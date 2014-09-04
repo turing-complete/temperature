@@ -14,10 +14,10 @@ type Profile struct {
 	time []float64
 }
 
-// CollectProfile computes a profile of the given system. Since the mapping of
+// NewProfile collects a profile of the given system. Since the mapping of
 // the tasks onto the cores is assumed to be unknown at this stage, the profile
 // is based on the average execution time of the tasks across all the cores.
-func CollectProfile(plat *Platform, app *Application) *Profile {
+func NewProfile(plat *Platform, app *Application) *Profile {
 	cc := len(plat.Cores)
 	tc := len(app.Tasks)
 

@@ -6,10 +6,10 @@ import (
 	"github.com/goesd/support/assert"
 )
 
-func TestCollectProfile(t *testing.T) {
+func TestNewProfile(t *testing.T) {
 	plat, app, _ := LoadTGFF(findFixture("002_040"))
 
-	prof := CollectProfile(plat, app)
+	prof := NewProfile(plat, app)
 
 	mobility := []float64{
 		0.0000, 0.0000, 0.0000, 0.0445, 0.0000, 0.0140, 0.1145, 0.0000,
