@@ -34,13 +34,12 @@ func (l *List) Schedule(priority []float64) *Schedule {
 	start := make([]float64, tc)
 	finish := make([]float64, tc)
 
-	pushed := make([]bool, tc)
 	scheduled := make([]bool, tc)
 
 	ctime := make([]float64, cc)
 	ttime := make([]float64, tc)
 
-	var i, j, cid, tid uint16
+	var i, j, cid, tid, kid, pid uint16
 	var ready bool
 
 	size := uint16(len(l.roots))
@@ -48,10 +47,6 @@ func (l *List) Schedule(priority []float64) *Schedule {
 	// According to the benchmarks, keeping it sorted is not worth it.
 	pool := make([]uint16, size, tc)
 	copy(pool, l.roots)
-
-	for i = 0; i < size; i++ {
-		pushed[pool[i]] = true
-	}
 
 	for size > 0 {
 		// Find the earliest available core.
@@ -87,21 +82,17 @@ func (l *List) Schedule(priority []float64) *Schedule {
 		// Update the time when the core is again available.
 		ctime[cid] = finish[tid]
 
-		for _, kid := range tasks[tid].Children {
+		for _, kid = range tasks[tid].Children {
 			// Update the time when the child can potentially start executing.
 			if ttime[kid] < finish[tid] {
 				ttime[kid] = finish[tid]
-			}
-
-			if pushed[kid] {
-				continue
 			}
 
 			// Push the child into the pool if it has become ready for
 			// scheduling, that is, if all its parents have been scheduled.
 			ready = true
 
-			for _, pid := range tasks[kid].Parents {
+			for _, pid = range tasks[kid].Parents {
 				if !scheduled[pid] {
 					ready = false
 					break
@@ -113,7 +104,6 @@ func (l *List) Schedule(priority []float64) *Schedule {
 			}
 
 			pool = append(pool, kid)
-			pushed[kid] = true
 		}
 
 		size = uint16(len(pool))
