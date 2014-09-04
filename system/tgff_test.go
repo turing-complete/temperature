@@ -104,7 +104,7 @@ func TestExtractTaskNumber(t *testing.T) {
 	}
 }
 
-func BenchmarkLoadTGFF_002_040(b *testing.B) {
+func BenchmarkLoadTGFF(b *testing.B) {
 	path := findFixture("002_040")
 
 	for i := 0; i < b.N; i++ {
