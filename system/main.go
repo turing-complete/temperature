@@ -1,4 +1,6 @@
-// Package system provides means for describing an electronic system for the
+// Package system provides an abstraction of an electronic system for the
 // purpose of simulation. Such a system is composed of a platform and an
-// application, running on the platform.
+// application. A platform is a collection of processing elements, referred to
+// as cores, and an application is a collection of data-dependent tasks,
+// forming a directed acyclic graph.
 package system
