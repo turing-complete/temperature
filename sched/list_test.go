@@ -13,7 +13,7 @@ const (
 	fixturePath = "fixtures"
 )
 
-func TestListConstruct(t *testing.T) {
+func TestListSchedule(t *testing.T) {
 	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
 	prof := system.NewProfile(plat, app)
 
@@ -49,6 +49,27 @@ func TestListConstruct(t *testing.T) {
 	assert.Equal(sched.Mapping, mapping, t)
 	assert.AlmostEqual(sched.Start, start, t)
 	assert.AlmostEqual(sched.Finish, finish, t)
+}
+
+func BenchmarkListSchedule_002_040(b *testing.B) {
+	benchmark("002_040", b)
+}
+
+func BenchmarkListSchedule_032_640(b *testing.B) {
+	benchmark("032_640", b)
+}
+
+func benchmark(name string, b *testing.B) {
+	plat, app, _ := system.LoadTGFF(findFixture(name))
+
+	prof := system.NewProfile(plat, app)
+	list := NewList(plat, app)
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		list.Schedule(prof.Mobility)
+	}
 }
 
 func findFixture(name string) string {
