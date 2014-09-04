@@ -104,11 +104,14 @@ func TestExtractTaskNumber(t *testing.T) {
 	}
 }
 
-func BenchmarkLoadTGFF(b *testing.B) {
+func BenchmarkLoadTGFF_002_040(b *testing.B) {
 	path := findFixture("002_040")
 
 	for i := 0; i < b.N; i++ {
-		LoadTGFF(path)
+		_, _, err := LoadTGFF(path)
+		if err != nil {
+			b.Fatal(err)
+		}
 	}
 }
 
