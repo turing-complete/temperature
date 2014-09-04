@@ -43,9 +43,14 @@ func TestListConstruct(t *testing.T) {
 		0.0140, 0.0130, 0.0260, 0.0220, 0.0100, 0.0160, 0.0110, 0.0120,
 	}
 
+	finish := make([]float64, len(start))
+	for i := range start {
+		finish[i] = start[i] + duration[i]
+	}
+
 	assert.Equal(sched.Mapping, mapping, t)
 	assert.Equal(sched.Start, start, t)
-	assert.Equal(sched.Duration, duration, t)
+	assert.Equal(sched.Finish, finish, t)
 }
 
 func findFixture(name string) string {
