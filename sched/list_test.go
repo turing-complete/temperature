@@ -14,8 +14,6 @@ const (
 )
 
 func TestListConstruct(t *testing.T) {
-	t.Skip()
-
 	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
 	prof := system.NewProfile(plat, app)
 
@@ -49,8 +47,8 @@ func TestListConstruct(t *testing.T) {
 	}
 
 	assert.Equal(sched.Mapping, mapping, t)
-	assert.Equal(sched.Start, start, t)
-	assert.Equal(sched.Finish, finish, t)
+	assert.AlmostEqual(sched.Start, start, t)
+	assert.AlmostEqual(sched.Finish, finish, t)
 }
 
 func findFixture(name string) string {

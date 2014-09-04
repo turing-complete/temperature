@@ -99,8 +99,8 @@ func (l *List) Schedule(priority []float64) *Schedule {
 				continue
 			}
 
-			pool.push(cid, priority[cid])
-			pushed[cid] = true
+			pool.push(kid, priority[kid])
+			pushed[kid] = true
 		}
 	}
 

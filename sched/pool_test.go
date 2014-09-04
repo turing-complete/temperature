@@ -18,4 +18,6 @@ func TestPool(t *testing.T) {
 	assert.Equal(pool.pop(), uint16(1), t)
 	assert.Equal(pool.pop(), uint16(2), t)
 	assert.Equal(pool.pop(), uint16(0), t)
+
+	assert.Equal(len(pool), 0, t)
 }
