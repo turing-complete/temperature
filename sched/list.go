@@ -1,7 +1,7 @@
 package sched
 
 import (
-	"github.com/goesd/persim/system"
+	"github.com/go-eslab/persim/system"
 )
 
 // List represents a list scheduler.

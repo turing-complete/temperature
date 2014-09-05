@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/goesd/format/tgff"
+	"github.com/go-eslab/format/tgff"
 )
 
 // LoadTGFF constructs a platform and an application based on a TGFF file.

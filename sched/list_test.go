@@ -5,8 +5,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/goesd/persim/system"
-	"github.com/goesd/support/assert"
+	"github.com/go-eslab/persim/system"
+	"github.com/go-eslab/support/assert"
 )
 
 const (

@@ -3,7 +3,7 @@ package system
 import (
 	"testing"
 
-	"github.com/goesd/support/assert"
+	"github.com/go-eslab/support/assert"
 )
 
 func TestNewProfile(t *testing.T) {
