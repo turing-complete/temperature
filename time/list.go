@@ -1,4 +1,4 @@
-package sched
+package time
 
 import (
 	"github.com/go-eslab/persim/system"
