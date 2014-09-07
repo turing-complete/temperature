@@ -20,10 +20,10 @@ func NewList(plat *system.Platform, app *system.Application) *List {
 	}
 }
 
-// Schedule constructs a schedule according to the given priority vector.
+// Compute constructs a schedule according to the given priority vector.
 // The length of this vector equals to the number of tasks in the system, and
 // smaller values correspond to higher priorities.
-func (l *List) Schedule(priority []float64) *Schedule {
+func (l *List) Compute(priority []float64) *Schedule {
 	cores := l.plat.Cores
 	tasks := l.app.Tasks
 

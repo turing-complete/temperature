@@ -13,12 +13,12 @@ const (
 	fixturePath = "fixtures"
 )
 
-func TestListSchedule(t *testing.T) {
+func TestListCompute(t *testing.T) {
 	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
 	prof := system.NewProfile(plat, app)
 
 	list := NewList(plat, app)
-	sched := list.Schedule(prof.Mobility)
+	sched := list.Compute(prof.Mobility)
 
 	mapping := []uint16{
 		0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0,
@@ -68,7 +68,7 @@ func benchmark(name string, b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		list.Schedule(prof.Mobility)
+		list.Compute(prof.Mobility)
 	}
 }
 
