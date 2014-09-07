@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-eslab/persim/system"
 	"github.com/go-eslab/persim/time"
-	"github.com/go-math/linal/matrix"
 )
 
 // Power represents a power distributer configured for a particular system.
@@ -28,7 +27,7 @@ func New(plat *system.Platform, app *system.Application, dt float64) *Power {
 }
 
 // Compute returns the power profile corresponding to the given schedule.
-func (p *Power) Compute(sched *time.Schedule) *matrix.Matrix {
+func (p *Power) Compute(sched *time.Schedule) []float64 {
 	cores, tasks := p.plat.Cores, p.app.Tasks
 
 	span, dt := sched.Span(), p.dt
@@ -37,7 +36,7 @@ func (p *Power) Compute(sched *time.Schedule) *matrix.Matrix {
 	tc := len(tasks)
 	sc := uint32(math.Floor(span / dt))
 
-	data := make([]float64, cc*sc)
+	P := make([]float64, cc*sc)
 
 	for i := 0; i < tc; i++ {
 		j := uint32(sched.Mapping[i])
@@ -45,9 +44,9 @@ func (p *Power) Compute(sched *time.Schedule) *matrix.Matrix {
 		f := uint32(math.Floor(sched.Finish[i] / dt) - 1)
 
 		for ; s <= f; s++ {
-			data[s*cc+j] = cores[j].Power[tasks[i].Type]
+			P[s*cc+j] = cores[j].Power[tasks[i].Type]
 		}
 	}
 
-	return matrix.New(cc, sc, data)
+	return P
 }

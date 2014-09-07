@@ -23,7 +23,7 @@ func TestPowerCompute(t *testing.T) {
 	power := New(plat, app, 1e-3)
 	P := power.Compute(sched)
 
-	assert.Equal(P.Data, fixturePData, t)
+	assert.Equal(P, fixturePData, t)
 }
 
 func findFixture(name string) string {
