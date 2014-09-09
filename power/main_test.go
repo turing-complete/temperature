@@ -13,7 +13,7 @@ const (
 	fixturePath = "fixtures"
 )
 
-func TestPowerCompute(t *testing.T) {
+func TestCompute(t *testing.T) {
 	plat, app, _ := system.LoadTGFF(findFixture("002_040.tgff"))
 
 	prof := system.NewProfile(plat, app)

@@ -9,8 +9,8 @@ import (
 	"github.com/go-eslab/persim/time"
 )
 
-// Power represents a power distributer configured for a particular system.
-type Power struct {
+// Self represents a power distributer configured for a particular system.
+type Self struct {
 	plat *system.Platform
 	app  *system.Application
 	dt   float64
@@ -18,8 +18,8 @@ type Power struct {
 
 // New returns a power distributor for the given platform, application, and
 // sampling period.
-func New(plat *system.Platform, app *system.Application, dt float64) *Power {
-	return &Power{
+func New(plat *system.Platform, app *system.Application, dt float64) *Self {
+	return &Self{
 		plat: plat,
 		app:  app,
 		dt:   dt,
@@ -27,10 +27,10 @@ func New(plat *system.Platform, app *system.Application, dt float64) *Power {
 }
 
 // Compute returns the power profile corresponding to the given schedule.
-func (p *Power) Compute(sched *time.Schedule) []float64 {
-	cores, tasks := p.plat.Cores, p.app.Tasks
+func (self *Self) Compute(sched *time.Schedule) []float64 {
+	cores, tasks := self.plat.Cores, self.app.Tasks
 
-	span, dt := sched.Span(), p.dt
+	span, dt := sched.Span(), self.dt
 
 	cc := uint32(len(cores))
 	tc := len(tasks)
