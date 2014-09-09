@@ -25,6 +25,11 @@ func TestListCompute(t *testing.T) {
 		1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0,
 	}
 
+	order := []uint16{
+		0, 1, 2, 8, 3, 6, 38, 4, 5, 9, 13, 7, 14, 26, 36, 10, 27, 17, 21, 11, 12,
+		22, 18, 28, 15, 31, 25, 23, 19, 20, 16, 29, 39, 30, 24, 35, 37, 34, 32, 33,
+	}
+
 	start := []float64{
 		0.0000, 0.0230, 0.0350, 0.0910, 0.0470, 0.0790, 0.4220, 0.0680,
 		0.0680, 0.1030, 0.1530, 0.0900, 0.1720, 0.3150, 0.4040, 0.1170,
@@ -47,6 +52,7 @@ func TestListCompute(t *testing.T) {
 	}
 
 	assert.Equal(sched.Mapping, mapping, t)
+	assert.Equal(sched.Order, order, t)
 	assert.AlmostEqual(sched.Start, start, t)
 	assert.AlmostEqual(sched.Finish, finish, t)
 }

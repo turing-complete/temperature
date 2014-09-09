@@ -31,6 +31,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 	tc := uint16(len(tasks))
 
 	mapping := make([]uint16, tc)
+	order := make([]uint16, tc)
 	start := make([]float64, tc)
 	finish := make([]float64, tc)
 
@@ -39,7 +40,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 	ctime := make([]float64, cc)
 	ttime := make([]float64, tc)
 
-	var i, j, cid, tid, kid, pid uint16
+	var i, j, k, cid, tid, kid, pid uint16
 	var ready bool
 
 	size := uint16(len(l.roots))
@@ -70,6 +71,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 		pool = pool[:size-1]
 
 		mapping[tid] = cid
+		order[tid] = k; k++
 		if ctime[cid] > ttime[tid] {
 			start[tid] = ctime[cid]
 		} else {
@@ -111,6 +113,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 
 	return &Schedule{
 		Mapping: mapping,
+		Order:   order,
 		Start:   start,
 		Finish:  finish,
 	}
