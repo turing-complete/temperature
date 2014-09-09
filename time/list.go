@@ -71,7 +71,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 		pool = pool[:size-1]
 
 		mapping[tid] = cid
-		order[tid] = k; k++
+		order[k] = tid; k++
 		if ctime[cid] > ttime[tid] {
 			start[tid] = ctime[cid]
 		} else {
