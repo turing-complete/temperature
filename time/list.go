@@ -119,7 +119,47 @@ func (l *List) Compute(priority []float64) *Schedule {
 	}
 }
 
-// Reschedule constructs a schedule based on another schedule.
-func (l *List) Reschedule(s *Schedule) *Schedule {
-	return s
+// Recompute constructs a new schedule based on an old one by adding a delay to
+// the execution time of the tasks.
+func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
+	tasks := l.app.Tasks
+
+	cc := uint16(len(l.plat.Cores))
+	tc := uint16(len(tasks))
+
+	start := make([]float64, tc)
+	finish := make([]float64, tc)
+
+	ctime := make([]float64, cc)
+	ttime := make([]float64, tc)
+
+	var i, cid, tid, kid uint16
+
+	for ; i < tc; i++ {
+		tid = s.Order[i]
+		cid = s.Mapping[tid]
+
+		if ctime[cid] > ttime[tid] {
+			start[tid] = ctime[cid]
+		} else {
+			start[tid] = ttime[tid]
+		}
+		finish[tid] = start[tid] + (s.Finish[tid] - s.Start[tid]) + delay[tid]
+
+		ctime[cid] = finish[tid]
+
+		for _, kid = range tasks[tid].Children {
+			if ttime[kid] < finish[tid] {
+				ttime[kid] = finish[tid]
+			}
+		}
+	}
+
+	return &Schedule{
+		// FIXME: Do not be greedy! Make a copy!
+		Mapping: s.Mapping,
+		Order:   s.Order,
+		Start:   start,
+		Finish:  finish,
+	}
 }

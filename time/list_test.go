@@ -57,15 +57,69 @@ func TestListCompute(t *testing.T) {
 	assert.AlmostEqual(sched.Finish, finish, t)
 }
 
-func BenchmarkListSchedule_002_040(b *testing.B) {
-	benchmark("002_040", b)
+func TestListRecompute(t *testing.T) {
+	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
+	prof := system.NewProfile(plat, app)
+
+	list := NewList(plat, app)
+	sched := list.Compute(prof.Mobility)
+
+	delay := []float64{
+		0.0352, 0.0831, 0.0585, 0.0550, 0.0917, 0.0286, 0.0757, 0.0754,
+		0.0380, 0.0568, 0.0076, 0.0054, 0.0531, 0.0779, 0.0934, 0.0130,
+		0.0569, 0.0469, 0.0012, 0.0337, 0.0162, 0.0794, 0.0311, 0.0529,
+		0.0166, 0.0602, 0.0263, 0.0654, 0.0689, 0.0748, 0.0451, 0.0084,
+		0.0229, 0.0913, 0.0152, 0.0826, 0.0538, 0.0996, 0.0078, 0.0443,
+	}
+
+	start := []float64{
+		0.0000, 0.0582, 0.1533, 0.4349, 0.2238, 0.3855, 1.7419, 0.3365,
+		0.3365, 0.5019, 0.6554, 0.4251, 0.6820, 1.2139, 1.6966, 0.5727,
+		1.3128, 0.7837, 0.9856, 0.6067, 0.6554, 0.9998, 0.8456, 1.3128,
+		0.7481, 1.4890, 1.1766, 1.0992, 0.8917, 0.9856, 0.7837, 1.3847,
+		1.8648, 1.3847, 1.1766, 1.6373, 1.8010, 1.5810, 1.5622, 1.5810,
+	}
+
+	finish := make([]float64, len(start))
+	for i := range finish {
+		finish[i] = start[i] + (sched.Finish[i] - sched.Start[i]) + delay[i]
+	}
+
+	sched = list.Recompute(sched, delay)
+
+	assert.AlmostEqual(sched.Start, start, t)
+	assert.AlmostEqual(sched.Finish, finish, t)
 }
 
-func BenchmarkListSchedule_032_640(b *testing.B) {
-	benchmark("032_640", b)
+func TestListRecomputeDummy(t *testing.T) {
+	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
+	prof := system.NewProfile(plat, app)
+
+	list := NewList(plat, app)
+	sched1 := list.Compute(prof.Mobility)
+	sched2 := list.Recompute(sched1, make([]float64, len(sched1.Start)))
+
+	assert.Equal(sched2.Start, sched1.Start, t)
+	assert.Equal(sched2.Finish, sched1.Finish, t)
 }
 
-func benchmark(name string, b *testing.B) {
+func BenchmarkListCompute_002_040(b *testing.B) {
+	benchmarkCompute("002_040", b)
+}
+
+func BenchmarkListRecompute_002_040(b *testing.B) {
+	benchmarkRecompute("002_040", b)
+}
+
+func BenchmarkListCompute_032_640(b *testing.B) {
+	benchmarkCompute("032_640", b)
+}
+
+func BenchmarkListRecompute_032_640(b *testing.B) {
+	benchmarkRecompute("032_640", b)
+}
+
+func benchmarkCompute(name string, b *testing.B) {
 	plat, app, _ := system.LoadTGFF(findFixture(name))
 
 	prof := system.NewProfile(plat, app)
@@ -75,6 +129,21 @@ func benchmark(name string, b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		list.Compute(prof.Mobility)
+	}
+}
+
+func benchmarkRecompute(name string, b *testing.B) {
+	plat, app, _ := system.LoadTGFF(findFixture(name))
+
+	prof := system.NewProfile(plat, app)
+	list := NewList(plat, app)
+	sched := list.Compute(prof.Mobility)
+	delay := make([]float64, len(sched.Start))
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		list.Recompute(sched, delay)
 	}
 }
 
