@@ -13,7 +13,7 @@ const (
 )
 
 func TestLoadTGFF(t *testing.T) {
-	plat, app, err := LoadTGFF(findFixture("002_040"))
+	plat, app, err := loadTGFF(findFixture("002_040"))
 
 	assert.Success(err, t)
 	assert.Equal(len(plat.Cores), 2, t)
@@ -108,7 +108,7 @@ func BenchmarkLoadTGFF(b *testing.B) {
 	path := findFixture("002_040")
 
 	for i := 0; i < b.N; i++ {
-		_, _, err := LoadTGFF(path)
+		_, _, err := loadTGFF(path)
 		if err != nil {
 			b.Fatal(err)
 		}

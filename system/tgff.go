@@ -8,8 +8,7 @@ import (
 	"github.com/go-eslab/format/tgff"
 )
 
-// LoadTGFF constructs a platform and an application based on a TGFF file.
-func LoadTGFF(path string) (*Platform, *Application, error) {
+func loadTGFF(path string) (*Platform, *Application, error) {
 	r, err := tgff.ParseFile(path)
 	if err != nil {
 		return nil, nil, err

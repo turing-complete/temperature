@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewProfile(t *testing.T) {
-	plat, app, _ := LoadTGFF(findFixture("002_040"))
+	plat, app, _ := Load(findFixture("002_040"))
 
 	prof := NewProfile(plat, app)
 

@@ -4,3 +4,9 @@
 // as cores, and an application is a collection of data-dependent tasks,
 // forming a directed acyclic graph.
 package system
+
+// Load constructs a platform and an application based on the specification
+// given in a file. The only supported format is TGFF.
+func Load(path string) (*Platform, *Application, error) {
+	return loadTGFF(path)
+}
