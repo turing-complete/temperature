@@ -14,7 +14,7 @@ const (
 )
 
 func TestListCompute(t *testing.T) {
-	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
+	plat, app, _ := system.Load(findFixture("002_040"))
 	prof := system.NewProfile(plat, app)
 
 	list := NewList(plat, app)
@@ -58,7 +58,7 @@ func TestListCompute(t *testing.T) {
 }
 
 func TestListRecompute(t *testing.T) {
-	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
+	plat, app, _ := system.Load(findFixture("002_040"))
 	prof := system.NewProfile(plat, app)
 
 	list := NewList(plat, app)
@@ -92,7 +92,7 @@ func TestListRecompute(t *testing.T) {
 }
 
 func TestListRecomputeDummy(t *testing.T) {
-	plat, app, _ := system.LoadTGFF(findFixture("002_040"))
+	plat, app, _ := system.Load(findFixture("002_040"))
 	prof := system.NewProfile(plat, app)
 
 	list := NewList(plat, app)
@@ -120,7 +120,7 @@ func BenchmarkListRecompute_032_640(b *testing.B) {
 }
 
 func benchmarkCompute(name string, b *testing.B) {
-	plat, app, _ := system.LoadTGFF(findFixture(name))
+	plat, app, _ := system.Load(findFixture(name))
 
 	prof := system.NewProfile(plat, app)
 	list := NewList(plat, app)
@@ -133,7 +133,7 @@ func benchmarkCompute(name string, b *testing.B) {
 }
 
 func benchmarkRecompute(name string, b *testing.B) {
-	plat, app, _ := system.LoadTGFF(findFixture(name))
+	plat, app, _ := system.Load(findFixture(name))
 
 	prof := system.NewProfile(plat, app)
 	list := NewList(plat, app)

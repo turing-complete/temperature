@@ -14,7 +14,7 @@ const (
 )
 
 func TestCompute(t *testing.T) {
-	plat, app, _ := system.LoadTGFF(findFixture("002_040.tgff"))
+	plat, app, _ := system.Load(findFixture("002_040.tgff"))
 
 	prof := system.NewProfile(plat, app)
 	list := time.NewList(plat, app)
