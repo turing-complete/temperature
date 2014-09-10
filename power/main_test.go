@@ -21,9 +21,14 @@ func TestCompute(t *testing.T) {
 	sched := list.Compute(prof.Mobility)
 
 	power := New(plat, app, 1e-3)
-	P := power.Compute(sched)
 
+	P := make([]float64, 2*440)
+	power.Compute(sched, P, 440)
 	assert.Equal(P, fixturePData, t)
+
+	P = make([]float64, 2*42)
+	power.Compute(sched, P, 42)
+	assert.Equal(P, fixturePData[:2*42], t)
 }
 
 func findFixture(name string) string {
