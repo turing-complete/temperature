@@ -40,17 +40,20 @@ func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
 	}
 
 	var j, s, f uint32
+	var p float64
 
 	for i := uint16(0); i < tc; i++ {
 		j = uint32(sched.Mapping[i])
+		p = cores[j].Power[tasks[i].Type]
+
 		s = uint32(math.Floor(sched.Start[i] / dt))
-		f = uint32(math.Floor(sched.Finish[i] / dt) - 1)
-		if f >= sc {
-			f = sc - 1
+		f = uint32(math.Floor(sched.Finish[i] / dt))
+		if f > sc {
+			f = sc
 		}
 
-		for ; s <= f; s++ {
-			P[s*cc+j] = cores[j].Power[tasks[i].Type]
+		for ; s < f; s++ {
+			P[s*cc+j] = p
 		}
 	}
 }
