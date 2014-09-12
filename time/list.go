@@ -122,6 +122,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 // Recompute constructs a new schedule based on an old one by adding a delay to
 // the execution time of the tasks.
 func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
+	cores := l.plat.Cores
 	tasks := l.app.Tasks
 
 	cc := uint16(len(l.plat.Cores))
@@ -144,7 +145,7 @@ func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
 		} else {
 			start[tid] = ttime[tid]
 		}
-		finish[tid] = start[tid] + (s.Finish[tid] - s.Start[tid]) + delay[tid]
+		finish[tid] = start[tid] + cores[cid].Time[tasks[tid].Type] + delay[tid]
 
 		ctime[cid] = finish[tid]
 
