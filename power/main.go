@@ -3,8 +3,6 @@
 package power
 
 import (
-	"math"
-
 	"github.com/go-eslab/persim/system"
 	"github.com/go-eslab/persim/time"
 )
@@ -35,7 +33,7 @@ func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
 
 	cc := uint32(len(cores))
 	tc := uint16(len(tasks))
-	if count := uint32(math.Floor(sched.Span() / dt)); count < sc {
+	if count := uint32(sched.Span() / dt); count < sc {
 		sc = count
 	}
 
@@ -46,8 +44,8 @@ func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
 		j = uint32(sched.Mapping[i])
 		p = cores[j].Power[tasks[i].Type]
 
-		s = uint32(math.Floor(sched.Start[i] / dt))
-		f = uint32(math.Floor(sched.Finish[i] / dt))
+		s = uint32(sched.Start[i] / dt)
+		f = uint32(sched.Finish[i] / dt)
 		if f > sc {
 			f = sc
 		}
