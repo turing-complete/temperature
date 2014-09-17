@@ -34,7 +34,7 @@ func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
 
 	cc := uint32(len(cores))
 	tc := uint16(len(tasks))
-	if count := uint32(sched.Span() / dt); count < sc {
+	if count := uint32(sched.Span / dt); count < sc {
 		sc = count
 	}
 

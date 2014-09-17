@@ -41,6 +41,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 	ttime := make([]float64, tc)
 
 	var i, j, k, cid, tid, kid, pid uint16
+	var span float64
 	var ready bool
 
 	size := uint16(len(l.roots))
@@ -71,7 +72,8 @@ func (l *List) Compute(priority []float64) *Schedule {
 		pool = pool[:size-1]
 
 		mapping[tid] = cid
-		order[k] = tid; k++
+		order[k] = tid
+		k++
 		if ctime[cid] > ttime[tid] {
 			start[tid] = ctime[cid]
 		} else {
@@ -83,6 +85,10 @@ func (l *List) Compute(priority []float64) *Schedule {
 
 		// Update the time when the core is again available.
 		ctime[cid] = finish[tid]
+
+		if span < finish[tid] {
+			span = finish[tid]
+		}
 
 		for _, kid = range tasks[tid].Children {
 			// Update the time when the child can potentially start executing.
@@ -116,6 +122,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 		Order:   order,
 		Start:   start,
 		Finish:  finish,
+		Span:    span,
 	}
 }
 
@@ -135,6 +142,7 @@ func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
 	ttime := make([]float64, tc)
 
 	var i, cid, tid, kid uint16
+	var span float64
 
 	for ; i < tc; i++ {
 		tid = s.Order[i]
@@ -148,6 +156,9 @@ func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
 		finish[tid] = start[tid] + cores[cid].Time[tasks[tid].Type] + delay[tid]
 
 		ctime[cid] = finish[tid]
+		if span < finish[tid] {
+			span = finish[tid]
+		}
 
 		for _, kid = range tasks[tid].Children {
 			if ttime[kid] < finish[tid] {
@@ -162,5 +173,6 @@ func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
 		Order:   s.Order,
 		Start:   start,
 		Finish:  finish,
+		Span:    span,
 	}
 }
