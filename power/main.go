@@ -26,7 +26,8 @@ func New(plat *system.Platform, app *system.Application, dt float64) *Self {
 
 // Compute constructs the power profile of the given schedule and stores it in
 // a cc-by-sc matrix P where cc is the number of cores and sc is the maximal
-// number of steps (samples) that the matrix can accommodate.
+// number of steps (samples) that the matrix can accommodate. P is assumed to
+// be zeroed.
 func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
 	cores, tasks := self.plat.Cores, self.app.Tasks
 	dt := self.dt
