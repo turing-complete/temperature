@@ -11,16 +11,16 @@ import (
 type Self struct {
 	plat *system.Platform
 	app  *system.Application
-	dt   float64
+	Δt   float64
 }
 
 // New returns a power distributor for the given platform, application, and
 // sampling period.
-func New(plat *system.Platform, app *system.Application, dt float64) *Self {
+func New(plat *system.Platform, app *system.Application, Δt float64) *Self {
 	return &Self{
 		plat: plat,
 		app:  app,
-		dt:   dt,
+		Δt:   Δt,
 	}
 }
 
@@ -30,11 +30,11 @@ func New(plat *system.Platform, app *system.Application, dt float64) *Self {
 // be zeroed.
 func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
 	cores, tasks := self.plat.Cores, self.app.Tasks
-	dt := self.dt
+	Δt := self.Δt
 
 	cc := uint32(len(cores))
 	tc := uint16(len(tasks))
-	if count := uint32(sched.Span / dt); count < sc {
+	if count := uint32(sched.Span / Δt); count < sc {
 		sc = count
 	}
 
@@ -45,8 +45,8 @@ func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
 		j = uint32(sched.Mapping[i])
 		p = cores[j].Power[tasks[i].Type]
 
-		s = uint32(sched.Start[i] / dt)
-		f = uint32(sched.Finish[i] / dt)
+		s = uint32(sched.Start[i] / Δt)
+		f = uint32(sched.Finish[i] / Δt)
 		if f > sc {
 			f = sc
 		}
