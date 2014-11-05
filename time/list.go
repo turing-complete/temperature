@@ -1,7 +1,7 @@
 package time
 
 import (
-	"github.com/go-eslab/persim/system"
+	"github.com/ready-steady/persim/system"
 )
 
 // List represents a list scheduler.

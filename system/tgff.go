@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/go-eslab/format/tgff"
+	"github.com/ready-steady/format/tgff"
 )
 
 func loadTGFF(path string) (*Platform, *Application, error) {

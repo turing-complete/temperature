@@ -3,8 +3,8 @@
 package power
 
 import (
-	"github.com/go-eslab/persim/system"
-	"github.com/go-eslab/persim/time"
+	"github.com/ready-steady/persim/system"
+	"github.com/ready-steady/persim/time"
 )
 
 // Self represents a power distributer configured for a particular system.

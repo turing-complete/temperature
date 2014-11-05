@@ -4,9 +4,9 @@ import (
 	"path"
 	"testing"
 
-	"github.com/go-eslab/persim/system"
-	"github.com/go-eslab/persim/time"
-	"github.com/go-math/support/assert"
+	"github.com/ready-steady/persim/system"
+	"github.com/ready-steady/persim/time"
+	"github.com/ready-steady/support/assert"
 )
 
 const (

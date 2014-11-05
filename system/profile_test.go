@@ -3,7 +3,7 @@ package system
 import (
 	"testing"
 
-	"github.com/go-math/support/assert"
+	"github.com/ready-steady/support/assert"
 )
 
 func TestNewProfile(t *testing.T) {
