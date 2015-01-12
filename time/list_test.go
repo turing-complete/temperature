@@ -47,14 +47,19 @@ func TestListCompute(t *testing.T) {
 	}
 
 	finish := make([]float64, len(start))
+	span := 0.0
 	for i := range start {
 		finish[i] = start[i] + duration[i]
+		if span < finish[i] {
+			span = finish[i]
+		}
 	}
 
 	assert.Equal(sched.Mapping, mapping, t)
 	assert.Equal(sched.Order, order, t)
 	assert.AlmostEqual(sched.Start, start, t)
 	assert.AlmostEqual(sched.Finish, finish, t)
+	assert.AlmostEqual(sched.Span, span, t)
 }
 
 func TestListRecompute(t *testing.T) {
