@@ -6,17 +6,17 @@ import (
 
 // List represents a list scheduler.
 type List struct {
-	plat  *system.Platform
-	app   *system.Application
-	roots []uint16
+	platform    *system.Platform
+	application *system.Application
+	roots       []uint16
 }
 
 // NewList creates a new list scheduler for the given platform and application.
-func NewList(plat *system.Platform, app *system.Application) *List {
+func NewList(platform *system.Platform, application *system.Application) *List {
 	return &List{
-		plat:  plat,
-		app:   app,
-		roots: app.Roots(),
+		platform:    platform,
+		application: application,
+		roots:       application.Roots(),
 	}
 }
 
@@ -24,8 +24,8 @@ func NewList(plat *system.Platform, app *system.Application) *List {
 // The length of this vector equals to the number of tasks in the system, and
 // smaller values correspond to higher priorities.
 func (l *List) Compute(priority []float64) *Schedule {
-	cores := l.plat.Cores
-	tasks := l.app.Tasks
+	cores := l.platform.Cores
+	tasks := l.application.Tasks
 
 	cc := uint16(len(cores))
 	tc := uint16(len(tasks))
@@ -128,11 +128,11 @@ func (l *List) Compute(priority []float64) *Schedule {
 
 // Recompute constructs a new schedule based on an old one by adding a delay to
 // the execution time of the tasks.
-func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
-	cores := l.plat.Cores
-	tasks := l.app.Tasks
+func (l *List) Recompute(schedule *Schedule, delay []float64) *Schedule {
+	cores := l.platform.Cores
+	tasks := l.application.Tasks
 
-	cc := uint16(len(l.plat.Cores))
+	cc := uint16(len(l.platform.Cores))
 	tc := uint16(len(tasks))
 
 	start := make([]float64, tc)
@@ -145,8 +145,8 @@ func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
 	var span float64
 
 	for ; i < tc; i++ {
-		tid = s.Order[i]
-		cid = s.Mapping[tid]
+		tid = schedule.Order[i]
+		cid = schedule.Mapping[tid]
 
 		if ctime[cid] > ttime[tid] {
 			start[tid] = ctime[cid]
@@ -169,8 +169,8 @@ func (l *List) Recompute(s *Schedule, delay []float64) *Schedule {
 
 	return &Schedule{
 		// FIXME: Do not be greedy! Make a copy!
-		Mapping: s.Mapping,
-		Order:   s.Order,
+		Mapping: schedule.Mapping,
+		Order:   schedule.Order,
 		Start:   start,
 		Finish:  finish,
 		Span:    span,

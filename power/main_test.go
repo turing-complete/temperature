@@ -14,13 +14,13 @@ const (
 )
 
 func TestCompute(t *testing.T) {
-	plat, app, _ := system.Load(findFixture("002_040.tgff"))
+	platform, application, _ := system.Load(findFixture("002_040.tgff"))
 
-	prof := system.NewProfile(plat, app)
-	list := time.NewList(plat, app)
+	prof := system.NewProfile(platform, application)
+	list := time.NewList(platform, application)
 	sched := list.Compute(prof.Mobility)
 
-	power := New(plat, app, 1e-3)
+	power := New(platform, application, 1e-3)
 
 	P := make([]float64, 2*440)
 	power.Compute(sched, P, 440)

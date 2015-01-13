@@ -7,20 +7,20 @@ import (
 	"github.com/ready-steady/persim/time"
 )
 
-// Self represents a power distributer configured for a particular system.
-type Self struct {
-	plat *system.Platform
-	app  *system.Application
-	Δt   float64
+// Power represents a power distributer configured for a particular system.
+type Power struct {
+	platform    *system.Platform
+	application *system.Application
+	Δt          float64
 }
 
 // New returns a power distributor for the given platform, application, and
 // sampling period.
-func New(plat *system.Platform, app *system.Application, Δt float64) *Self {
-	return &Self{
-		plat: plat,
-		app:  app,
-		Δt:   Δt,
+func New(platform *system.Platform, application *system.Application, Δt float64) *Power {
+	return &Power{
+		platform:    platform,
+		application: application,
+		Δt:          Δt,
 	}
 }
 
@@ -28,8 +28,8 @@ func New(plat *system.Platform, app *system.Application, Δt float64) *Self {
 // a cc-by-sc matrix P where cc is the number of cores and sc is the maximal
 // number of steps (samples) that the matrix can accommodate. P is assumed to
 // be zeroed.
-func (self *Self) Compute(sched *time.Schedule, P []float64, sc uint32) {
-	cores, tasks := self.plat.Cores, self.app.Tasks
+func (self *Power) Compute(sched *time.Schedule, P []float64, sc uint32) {
+	cores, tasks := self.platform.Cores, self.application.Tasks
 	Δt := self.Δt
 
 	cc := uint32(len(cores))

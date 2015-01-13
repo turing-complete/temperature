@@ -9,22 +9,22 @@ import (
 )
 
 func loadTGFF(path string) (*Platform, *Application, error) {
-	r, err := tgff.ParseFile(path)
+	result, err := tgff.ParseFile(path)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	p, err := loadPlatform(r.Tables)
+	platform, err := loadPlatform(result.Tables)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	a, err := loadApplication(r.Graphs)
+	application, err := loadApplication(result.Graphs)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return p, a, nil
+	return platform, application, nil
 }
 
 func loadPlatform(tables []tgff.Table) (*Platform, error) {
@@ -34,7 +34,7 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 		return nil, errors.New("need at least one table")
 	}
 
-	p := &Platform{
+	platform := &Platform{
 		Cores: make([]Core, size),
 	}
 
@@ -47,22 +47,22 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 			return nil, errors.New("unknown table indexing scheme")
 		}
 
-		p.Cores[i], err = loadCore(table)
+		platform.Cores[i], err = loadCore(table)
 
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	rows := len(p.Cores[0].Time)
+	rows := len(platform.Cores[0].Time)
 
 	for i := 1; i < size; i++ {
-		if rows != len(p.Cores[i].Time) {
+		if rows != len(platform.Cores[i].Time) {
 			return nil, errors.New("inconsistent table data")
 		}
 	}
 
-	return p, nil
+	return platform, nil
 }
 
 func loadApplication(graphs []tgff.Graph) (*Application, error) {
@@ -72,7 +72,7 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 
 	size := uint16(len(graphs[0].Tasks))
 
-	a := &Application{
+	application := &Application{
 		Tasks: make([]Task, size),
 	}
 
@@ -83,8 +83,8 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 			return nil, err
 		}
 
-		a.Tasks[i].ID = i
-		a.Tasks[i].Type = task.Type
+		application.Tasks[i].ID = i
+		application.Tasks[i].Type = task.Type
 	}
 
 	for _, arc := range graphs[0].Arcs {
@@ -100,15 +100,15 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 			return nil, err
 		}
 
-		a.Tasks[i].Children = append(a.Tasks[i].Children, uint16(j))
-		a.Tasks[j].Parents = append(a.Tasks[j].Parents, uint16(i))
+		application.Tasks[i].Children = append(application.Tasks[i].Children, uint16(j))
+		application.Tasks[j].Parents = append(application.Tasks[j].Parents, uint16(i))
 	}
 
-	return a, nil
+	return application, nil
 }
 
 func loadCore(table tgff.Table) (Core, error) {
-	c := Core{
+	core := Core{
 		ID: table.ID,
 	}
 
@@ -133,24 +133,24 @@ func loadCore(table tgff.Table) (Core, error) {
 	}
 
 	if tycol == nil || tmcol == nil || pwcol == nil {
-		return c, errors.New("need columns named type, time, and power")
+		return core, errors.New("need columns named type, time, and power")
 	}
 
 	size := len(tycol.Data)
 
 	for i := 0; i < size; i++ {
 		if int(tycol.Data[i]) != i {
-			return c, errors.New("data should be sorted by type")
+			return core, errors.New("data should be sorted by type")
 		}
 	}
 
-	c.Time = make([]float64, size)
-	copy(c.Time, tmcol.Data)
+	core.Time = make([]float64, size)
+	copy(core.Time, tmcol.Data)
 
-	c.Power = make([]float64, size)
-	copy(c.Power, pwcol.Data)
+	core.Power = make([]float64, size)
+	copy(core.Power, pwcol.Data)
 
-	return c, nil
+	return core, nil
 }
 
 func extractTaskID(name string, total uint16) (uint16, error) {

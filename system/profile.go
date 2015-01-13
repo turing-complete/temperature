@@ -17,9 +17,9 @@ type Profile struct {
 // NewProfile collects a profile of the given system. Since the mapping of
 // the tasks onto the cores is assumed to be unknown at this stage, the profile
 // is based on the average execution time of the tasks across all the cores.
-func NewProfile(plat *Platform, app *Application) *Profile {
-	cc := len(plat.Cores)
-	tc := len(app.Tasks)
+func NewProfile(platform *Platform, application *Application) *Profile {
+	cc := len(platform.Cores)
+	tc := len(application.Tasks)
 
 	p := &Profile{
 		ASAP:     make([]float64, tc),
@@ -39,17 +39,17 @@ func NewProfile(plat *Platform, app *Application) *Profile {
 		}
 
 		for j := 0; j < cc; j++ {
-			p.time[i] += plat.Cores[j].Time[app.Tasks[i].Type]
+			p.time[i] += platform.Cores[j].Time[application.Tasks[i].Type]
 		}
 		p.time[i] /= float64(cc)
 	}
 
 	// Compute ASAP starting from the roots.
-	for _, i := range app.Roots() {
-		p.propagateASAP(app, i, 0)
+	for _, i := range application.Roots() {
+		p.propagateASAP(application, i, 0)
 	}
 
-	leafs := app.Leafs()
+	leafs := application.Leafs()
 
 	totalASAP := float64(0)
 	for _, i := range leafs {
@@ -60,13 +60,13 @@ func NewProfile(plat *Platform, app *Application) *Profile {
 
 	// Compute ASAP starting from the leafs.
 	for _, i := range leafs {
-		p.propagateALAP(app, i, totalASAP)
+		p.propagateALAP(application, i, totalASAP)
 	}
 
 	return p
 }
 
-func (p *Profile) propagateASAP(app *Application, i uint16, time float64) {
+func (p *Profile) propagateASAP(application *Application, i uint16, time float64) {
 	if p.ASAP[i] >= time {
 		return
 	}
@@ -74,12 +74,12 @@ func (p *Profile) propagateASAP(app *Application, i uint16, time float64) {
 	p.ASAP[i] = time
 	time += p.time[i]
 
-	for _, i = range app.Tasks[i].Children {
-		p.propagateASAP(app, i, time)
+	for _, i = range application.Tasks[i].Children {
+		p.propagateASAP(application, i, time)
 	}
 }
 
-func (p *Profile) propagateALAP(app *Application, i uint16, time float64) {
+func (p *Profile) propagateALAP(application *Application, i uint16, time float64) {
 	if time > p.time[i] {
 		time = time - p.time[i]
 	} else {
@@ -98,7 +98,7 @@ func (p *Profile) propagateALAP(app *Application, i uint16, time float64) {
 		p.Mobility[i] = 0
 	}
 
-	for _, i = range app.Tasks[i].Parents {
-		p.propagateALAP(app, i, time)
+	for _, i = range application.Tasks[i].Parents {
+		p.propagateALAP(application, i, time)
 	}
 }
