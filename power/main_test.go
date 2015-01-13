@@ -16,18 +16,18 @@ const (
 func TestCompute(t *testing.T) {
 	platform, application, _ := system.Load(findFixture("002_040.tgff"))
 
-	prof := system.NewProfile(platform, application)
+	profile := system.NewProfile(platform, application)
 	list := time.NewList(platform, application)
-	sched := list.Compute(prof.Mobility)
+	schedule := list.Compute(profile.Mobility)
 
-	power := New(platform, application, 1e-3)
+	distributer := New(platform, application, 1e-3)
 
 	P := make([]float64, 2*440)
-	power.Compute(sched, P, 440)
+	distributer.Compute(schedule, P, 440)
 	assert.Equal(P, fixturePData, t)
 
 	P = make([]float64, 2*42)
-	power.Compute(sched, P, 42)
+	distributer.Compute(schedule, P, 42)
 	assert.Equal(P, fixturePData[:2*42], t)
 }
 
