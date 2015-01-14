@@ -4,7 +4,7 @@ import (
 	"math"
 
 	"github.com/ready-steady/hotspot"
-	"github.com/ready-steady/linal/decomp"
+	"github.com/ready-steady/linal/decomposition"
 	"github.com/ready-steady/linal/matrix"
 )
 
@@ -48,7 +48,7 @@ func New(c Config) (*Solver, error) {
 	// Reusing A (which is model.G) to store U.
 	U := A
 	Λ := make([]float64, nc)
-	if err := decomp.SymEig(A, U, Λ, nc); err != nil {
+	if err := decomposition.SymEig(A, U, Λ, nc); err != nil {
 		return nil, err
 	}
 
