@@ -3,8 +3,8 @@
 package power
 
 import (
-	"github.com/ready-steady/persim/system"
-	"github.com/ready-steady/persim/time"
+	"github.com/ready-steady/simulation/system"
+	"github.com/ready-steady/simulation/time"
 )
 
 // Power represents a power simulator configured for a particular system.

@@ -4,8 +4,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/ready-steady/persim/system"
-	"github.com/ready-steady/persim/time"
+	"github.com/ready-steady/simulation/system"
+	"github.com/ready-steady/simulation/time"
 	"github.com/ready-steady/support/assert"
 )
 

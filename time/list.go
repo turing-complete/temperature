@@ -1,7 +1,7 @@
 package time
 
 import (
-	"github.com/ready-steady/persim/system"
+	"github.com/ready-steady/simulation/system"
 )
 
 // List represents a list scheduler.
