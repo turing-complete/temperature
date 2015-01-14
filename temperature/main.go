@@ -1,3 +1,6 @@
+// Package temperature provides an exponential-integrator-based solver for
+// systems of differential-algebraic equations modeling temperature of
+// electronic systems.
 package temperature
 
 import (
