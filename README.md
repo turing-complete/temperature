@@ -1,9 +1,10 @@
-# Performance Simulation
+# Simulation
 
-The repository hosts three packages:
+The repository hosts four packages:
 
 * [power](power),
-* [system](system), and
+* [system](system),
+* [temperature](temperature), and
 * [time](time).
 
 ## Contributing

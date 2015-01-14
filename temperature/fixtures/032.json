@@ -1,0 +1,9 @@
+{
+	"floorplan": "fixtures/032.flp",
+	"hotspot": {
+		"config": "fixtures/hotspot.config",
+		"params": ""
+	},
+	"timeStep": 1e-3,
+	"ambientTemp": 318.15
+}
