@@ -5,4 +5,4 @@ concurrent applications running on multiprocessor platforms.
 
 ## [Documentation][doc]
 
-[doc]: http://godoc.org/github.com/ready-steady/persim/power
+[doc]: http://godoc.org/github.com/ready-steady/simulation/power

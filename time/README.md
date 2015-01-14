@@ -5,4 +5,4 @@ on multiprocessor platforms.
 
 ## [Documentation][doc]
 
-[doc]: http://godoc.org/github.com/ready-steady/persim/time
+[doc]: http://godoc.org/github.com/ready-steady/simulation/time
