@@ -4,6 +4,7 @@
 package temperature
 
 import (
+	"errors"
 	"math"
 
 	"github.com/ready-steady/hotspot"
@@ -25,6 +26,10 @@ type Temperature struct {
 // New returns an instance of the algorithm set up according to the given
 // configuration.
 func New(c Config) (*Temperature, error) {
+	if c.TimeStep <= 0 {
+		return nil, errors.New("the time step is invalid")
+	}
+
 	model := hotspot.New(c.Floorplan, c.HotSpot.Config, c.HotSpot.Params)
 
 	cc := model.Cores
