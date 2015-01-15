@@ -20,14 +20,14 @@ func TestCompute(t *testing.T) {
 	list := time.NewList(platform, application)
 	schedule := list.Compute(profile.Mobility)
 
-	distributer := New(platform, application, 1e-3)
+	power, _ := New(platform, application, 1e-3)
 
 	P := make([]float64, 2*440)
-	distributer.Compute(schedule, P, 440)
+	power.Compute(schedule, P, 440)
 	assert.Equal(P, fixturePData, t)
 
 	P = make([]float64, 2*42)
-	distributer.Compute(schedule, P, 42)
+	power.Compute(schedule, P, 42)
 	assert.Equal(P, fixturePData[:2*42], t)
 }
 

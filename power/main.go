@@ -3,6 +3,8 @@
 package power
 
 import (
+	"errors"
+
 	"github.com/ready-steady/simulation/system"
 	"github.com/ready-steady/simulation/time"
 )
@@ -16,12 +18,18 @@ type Power struct {
 
 // New returns a power distributor for the given platform, application, and
 // sampling period.
-func New(platform *system.Platform, application *system.Application, Δt float64) *Power {
-	return &Power{
+func New(platform *system.Platform, application *system.Application, Δt float64) (*Power, error) {
+	if Δt <= 0 {
+		return nil, errors.New("the time step is invalid")
+	}
+
+	power := &Power{
 		platform:    platform,
 		application: application,
 		Δt:          Δt,
 	}
+
+	return power, nil
 }
 
 // Compute constructs the power profile of the given schedule and stores it in a
