@@ -11,9 +11,9 @@ import (
 	"github.com/ready-steady/linal/matrix"
 )
 
-// Solver represents the algorithm for temperature analysis configured for a
-// particular problem.
-type Solver struct {
+// Temperature represents the algorithm for temperature analysis configured for
+// a particular problem.
+type Temperature struct {
 	Config Config
 
 	Cores uint32
@@ -24,11 +24,7 @@ type Solver struct {
 
 // New returns an instance of the algorithm set up according to the given
 // configuration.
-func New(c Config) (*Solver, error) {
-	s := &Solver{
-		Config: c,
-	}
-
+func New(c Config) (*Temperature, error) {
 	model := hotspot.New(c.Floorplan, c.HotSpot.Config, c.HotSpot.Params)
 
 	cc := model.Cores
@@ -85,23 +81,29 @@ func New(c Config) (*Solver, error) {
 	F := make([]float64, nc*cc)
 	matrix.Multiply(U, temp, F, nc, nc, cc)
 
-	s.Cores = model.Cores
-	s.Nodes = model.Nodes
+	temperature := &Temperature{
+		Config: c,
 
-	s.system.D = D
+		Cores: model.Cores,
+		Nodes: model.Nodes,
 
-	s.system.Λ = Λ
-	s.system.U = U
+		system: system{
+			D: D,
 
-	s.system.E = E
-	s.system.F = F
+			Λ: Λ,
+			U: U,
 
-	return s, nil
+			E: E,
+			F: F,
+		},
+	}
+
+	return temperature, nil
 }
 
 // Load returns an instance of the algorithm set up according to the given
 // configuration file.
-func Load(path string) (*Solver, error) {
+func Load(path string) (*Temperature, error) {
 	config, err := loadConfig(path)
 	if err != nil {
 		return nil, err
