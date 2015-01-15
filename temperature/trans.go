@@ -1,7 +1,7 @@
 package temperature
 
 import (
-	"github.com/ready-steady/linal/matrix"
+	"github.com/ready-steady/linear/matrix"
 )
 
 // ComputeTransient performs transient temperature analysis. P is an input

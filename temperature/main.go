@@ -7,8 +7,8 @@ import (
 	"math"
 
 	"github.com/ready-steady/hotspot"
-	"github.com/ready-steady/linal/decomposition"
-	"github.com/ready-steady/linal/matrix"
+	"github.com/ready-steady/linear/decomposition"
+	"github.com/ready-steady/linear/matrix"
 )
 
 // Temperature represents the algorithm for temperature analysis configured for
