@@ -40,7 +40,7 @@ func BenchmarkCompute(b *testing.B) {
 	schedule := list.Compute(profile.Mobility)
 	power, _ := New(platform, application, Δt)
 
-	sc := uint32(schedule.Span / Δt)
+	sc := uint(schedule.Span / Δt)
 	P := make([]float64, 2*sc)
 
 	b.ResetTimer()

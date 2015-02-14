@@ -39,25 +39,25 @@ func New(platform *system.Platform, application *system.Application, Δt float64
 // Compute constructs the power profile of the given schedule and stores it in a
 // cc-by-sc matrix P where cc is the number of cores and sc is the maximal
 // number of steps (samples) that the matrix can accommodate.
-func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint32) {
+func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint) {
 	cores, tasks := p.platform.Cores, p.application.Tasks
 	Δt := p.Δt
 
-	cc := uint32(len(cores))
-	tc := uint16(len(tasks))
-	if count := uint32(schedule.Span / Δt); count < sc {
+	cc := uint(len(cores))
+	tc := uint(len(tasks))
+	if count := uint(schedule.Span / Δt); count < sc {
 		sc = count
 	}
 
 	// FIXME: Bad, bad, bad!
 	C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8*cc*sc))
 
-	for i := uint16(0); i < tc; i++ {
-		j := uint32(schedule.Mapping[i])
+	for i := uint(0); i < tc; i++ {
+		j := schedule.Mapping[i]
 		p := cores[j].Power[tasks[i].Type]
 
-		s := uint32(schedule.Start[i] / Δt)
-		f := uint32(schedule.Finish[i] / Δt)
+		s := uint(schedule.Start[i] / Δt)
+		f := uint(schedule.Finish[i] / Δt)
 		if f > sc {
 			f = sc
 		}
