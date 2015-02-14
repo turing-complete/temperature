@@ -17,8 +17,8 @@ import (
 type Temperature struct {
 	Config Config
 
-	Cores uint32
-	Nodes uint32
+	Cores uint
+	Nodes uint
 
 	system system
 }
@@ -35,7 +35,7 @@ func New(c Config) (*Temperature, error) {
 	cc := model.Cores
 	nc := model.Nodes
 
-	var i, j uint32
+	var i, j uint
 
 	// Reusing model.G to store A and model.C to store D.
 	A := model.G

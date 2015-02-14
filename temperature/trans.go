@@ -11,7 +11,7 @@ import (
 // cc-by-sc-matrix. S is an optional nc-by-sc matrix, where nc is the number of
 // thermal nodes, for the internal usage of the function to prevent repetitive
 // memory allocation if the analysis is to be performed several times.
-func (t *Temperature) ComputeTransient(P, Q, S []float64, sc uint32) {
+func (t *Temperature) ComputeTransient(P, Q, S []float64, sc uint) {
 	cc := t.Cores
 	nc := t.Nodes
 
@@ -21,7 +21,7 @@ func (t *Temperature) ComputeTransient(P, Q, S []float64, sc uint32) {
 
 	matrix.Multiply(t.system.F, P, S, nc, cc, sc)
 
-	var i, j, k uint32
+	var i, j, k uint
 
 	for i, j, k = 1, 0, nc; i < sc; i++ {
 		matrix.MultiplyAdd(t.system.E, S[j:k], S[k:k+nc], S[k:k+nc], nc, nc, 1)

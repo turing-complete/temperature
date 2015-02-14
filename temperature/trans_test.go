@@ -11,8 +11,8 @@ import (
 func TestComputeTransient(t *testing.T) {
 	temperature, _ := Load(findFixture("002.json"))
 
-	cc := uint32(2)
-	sc := uint32(len(fixtureP)) / cc
+	cc := uint(2)
+	sc := uint(len(fixtureP)) / cc
 
 	Q := make([]float64, cc*sc)
 	temperature.ComputeTransient(fixtureP, Q, nil, sc)
@@ -23,8 +23,8 @@ func TestComputeTransient(t *testing.T) {
 func BenchmarkComputeTransient(b *testing.B) {
 	temperature, _ := Load(findFixture("032.json"))
 
-	cc := uint32(32)
-	sc := uint32(1000)
+	cc := uint(32)
+	sc := uint(1000)
 	nc := temperature.Nodes
 
 	P := probability.Sample(uniform.New(0, 1), cc*sc)

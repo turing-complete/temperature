@@ -10,8 +10,8 @@ import (
 func TestLoad(t *testing.T) {
 	temperature, _ := Load(findFixture("002.json"))
 
-	assert.Equal(temperature.Cores, uint32(2), t)
-	assert.Equal(temperature.Nodes, uint32(4*2+12), t)
+	assert.Equal(temperature.Cores, uint(2), t)
+	assert.Equal(temperature.Nodes, uint(4*2+12), t)
 
 	assert.AlmostEqual(temperature.system.D, fixtureD, t)
 
