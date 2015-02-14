@@ -20,54 +20,54 @@ func TestLoadTGFF(t *testing.T) {
 	assert.Equal(len(application.Tasks), 40, t)
 
 	tasks := []struct {
-		children []uint16
+		children []uint
 	}{
-		{[]uint16{1}},
-		{[]uint16{2, 3, 23, 32}},
-		{[]uint16{4, 10, 11, 12}},
-		{[]uint16{9, 10, 26}},
-		{[]uint16{5, 6, 7, 8}},
+		{[]uint{1}},
+		{[]uint{2, 3, 23, 32}},
+		{[]uint{4, 10, 11, 12}},
+		{[]uint{9, 10, 26}},
+		{[]uint{5, 6, 7, 8}},
 
-		{[]uint16{10, 11, 27}},
+		{[]uint{10, 11, 27}},
 		{nil},
-		{[]uint16{9}},
-		{[]uint16{9}},
-		{[]uint16{13, 14, 15}},
+		{[]uint{9}},
+		{[]uint{9}},
+		{[]uint{13, 14, 15}},
 
-		{[]uint16{12}},
-		{[]uint16{12, 31}},
-		{[]uint16{17, 18, 24}},
-		{[]uint16{16, 25}},
-		{[]uint16{36}},
+		{[]uint{12}},
+		{[]uint{12, 31}},
+		{[]uint{17, 18, 24}},
+		{[]uint{16, 25}},
+		{[]uint{36}},
 
-		{[]uint16{19, 20, 23, 29}},
-		{[]uint16{31}},
-		{[]uint16{22, 35}},
-		{[]uint16{21, 23}},
-		{[]uint16{20, 24}},
+		{[]uint{19, 20, 23, 29}},
+		{[]uint{31}},
+		{[]uint{22, 35}},
+		{[]uint{21, 23}},
+		{[]uint{20, 24}},
 
-		{[]uint16{24, 26}},
-		{[]uint16{27}},
-		{[]uint16{28, 29}},
-		{[]uint16{31}},
-		{[]uint16{30}},
+		{[]uint{24, 26}},
+		{[]uint{27}},
+		{[]uint{28, 29}},
+		{[]uint{31}},
+		{[]uint{30}},
 
-		{[]uint16{37, 38}},
+		{[]uint{37, 38}},
 		{nil},
-		{[]uint16{33, 34}},
-		{[]uint16{29}},
-		{nil},
-
-		{nil},
-		{[]uint16{36}},
-		{nil},
-		{nil},
+		{[]uint{33, 34}},
+		{[]uint{29}},
 		{nil},
 
 		{nil},
+		{[]uint{36}},
 		{nil},
 		{nil},
-		{[]uint16{39}},
+		{nil},
+
+		{nil},
+		{nil},
+		{nil},
+		{[]uint{39}},
 		{nil},
 	}
 
@@ -79,8 +79,8 @@ func TestLoadTGFF(t *testing.T) {
 func TestExtractTaskNumber(t *testing.T) {
 	scenarios := []struct {
 		name    string
-		total   uint16
-		result  uint16
+		total   uint
+		result  uint
 		success bool
 	}{
 		{"t0_0", 50, 0, true},

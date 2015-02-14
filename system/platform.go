@@ -11,7 +11,7 @@ type Platform struct {
 // (Power). Each entry in these vectors corresponds to a task Type, not to a
 // task ID (see the ID and Type fields of the Task struct).
 type Core struct {
-	ID    uint16
+	ID    uint
 	Time  []float64
 	Power []float64
 }

@@ -28,7 +28,7 @@ func loadTGFF(path string) (*Platform, *Application, error) {
 }
 
 func loadPlatform(tables []tgff.Table) (*Platform, error) {
-	size := len(tables)
+	size := uint(len(tables))
 
 	if size == 0 {
 		return nil, errors.New("need at least one table")
@@ -43,7 +43,7 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 	for _, table := range tables {
 		i := table.ID
 
-		if i >= uint16(size) {
+		if i >= size {
 			return nil, errors.New("unknown table indexing scheme")
 		}
 
@@ -56,7 +56,7 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 
 	rows := len(platform.Cores[0].Time)
 
-	for i := 1; i < size; i++ {
+	for i := uint(1); i < size; i++ {
 		if rows != len(platform.Cores[i].Time) {
 			return nil, errors.New("inconsistent table data")
 		}
@@ -70,7 +70,7 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 		return nil, errors.New("need exactly one task graph")
 	}
 
-	size := uint16(len(graphs[0].Tasks))
+	size := uint(len(graphs[0].Tasks))
 
 	application := &Application{
 		Tasks: make([]Task, size),
@@ -100,8 +100,8 @@ func loadApplication(graphs []tgff.Graph) (*Application, error) {
 			return nil, err
 		}
 
-		application.Tasks[i].Children = append(application.Tasks[i].Children, uint16(j))
-		application.Tasks[j].Parents = append(application.Tasks[j].Parents, uint16(i))
+		application.Tasks[i].Children = append(application.Tasks[i].Children, j)
+		application.Tasks[j].Parents = append(application.Tasks[j].Parents, i)
 	}
 
 	return application, nil
@@ -153,16 +153,15 @@ func loadCore(table tgff.Table) (Core, error) {
 	return core, nil
 }
 
-func extractTaskID(name string, total uint16) (uint16, error) {
+func extractTaskID(name string, total uint) (uint, error) {
 	if !strings.HasPrefix(name, "t0_") {
 		return 0, errors.New("unknown task naming scheme")
 	}
 
-	id, err := strconv.ParseInt(name[3:], 10, 0)
-
-	if err != nil || id < 0 || uint16(id) >= total {
+	id, err := strconv.ParseUint(name[3:], 10, 0)
+	if err != nil || id < 0 || uint(id) >= total {
 		return 0, errors.New("unknown task indexing scheme")
 	}
 
-	return uint16(id), nil
+	return uint(id), nil
 }

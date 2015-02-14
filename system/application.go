@@ -12,20 +12,20 @@ type Application struct {
 // which is used for looking up the execution time and power consumption of the
 // task when it is being executed of a core (see the definition of Core).
 type Task struct {
-	ID       uint16
-	Type     uint16
-	Parents  []uint16
-	Children []uint16
+	ID       uint
+	Type     uint
+	Parents  []uint
+	Children []uint
 }
 
 // Roots returns the IDs of the tasks without parents.
-func (a *Application) Roots() []uint16 {
-	size := len(a.Tasks)
-	roots := make([]uint16, 0, 1)
+func (a *Application) Roots() []uint {
+	size := uint(len(a.Tasks))
+	roots := make([]uint, 0, 1)
 
-	for i := 0; i < size; i++ {
+	for i := uint(0); i < size; i++ {
 		if len(a.Tasks[i].Parents) == 0 {
-			roots = append(roots, uint16(i))
+			roots = append(roots, i)
 		}
 	}
 
@@ -33,13 +33,13 @@ func (a *Application) Roots() []uint16 {
 }
 
 // Leafs returns the IDs of the tasks without children.
-func (a *Application) Leafs() []uint16 {
-	size := len(a.Tasks)
-	leafs := make([]uint16, 0, size/2+1)
+func (a *Application) Leafs() []uint {
+	size := uint(len(a.Tasks))
+	leafs := make([]uint, 0, size/2+1)
 
-	for i := 0; i < size; i++ {
+	for i := uint(0); i < size; i++ {
 		if len(a.Tasks[i].Children) == 0 {
-			leafs = append(leafs, uint16(i))
+			leafs = append(leafs, i)
 		}
 	}
 
