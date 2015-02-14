@@ -27,7 +27,7 @@ type Temperature struct {
 // configuration.
 func New(c Config) (*Temperature, error) {
 	if c.TimeStep <= 0 {
-		return nil, errors.New("the time step is invalid")
+		return nil, errors.New("the time step should be positive")
 	}
 
 	model := hotspot.New(c.Floorplan, c.HotSpot.Config, c.HotSpot.Params)

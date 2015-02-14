@@ -24,7 +24,7 @@ type Power struct {
 // sampling period.
 func New(platform *system.Platform, application *system.Application, Δt float64) (*Power, error) {
 	if Δt <= 0 {
-		return nil, errors.New("the time step is invalid")
+		return nil, errors.New("the time step should be positive")
 	}
 
 	power := &Power{

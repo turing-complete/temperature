@@ -44,7 +44,7 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 		i := table.ID
 
 		if i >= size {
-			return nil, errors.New("unknown table indexing scheme")
+			return nil, errors.New("encountered an unknown table indexing scheme")
 		}
 
 		platform.Cores[i], err = loadCore(table)
@@ -58,7 +58,7 @@ func loadPlatform(tables []tgff.Table) (*Platform, error) {
 
 	for i := uint(1); i < size; i++ {
 		if rows != len(platform.Cores[i].Time) {
-			return nil, errors.New("inconsistent table data")
+			return nil, errors.New("the table data are inconsistent")
 		}
 	}
 
@@ -155,12 +155,12 @@ func loadCore(table tgff.Table) (Core, error) {
 
 func extractTaskID(name string, total uint) (uint, error) {
 	if !strings.HasPrefix(name, "t0_") {
-		return 0, errors.New("unknown task naming scheme")
+		return 0, errors.New("encountered an unknown task naming scheme")
 	}
 
 	id, err := strconv.ParseUint(name[3:], 10, 0)
 	if err != nil || id < 0 || uint(id) >= total {
-		return 0, errors.New("unknown task indexing scheme")
+		return 0, errors.New("encountered an unknown task indexing scheme")
 	}
 
 	return uint(id), nil
