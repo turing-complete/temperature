@@ -8,7 +8,7 @@ import (
 type List struct {
 	platform    *system.Platform
 	application *system.Application
-	roots       []uint16
+	roots       []uint
 }
 
 // NewList creates a new list scheduler for the given platform and application.
@@ -27,11 +27,11 @@ func (l *List) Compute(priority []float64) *Schedule {
 	cores := l.platform.Cores
 	tasks := l.application.Tasks
 
-	cc := uint16(len(cores))
-	tc := uint16(len(tasks))
+	cc := uint(len(cores))
+	tc := uint(len(tasks))
 
-	mapping := make([]uint16, tc)
-	order := make([]uint16, tc)
+	mapping := make([]uint, tc)
+	order := make([]uint, tc)
 	start := make([]float64, tc)
 	finish := make([]float64, tc)
 
@@ -40,14 +40,14 @@ func (l *List) Compute(priority []float64) *Schedule {
 	ctime := make([]float64, cc)
 	ttime := make([]float64, tc)
 
-	var i, j, k, cid, tid, kid, pid uint16
+	var i, j, k, cid, tid, kid, pid uint
 	var span float64
 	var ready bool
 
-	size := uint16(len(l.roots))
+	size := uint(len(l.roots))
 
 	// According to the benchmarks, keeping it sorted is not worth it.
-	pool := make([]uint16, size, tc)
+	pool := make([]uint, size, tc)
 	copy(pool, l.roots)
 
 	for size > 0 {
@@ -114,7 +114,7 @@ func (l *List) Compute(priority []float64) *Schedule {
 			pool = append(pool, kid)
 		}
 
-		size = uint16(len(pool))
+		size = uint(len(pool))
 	}
 
 	return &Schedule{
@@ -132,8 +132,8 @@ func (l *List) Recompute(schedule *Schedule, delay []float64) *Schedule {
 	cores := l.platform.Cores
 	tasks := l.application.Tasks
 
-	cc := uint16(len(l.platform.Cores))
-	tc := uint16(len(tasks))
+	cc := uint(len(l.platform.Cores))
+	tc := uint(len(tasks))
 
 	start := make([]float64, tc)
 	finish := make([]float64, tc)
@@ -141,7 +141,7 @@ func (l *List) Recompute(schedule *Schedule, delay []float64) *Schedule {
 	ctime := make([]float64, cc)
 	ttime := make([]float64, tc)
 
-	var i, cid, tid, kid uint16
+	var i, cid, tid, kid uint
 	var span float64
 
 	for ; i < tc; i++ {

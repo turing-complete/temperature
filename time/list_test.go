@@ -20,12 +20,12 @@ func TestListCompute(t *testing.T) {
 	list := NewList(plat, app)
 	sched := list.Compute(prof.Mobility)
 
-	mapping := []uint16{
+	mapping := []uint{
 		0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0,
 		1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0,
 	}
 
-	order := []uint16{
+	order := []uint{
 		0, 1, 2, 4, 7, 8, 5, 11, 3, 9, 15, 19, 20, 10, 12, 24, 30, 17, 22, 28, 29,
 		18, 21, 27, 34, 26, 13, 16, 23, 31, 33, 25, 38, 39, 37, 35, 14, 36, 6, 32,
 	}
