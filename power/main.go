@@ -48,12 +48,12 @@ func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint) {
 	cc, tc := uint(len(cores)), uint(len(tasks))
 	Δt := p.Δt
 
+	// FIXME: Bad, bad, bad!
+	C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(sizeOfFloat64*cc*sc))
+
 	if count := uint(schedule.Span / Δt); count < sc {
 		sc = count
 	}
-
-	// FIXME: Bad, bad, bad!
-	C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(sizeOfFloat64*cc*sc))
 
 	for i := uint(0); i < tc; i++ {
 		j := schedule.Mapping[i]
