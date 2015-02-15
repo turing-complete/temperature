@@ -41,10 +41,9 @@ func New(platform *system.Platform, application *system.Application, Δt float64
 // number of steps (samples) that the matrix can accommodate.
 func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint) {
 	cores, tasks := p.platform.Cores, p.application.Tasks
+	cc, tc := uint(len(cores)), uint(len(tasks))
 	Δt := p.Δt
 
-	cc := uint(len(cores))
-	tc := uint(len(tasks))
 	if count := uint(schedule.Span / Δt); count < sc {
 		sc = count
 	}
