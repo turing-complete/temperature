@@ -40,6 +40,10 @@ func New(platform *system.Platform, application *system.Application, Δt float64
 // cc-by-sc matrix P where cc is the number of cores and sc is the maximal
 // number of steps (samples) that the matrix can accommodate.
 func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint) {
+	const (
+		sizeOfFloat64 = 8
+	)
+
 	cores, tasks := p.platform.Cores, p.application.Tasks
 	cc, tc := uint(len(cores)), uint(len(tasks))
 	Δt := p.Δt
@@ -49,7 +53,7 @@ func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint) {
 	}
 
 	// FIXME: Bad, bad, bad!
-	C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8*cc*sc))
+	C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(sizeOfFloat64*cc*sc))
 
 	for i := uint(0); i < tc; i++ {
 		j := schedule.Mapping[i]
