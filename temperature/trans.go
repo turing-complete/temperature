@@ -4,20 +4,16 @@ import (
 	"github.com/ready-steady/linear/matrix"
 )
 
-// ComputeTransient performs transient temperature analysis. P is an input
-// power profile given as a cc-by-sc matrix where cc is the number of cores,
-// and sc is the number of time steps; see TimeStep in Config. Q is the
-// corresponding output temperature profile, which is given as a
-// cc-by-sc-matrix. S is an optional nc-by-sc matrix, where nc is the number of
-// thermal nodes, for the internal usage of the function to prevent repetitive
-// memory allocation if the analysis is to be performed several times.
-func (t *Temperature) ComputeTransient(P, Q, S []float64, sc uint) {
+// ComputeTransient calculates the temperature profile corresponding to the
+// given power profile. The sc parameter controls the number of steps/samples
+// that the output matrix will contain; power profiles longer than this value
+// get truncated.
+func (t *Temperature) ComputeTransient(P []float64, sc uint) []float64 {
 	cc := t.Cores
 	nc := t.Nodes
 
-	if S == nil {
-		S = make([]float64, nc*sc)
-	}
+	Q := make([]float64, cc*sc)
+	S := make([]float64, nc*sc)
 
 	matrix.Multiply(t.system.F, P, S, nc, cc, sc)
 
@@ -34,4 +30,6 @@ func (t *Temperature) ComputeTransient(P, Q, S []float64, sc uint) {
 			Q[cc*j+i] = t.system.D[i]*S[nc*j+i] + t.Config.AmbientTemp
 		}
 	}
+
+	return Q
 }

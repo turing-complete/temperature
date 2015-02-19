@@ -14,8 +14,7 @@ func TestComputeTransient(t *testing.T) {
 	cc := uint(2)
 	sc := uint(len(fixtureP)) / cc
 
-	Q := make([]float64, cc*sc)
-	temperature.ComputeTransient(fixtureP, Q, nil, sc)
+	Q := temperature.ComputeTransient(fixtureP, sc)
 
 	assert.AlmostEqual(Q, fixtureQ, t)
 }
@@ -25,15 +24,12 @@ func BenchmarkComputeTransient(b *testing.B) {
 
 	cc := uint(32)
 	sc := uint(1000)
-	nc := temperature.Nodes
 
 	P := probability.Sample(uniform.New(0, 1), cc*sc)
-	Q := make([]float64, cc*sc)
-	S := make([]float64, nc*sc)
 
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		temperature.ComputeTransient(P, Q, S, sc)
+		temperature.ComputeTransient(P, sc)
 	}
 }
