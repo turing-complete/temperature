@@ -2,12 +2,8 @@
 // concurrent applications running on multiprocessor platforms.
 package power
 
-// #include <string.h>
-import "C"
-
 import (
 	"errors"
-	"unsafe"
 
 	"github.com/ready-steady/simulation/system"
 	"github.com/ready-steady/simulation/time"
@@ -21,7 +17,7 @@ type Power struct {
 }
 
 // New returns a power distributor for the given platform, application, and
-// sampling period.
+// sampling interval.
 func New(platform *system.Platform, application *system.Application, Δt float64) (*Power, error) {
 	if Δt <= 0 {
 		return nil, errors.New("the time step should be positive")
@@ -36,20 +32,16 @@ func New(platform *system.Platform, application *system.Application, Δt float64
 	return power, nil
 }
 
-// Compute constructs the power profile of the given schedule and stores it in a
-// cc-by-sc matrix P where cc is the number of cores and sc is the maximal
-// number of steps (samples) that the matrix can accommodate.
-func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint) {
-	const (
-		sizeOfFloat64 = 8
-	)
-
+// Compute calculates the power profile corresponding to the given schedule. The
+// sc parameter controls the number of steps/samples that the output matrix will
+// contain; schedules longer than this value (multiplied by the sampling
+// interval Δt passed to New) get truncated.
+func (p *Power) Compute(schedule *time.Schedule, sc uint) []float64 {
 	cores, tasks := p.platform.Cores, p.application.Tasks
 	cc, tc := uint(len(cores)), uint(len(tasks))
 	Δt := p.Δt
 
-	// FIXME: Bad, bad, bad!
-	C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(sizeOfFloat64*cc*sc))
+	P := make([]float64, cc*sc)
 
 	if count := uint(schedule.Span / Δt); count < sc {
 		sc = count
@@ -69,4 +61,6 @@ func (p *Power) Compute(schedule *time.Schedule, P []float64, sc uint) {
 			P[s*cc+j] = p
 		}
 	}
+
+	return P
 }

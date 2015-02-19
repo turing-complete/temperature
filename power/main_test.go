@@ -20,13 +20,8 @@ func TestCompute(t *testing.T) {
 	schedule := list.Compute(profile.Mobility)
 	power, _ := New(platform, application, 1e-3)
 
-	P := make([]float64, 2*440)
-	power.Compute(schedule, P, 440)
-	assert.Equal(P, fixturePData, t)
-
-	P = make([]float64, 2*42)
-	power.Compute(schedule, P, 42)
-	assert.Equal(P, fixturePData[:2*42], t)
+	assert.Equal(power.Compute(schedule, 440), fixturePData, t)
+	assert.Equal(power.Compute(schedule, 42), fixturePData[:2*42], t)
 }
 
 func BenchmarkCompute(b *testing.B) {
@@ -41,12 +36,11 @@ func BenchmarkCompute(b *testing.B) {
 	power, _ := New(platform, application, Δt)
 
 	sc := uint(schedule.Span / Δt)
-	P := make([]float64, 2*sc)
 
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		power.Compute(schedule, P, sc)
+		power.Compute(schedule, sc)
 	}
 }
 
