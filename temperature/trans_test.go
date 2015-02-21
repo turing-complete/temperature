@@ -16,7 +16,7 @@ func TestComputeTransient(t *testing.T) {
 
 	Q := temperature.ComputeTransient(fixtureP, sc)
 
-	assert.AlmostEqual(Q, fixtureQ, t)
+	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
 }
 
 func BenchmarkComputeTransient(b *testing.B) {

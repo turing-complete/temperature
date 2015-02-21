@@ -57,9 +57,9 @@ func TestListCompute(t *testing.T) {
 
 	assert.Equal(sched.Mapping, mapping, t)
 	assert.Equal(sched.Order, order, t)
-	assert.AlmostEqual(sched.Start, start, t)
-	assert.AlmostEqual(sched.Finish, finish, t)
-	assert.AlmostEqual(sched.Span, span, t)
+	assert.EqualWithin(sched.Start, start, 1e-15, t)
+	assert.EqualWithin(sched.Finish, finish, 1e-15, t)
+	assert.EqualWithin(sched.Span, span, 1e-15, t)
 }
 
 func TestListRecompute(t *testing.T) {
@@ -92,8 +92,8 @@ func TestListRecompute(t *testing.T) {
 
 	sched = list.Recompute(sched, delay)
 
-	assert.AlmostEqual(sched.Start, start, t)
-	assert.AlmostEqual(sched.Finish, finish, t)
+	assert.EqualWithin(sched.Start, start, 1e-15, t)
+	assert.EqualWithin(sched.Finish, finish, 2e-15, t)
 }
 
 func TestListRecomputeDummy(t *testing.T) {

@@ -13,13 +13,13 @@ func TestLoad(t *testing.T) {
 	assert.Equal(temperature.Cores, uint(2), t)
 	assert.Equal(temperature.Nodes, uint(4*2+12), t)
 
-	assert.AlmostEqual(temperature.system.D, fixtureD, t)
+	assert.EqualWithin(temperature.system.D, fixtureD, 1e-14, t)
 
-	assert.AlmostEqual(abs(temperature.system.U), abs(fixtureU), t)
-	assert.AlmostEqual(temperature.system.Λ, fixtureΛ, t)
+	assert.EqualWithin(abs(temperature.system.U), abs(fixtureU), 1e-9, t)
+	assert.EqualWithin(temperature.system.Λ, fixtureΛ, 1e-9, t)
 
-	assert.AlmostEqual(temperature.system.E, fixtureE, t)
-	assert.AlmostEqual(temperature.system.F, fixtureF, t)
+	assert.EqualWithin(temperature.system.E, fixtureE, 1e-9, t)
+	assert.EqualWithin(temperature.system.F, fixtureF, 1e-9, t)
 }
 
 func abs(A []float64) []float64 {
