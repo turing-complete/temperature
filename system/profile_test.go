@@ -19,5 +19,5 @@ func TestNewProfile(t *testing.T) {
 		0.1490, 0.0340, 0.0225, 0.0520, 0.0280, 0.0435, 0.0380, 0.0380,
 	}
 
-	assert.AlmostEqual(prof.Mobility, mobility, t)
+	assert.EqualWithin(prof.Mobility, mobility, 1e-15, t)
 }
