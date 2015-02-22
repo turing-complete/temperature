@@ -14,4 +14,6 @@ type system struct {
 	// F = A**(-1) * (exp(A * Δt) - I) * B
 	//   = U * diag((exp(λi * Δt) - 1) / λi) * U**T * B
 	F []float64
+
+	Qamb float64
 }

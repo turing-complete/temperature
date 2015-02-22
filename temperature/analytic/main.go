@@ -14,8 +14,6 @@ import (
 
 // Temperature represents an integrator.
 type Temperature struct {
-	Config Config
-
 	Cores uint
 	Nodes uint
 
@@ -85,10 +83,8 @@ func New(c Config) (*Temperature, error) {
 	matrix.Multiply(U, temp, F, nc, nc, cc)
 
 	temperature := &Temperature{
-		Config: c,
-
-		Cores: model.Cores,
-		Nodes: model.Nodes,
+		Cores: cc,
+		Nodes: nc,
 
 		system: system{
 			D: D,

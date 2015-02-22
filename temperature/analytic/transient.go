@@ -27,7 +27,7 @@ func (t *Temperature) ComputeTransient(P []float64, sc uint) []float64 {
 
 	for i = 0; i < cc; i++ {
 		for j = 0; j < sc; j++ {
-			Q[cc*j+i] = t.system.D[i]*S[nc*j+i] + t.Config.AmbientTemp
+			Q[cc*j+i] = t.system.D[i]*S[nc*j+i] + t.system.Qamb
 		}
 	}
 
