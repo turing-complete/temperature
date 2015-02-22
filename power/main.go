@@ -3,8 +3,6 @@
 package power
 
 import (
-	"errors"
-
 	"github.com/ready-steady/simulation/system"
 	"github.com/ready-steady/simulation/time"
 )
@@ -13,33 +11,22 @@ import (
 type Power struct {
 	platform    *system.Platform
 	application *system.Application
-	Δt          float64
 }
 
-// New returns a power distributor for the given platform, application, and
-// sampling interval.
-func New(platform *system.Platform, application *system.Application, Δt float64) (*Power, error) {
-	if Δt <= 0 {
-		return nil, errors.New("the time step should be positive")
-	}
-
-	power := &Power{
+// New returns a power distributor for the given platform and application.
+func New(platform *system.Platform, application *system.Application) *Power {
+	return &Power{
 		platform:    platform,
 		application: application,
-		Δt:          Δt,
 	}
-
-	return power, nil
 }
 
-// Compute calculates the power profile corresponding to the given schedule. The
-// sc parameter controls the number of steps/samples that the output matrix will
-// contain; schedules longer than this value (multiplied by the sampling
-// interval Δt passed to New) get truncated.
-func (p *Power) Compute(schedule *time.Schedule, sc uint) []float64 {
+// Compute calculates the power profile of a schedule. The sampling interval is
+// specified by the Δt parameter, and the sc parameter controls the number of
+// samples that the output matrix will contain; long schedules are truncated.
+func (p *Power) Compute(schedule *time.Schedule, Δt float64, sc uint) []float64 {
 	cores, tasks := p.platform.Cores, p.application.Tasks
 	cc, tc := uint(len(cores)), uint(len(tasks))
-	Δt := p.Δt
 
 	P := make([]float64, cc*sc)
 
@@ -63,4 +50,36 @@ func (p *Power) Compute(schedule *time.Schedule, sc uint) []float64 {
 	}
 
 	return P
+}
+
+// Process takes a schedule and returns a function func(time float64, power
+// []float64) that computes the power dissipation at an arbitrary time moment
+// according to the schedule.
+func (p *Power) Process(schedule *time.Schedule) func(float64, []float64) {
+	cores, tasks := p.platform.Cores, p.application.Tasks
+	cc, tc := uint(len(cores)), uint(len(tasks))
+
+	mapping := make([][]uint, cc)
+	for i := uint(0); i < cc; i++ {
+		mapping[i] = make([]uint, 0, tc)
+		for j := uint(0); j < tc; j++ {
+			if i == schedule.Mapping[j] {
+				mapping[i] = append(mapping[i], j)
+			}
+		}
+	}
+
+	start, finish := schedule.Start, schedule.Finish
+
+	return func(time float64, power []float64) {
+		for i := uint(0); i < cc; i++ {
+			power[i] = 0
+			for _, j := range mapping[i] {
+				if start[j] <= time && time <= finish[j] {
+					power[i] = cores[i].Power[tasks[j].Type]
+					break
+				}
+			}
+		}
+	}
 }

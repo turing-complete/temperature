@@ -1,6 +1,6 @@
 package power
 
-var fixturePData = []float64{
+var fixtureP = []float64{
 	12.48, +0.00,
 	12.48, +0.00,
 	12.48, +0.00,
