@@ -1,4 +1,4 @@
-package temperature
+package analytic
 
 type system struct {
 	// D = C**(-½)

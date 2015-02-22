@@ -1,4 +1,4 @@
-package temperature
+package analytic
 
 import (
 	"path"

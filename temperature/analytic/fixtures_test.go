@@ -1,4 +1,4 @@
-package temperature
+package analytic
 
 var fixtureD = []float64{
 	5.347899456798773e+01,

@@ -1,6 +1,6 @@
-# Temperature
+# Analytic
 
-The package provides an exponential-integrator-based solver for systems of
+The package provides an exponential integrator for systems of
 differential-algebraic equations modeling temperature of electronic systems.
 
 ## [Documentation][doc]
@@ -18,4 +18,4 @@ differential-algebraic equations modeling temperature of electronic systems.
 [1]: http://www.virginia.edu/cs/people/faculty/pdfs/p94-skadron.pdf
 [2]: http://dx.doi.org/10.1017/S0962492910000048
 
-[doc]: http://godoc.org/github.com/ready-steady/simulation/temperature
+[doc]: http://godoc.org/github.com/ready-steady/simulation/temperature/analytic

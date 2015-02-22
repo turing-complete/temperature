@@ -1,6 +1,5 @@
-// Package temperature provides an exponential-integrator-based solver for
-// systems of differential-algebraic equations modeling temperature of
-// electronic systems.
+// Package temperature provides an exponential integrator for systems of
+// differential-algebraic equations modeling temperature of electronic systems.
 //
 // The initial thermal system is
 //
@@ -39,4 +38,4 @@
 //     E = exp(A * Δt) = U * diag(exp(λi * Δt)) * U**T and
 //     F = A**(-1) * (exp(A * Δt) - I) * B
 //       = U * diag((exp(λi * Δt) - 1) / λi) * U**T * B.
-package temperature
+package analytic
