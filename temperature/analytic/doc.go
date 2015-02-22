@@ -1,20 +1,28 @@
 // Package temperature provides an exponential integrator for systems of
 // differential-algebraic equations modeling temperature of electronic systems.
 //
-// The initial thermal system is
+// The initial system is
 //
-//     C * dQ'/dt + G * (Q' - Qamb) = M * P
+//         dQ'
+//     C * -- + G * (Q - Qamb) = M * P
+//         dt
+//
 //     Q = M**T * Q'
 //
-// where C and G are the thermal capacitance and conductance matrices,
-// respectively; Q' and Q are the temperature vectors of all thermal nodes and
-// those that correspond to the processing elements, respectively; Qamb is the
-// ambient temperature; P is the power vector of the processing elements; and
-// M is a rectangular diagonal matrix whose diagonal elements equal to unity.
+// where C is a diagonal matrix of the thermal capacitance; G is a symmetric
+// matrix of the thermal conductance; Q' is a vector of the temperature of the
+// thermal nodes; Q is a subset of Q corresponding to the processing elements;
+// Qamb is a vector of the ambient temperature; P is a vector of the power
+// consumption of the processing elements; and M is a diagonal matrix whose
+// diagonal elements equal to unity that maps the power dissipation of the
+// processing elements onto the thermal nodes.
 //
 // The transformed system is
 //
-//     dS/dt = A * S + B * P
+//     dS
+//     -- = A * S + B * P
+//     dt
+//
 //     Q = B**T * S + Qamb
 //
 // where

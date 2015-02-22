@@ -12,8 +12,7 @@ import (
 	"github.com/ready-steady/linear/matrix"
 )
 
-// Temperature represents the algorithm for temperature analysis configured for
-// a particular problem.
+// Temperature represents an integrator.
 type Temperature struct {
 	Config Config
 
@@ -23,8 +22,7 @@ type Temperature struct {
 	system system
 }
 
-// New returns an instance of the algorithm set up according to the given
-// configuration.
+// New returns an integrator set up according to  the given configuration.
 func New(c Config) (*Temperature, error) {
 	if c.TimeStep <= 0 {
 		return nil, errors.New("the time step should be positive")
@@ -100,14 +98,15 @@ func New(c Config) (*Temperature, error) {
 
 			E: E,
 			F: F,
+
+			Qamb: c.AmbientTemp,
 		},
 	}
 
 	return temperature, nil
 }
 
-// Load returns an instance of the algorithm set up according to the given
-// configuration file.
+// Load returns an integrator set up according to the given configuration file.
 func Load(path string) (*Temperature, error) {
 	config, err := loadConfig(path)
 	if err != nil {
