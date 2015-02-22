@@ -2,6 +2,7 @@ package analytic
 
 import (
 	"math"
+	"path"
 	"testing"
 
 	"github.com/ready-steady/support/assert"
@@ -30,4 +31,8 @@ func abs(A []float64) []float64 {
 	}
 
 	return B
+}
+
+func findFixture(name string) string {
+	return path.Join("fixtures", name)
 }

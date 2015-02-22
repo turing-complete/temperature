@@ -10,6 +10,7 @@ import (
 	"github.com/ready-steady/hotspot"
 	"github.com/ready-steady/linear/decomposition"
 	"github.com/ready-steady/linear/matrix"
+	"github.com/ready-steady/simulation/temperature"
 )
 
 // Temperature represents an integrator.
@@ -21,7 +22,7 @@ type Temperature struct {
 }
 
 // New returns an integrator set up according to  the given configuration.
-func New(c Config) (*Temperature, error) {
+func New(c temperature.Config) (*Temperature, error) {
 	if c.TimeStep <= 0 {
 		return nil, errors.New("the time step should be positive")
 	}
@@ -104,7 +105,7 @@ func New(c Config) (*Temperature, error) {
 
 // Load returns an integrator set up according to the given configuration file.
 func Load(path string) (*Temperature, error) {
-	config, err := loadConfig(path)
+	config, err := temperature.LoadConfig(path)
 	if err != nil {
 		return nil, err
 	}

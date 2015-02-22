@@ -1,4 +1,4 @@
-package analytic
+package temperature
 
 import (
 	"encoding/json"
@@ -28,7 +28,8 @@ type Config struct {
 	AmbientTemp float64 // in Kelvin
 }
 
-func loadConfig(path string) (Config, error) {
+// LoadConfig reads the configuration from a JSON file.
+func LoadConfig(path string) (Config, error) {
 	config := Config{}
 
 	file, err := os.Open(path)

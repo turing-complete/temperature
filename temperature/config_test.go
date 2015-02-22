@@ -1,13 +1,14 @@
-package analytic
+package temperature
 
 import (
+	"path"
 	"testing"
 
 	"github.com/ready-steady/support/assert"
 )
 
-func TestConfigLoad(t *testing.T) {
-	config, err := loadConfig(findFixture("002.json"))
+func TestLoadConfig(t *testing.T) {
+	config, err := LoadConfig(findFixture("002.json"))
 
 	assert.Success(err, t)
 
@@ -16,4 +17,8 @@ func TestConfigLoad(t *testing.T) {
 	assert.Equal(config.HotSpot.Params, "", t)
 	assert.Equal(config.TimeStep, 1e-3, t)
 	assert.Equal(config.AmbientTemp, 318.15, t)
+}
+
+func findFixture(name string) string {
+	return path.Join("fixtures", name)
 }
