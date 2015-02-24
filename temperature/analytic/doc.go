@@ -1,5 +1,5 @@
-// Package temperature provides an exponential integrator for systems of
-// differential-algebraic equations modeling temperature of electronic systems.
+// Package analytic provides an exponential integrator of systems of ordinary
+// differential equations modeling temperature of electronic systems.
 //
 // The initial system is
 //
