@@ -4,7 +4,7 @@ The repository hosts four packages:
 
 * [power](power),
 * [system](system),
-* temperature/[analytic](temperature/analytic), and
+* [temperature](temperature), and
 * [time](time).
 
 ## Contributing
