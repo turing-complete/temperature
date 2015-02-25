@@ -4,6 +4,7 @@ package numeric
 
 import (
 	"github.com/ready-steady/hotspot"
+	"github.com/ready-steady/numeric/integration/ode"
 	"github.com/ready-steady/simulation/temperature"
 )
 
@@ -13,6 +14,8 @@ type Temperature struct {
 	Nodes uint
 
 	system system
+
+	integrator *ode.DormandPrince
 }
 
 // New returns an integrator set up according to the given configuration.
@@ -36,6 +39,16 @@ func New(c *temperature.Config) (*Temperature, error) {
 		}
 	}
 
+	integrator, err := ode.NewDormandPrince(&ode.Config{
+		MaximalStep:       0,
+		InitialStep:       0,
+		AbsoluteTolerance: 1e-3,
+		RelativeTolerance: 1e-3,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	temperature := &Temperature{
 		Cores: cc,
 		Nodes: nc,
@@ -47,6 +60,8 @@ func New(c *temperature.Config) (*Temperature, error) {
 			Δt:   c.TimeStep,
 			Qamb: c.Ambience,
 		},
+
+		integrator: integrator,
 	}
 
 	return temperature, nil
