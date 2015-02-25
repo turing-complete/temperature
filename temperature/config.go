@@ -29,18 +29,18 @@ type Config struct {
 }
 
 // LoadConfig reads the configuration from a JSON file.
-func LoadConfig(path string) (Config, error) {
-	config := Config{}
-
+func LoadConfig(path string) (*Config, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		return config, err
+		return nil, err
 	}
 	defer file.Close()
 
+	config := &Config{}
+
 	dec := json.NewDecoder(file)
-	if err = dec.Decode(&config); err != nil {
-		return config, err
+	if err = dec.Decode(config); err != nil {
+		return nil, err
 	}
 
 	return config, nil

@@ -22,7 +22,7 @@ type Temperature struct {
 }
 
 // New returns an integrator set up according to  the given configuration.
-func New(c temperature.Config) (*Temperature, error) {
+func New(c *temperature.Config) (*Temperature, error) {
 	if c.TimeStep <= 0 {
 		return nil, errors.New("the time step should be positive")
 	}
