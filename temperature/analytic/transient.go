@@ -4,11 +4,11 @@ import (
 	"github.com/ready-steady/linear/matrix"
 )
 
-// ComputeTransient calculates the temperature profile corresponding to the
-// given power profile. The sc parameter controls the number of steps/samples
-// that the output matrix will contain; power profiles longer than this value
-// get truncated.
-func (t *Temperature) ComputeTransient(P []float64, sc uint) []float64 {
+// Compute calculates the temperature profile corresponding to the given power
+// profile. The sc parameter controls the number of samples that the temperature
+// profile will contain; if the power profile contains more samples than needed,
+// it will be truncated accordingly.
+func (t *Temperature) Compute(P []float64, sc uint) []float64 {
 	cc := t.Cores
 	nc := t.Nodes
 

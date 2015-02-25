@@ -8,18 +8,18 @@ import (
 	"github.com/ready-steady/support/assert"
 )
 
-func TestComputeTransient(t *testing.T) {
+func TestCompute(t *testing.T) {
 	temperature, _ := Load(findFixture("002.json"))
 
 	cc := uint(2)
 	sc := uint(len(fixtureP)) / cc
 
-	Q := temperature.ComputeTransient(fixtureP, sc)
+	Q := temperature.Compute(fixtureP, sc)
 
 	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
 }
 
-func BenchmarkComputeTransient(b *testing.B) {
+func BenchmarkCompute(b *testing.B) {
 	temperature, _ := Load(findFixture("032.json"))
 
 	cc := uint(32)
@@ -30,6 +30,6 @@ func BenchmarkComputeTransient(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		temperature.ComputeTransient(P, sc)
+		temperature.Compute(P, sc)
 	}
 }
