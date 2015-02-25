@@ -4,7 +4,6 @@
 package analytic
 
 import (
-	"errors"
 	"math"
 
 	"github.com/ready-steady/hotspot"
@@ -23,8 +22,8 @@ type Temperature struct {
 
 // New returns an integrator set up according to the given configuration.
 func New(c *temperature.Config) (*Temperature, error) {
-	if c.TimeStep <= 0 {
-		return nil, errors.New("the time step should be positive")
+	if err := c.Validate(); err != nil {
+		return nil, err
 	}
 
 	model := hotspot.New(&c.HotSpot)

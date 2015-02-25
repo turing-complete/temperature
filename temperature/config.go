@@ -2,6 +2,7 @@ package temperature
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 
 	"github.com/ready-steady/hotspot"
@@ -38,4 +39,13 @@ func LoadConfig(path string) (*Config, error) {
 	}
 
 	return config, nil
+}
+
+// Validate checks if the configuration is valid.
+func (c *Config) Validate() error {
+	if c.TimeStep <= 0 {
+		return errors.New("the time step should be positive")
+	}
+
+	return nil
 }
