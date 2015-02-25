@@ -11,9 +11,7 @@ import (
 func (t *Temperature) Compute(P []float64, sc uint) []float64 {
 	cc, nc := t.Cores, t.Nodes
 
-	Q := make([]float64, cc*sc)
 	S := make([]float64, nc*sc)
-
 	matrix.Multiply(t.system.F, P, S, nc, cc, sc)
 
 	for i, j, k := uint(1), uint(0), nc; i < sc; i++ {
@@ -22,9 +20,10 @@ func (t *Temperature) Compute(P []float64, sc uint) []float64 {
 		k += nc
 	}
 
+	Q := make([]float64, cc*sc)
 	for i := uint(0); i < cc; i++ {
 		for j := uint(0); j < sc; j++ {
-			Q[cc*j+i] = t.system.D[i]*S[nc*j+i] + t.system.Qamb
+			Q[j*cc+i] = t.system.D[i]*S[j*nc+i] + t.system.Qamb
 		}
 	}
 
