@@ -102,13 +102,3 @@ func New(c *temperature.Config) (*Temperature, error) {
 
 	return temperature, nil
 }
-
-// Load returns an integrator set up according to the given configuration file.
-func Load(path string) (*Temperature, error) {
-	config, err := temperature.LoadConfig(path)
-	if err != nil {
-		return nil, err
-	}
-
-	return New(config)
-}

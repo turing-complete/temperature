@@ -9,7 +9,7 @@ import (
 )
 
 func TestCompute(t *testing.T) {
-	temperature, _ := Load(findFixture("002.json"))
+	temperature := load("002")
 
 	cc := uint(2)
 	sc := uint(len(fixtureP)) / cc
@@ -20,7 +20,7 @@ func TestCompute(t *testing.T) {
 }
 
 func BenchmarkCompute(b *testing.B) {
-	temperature, _ := Load(findFixture("032.json"))
+	temperature := load("032")
 
 	cc := uint(32)
 	sc := uint(1000)

@@ -1,15 +1,17 @@
 package analytic
 
 import (
+	"fmt"
 	"math"
 	"path"
 	"testing"
 
+	"github.com/ready-steady/simulation/temperature"
 	"github.com/ready-steady/support/assert"
 )
 
 func TestLoad(t *testing.T) {
-	temperature, _ := Load(findFixture("002.json"))
+	temperature := load("002")
 
 	assert.Equal(temperature.Cores, uint(2), t)
 	assert.Equal(temperature.Nodes, uint(4*2+12), t)
@@ -31,6 +33,12 @@ func abs(A []float64) []float64 {
 	}
 
 	return B
+}
+
+func load(path string) *Temperature {
+	config, _ := temperature.LoadConfig(findFixture(fmt.Sprintf("%s.json", path)))
+	temperature, _ := New(config)
+	return temperature
 }
 
 func findFixture(name string) string {
