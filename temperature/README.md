@@ -7,8 +7,9 @@ integrators given in the suppackages.
 
 ## Subpackages
 
-The package contains one subpackage:
+The package contains two subpackage:
 
-* [analytic](analytic).
+* [analytic](analytic) and
+* [numeric](numeric).
 
 [doc]: http://godoc.org/github.com/ready-steady/simulation/temperature
