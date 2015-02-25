@@ -28,21 +28,17 @@ func New(c *temperature.Config) (*Temperature, error) {
 	}
 
 	model := hotspot.New(&c.HotSpot)
-
-	cc := model.Cores
-	nc := model.Nodes
-
-	var i, j uint
+	cc, nc := model.Cores, model.Nodes
 
 	// Reusing model.G to store A and model.C to store D.
 	A := model.G
 	D := model.C
-	for i = 0; i < nc; i++ {
+	for i := uint(0); i < nc; i++ {
 		D[i] = math.Sqrt(1 / model.C[i])
 	}
-	for i = 0; i < nc; i++ {
-		for j = 0; j < nc; j++ {
-			A[j*nc+i] = -1 * D[i] * D[j] * A[j*nc+i]
+	for i := uint(0); i < nc; i++ {
+		for j := uint(0); j < nc; j++ {
+			A[j*nc+i] = -D[i] * D[j] * A[j*nc+i]
 		}
 	}
 
@@ -58,11 +54,11 @@ func New(c *temperature.Config) (*Temperature, error) {
 	coef := make([]float64, nc)
 	temp := make([]float64, nc*nc)
 
-	for i = 0; i < nc; i++ {
+	for i := uint(0); i < nc; i++ {
 		coef[i] = math.Exp(Δt * Λ[i])
 	}
-	for i = 0; i < nc; i++ {
-		for j = 0; j < nc; j++ {
+	for i := uint(0); i < nc; i++ {
+		for j := uint(0); j < nc; j++ {
 			temp[j*nc+i] = coef[i] * U[i*nc+j]
 		}
 	}
@@ -71,11 +67,11 @@ func New(c *temperature.Config) (*Temperature, error) {
 	matrix.Multiply(U, temp, E, nc, nc, nc)
 
 	// Technically, temp = temp[0 : nc*cc].
-	for i = 0; i < nc; i++ {
+	for i := uint(0); i < nc; i++ {
 		coef[i] = (coef[i] - 1) / Λ[i]
 	}
-	for i = 0; i < nc; i++ {
-		for j = 0; j < cc; j++ {
+	for i := uint(0); i < nc; i++ {
+		for j := uint(0); j < cc; j++ {
 			temp[j*nc+i] = coef[i] * U[i*nc+j] * D[j]
 		}
 	}
