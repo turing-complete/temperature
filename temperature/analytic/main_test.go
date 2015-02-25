@@ -10,7 +10,7 @@ import (
 	"github.com/ready-steady/support/assert"
 )
 
-func TestLoad(t *testing.T) {
+func TestNew(t *testing.T) {
 	temperature := load("002")
 
 	assert.Equal(temperature.Cores, uint(2), t)
