@@ -1,4 +1,4 @@
-// Package analytic provides an exponential integrator of systems of ordinary
+// Package analytic provides an exponential integrator for systems of ordinary
 // differential equations modeling temperature of electronic systems.
 //
 // The initial system is
