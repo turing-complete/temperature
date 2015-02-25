@@ -1,10 +1,11 @@
 # Simulation
 
-The repository hosts four packages:
+The repository hosts five packages:
 
 * [power](power),
 * [system](system),
-* [temperature](temperature), and
+* temperature/[analytic](temperature/analytic),
+* temperature/[numeric](temperature/numeric), and
 * [time](time).
 
 ## Contributing

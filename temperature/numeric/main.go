@@ -3,9 +3,10 @@
 package numeric
 
 import (
+	"errors"
+
 	"github.com/ready-steady/hotspot"
 	"github.com/ready-steady/numeric/integration/ode"
-	"github.com/ready-steady/simulation/temperature"
 )
 
 // Temperature represents an integrator.
@@ -19,10 +20,9 @@ type Temperature struct {
 }
 
 // New returns an integrator set up according to the given configuration.
-func New(config *Config) (*Temperature, error) {
-	c := (*temperature.Config)(config)
-	if err := c.Validate(); err != nil {
-		return nil, err
+func New(c *Config) (*Temperature, error) {
+	if c.TimeStep <= 0 {
+		return nil, errors.New("the time step should be positive")
 	}
 
 	model := hotspot.New((*hotspot.Config)(&c.Config))
