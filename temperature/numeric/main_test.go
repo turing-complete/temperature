@@ -5,8 +5,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/ready-steady/simulation/temperature"
 	"github.com/ready-steady/support/assert"
+	"github.com/ready-steady/support/fixture"
 )
 
 func TestNew(t *testing.T) {
@@ -20,7 +20,8 @@ func TestNew(t *testing.T) {
 }
 
 func load(path string) *Temperature {
-	config, _ := temperature.LoadConfig(findFixture(fmt.Sprintf("%s.json", path)))
+	config := &Config{}
+	fixture.Load(findFixture(fmt.Sprintf("%s.json", path)), config)
 	temperature, _ := New(config)
 	return temperature
 }

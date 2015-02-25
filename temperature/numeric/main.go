@@ -19,12 +19,13 @@ type Temperature struct {
 }
 
 // New returns an integrator set up according to the given configuration.
-func New(c *temperature.Config) (*Temperature, error) {
+func New(config *Config) (*Temperature, error) {
+	c := (*temperature.Config)(config)
 	if err := c.Validate(); err != nil {
 		return nil, err
 	}
 
-	model := hotspot.New(&c.HotSpot)
+	model := hotspot.New((*hotspot.Config)(&c.Config))
 	cc, nc := model.Cores, model.Nodes
 
 	// Reusing model.G to store A and model.C to store B.
@@ -40,10 +41,10 @@ func New(c *temperature.Config) (*Temperature, error) {
 	}
 
 	integrator, err := ode.NewDormandPrince(&ode.Config{
-		MaximalStep:       0,
-		InitialStep:       0,
-		AbsoluteTolerance: 1e-3,
-		RelativeTolerance: 1e-3,
+		MaxStep:  0,
+		TryStep:  0,
+		AbsError: 1e-3,
+		RelError: 1e-3,
 	})
 	if err != nil {
 		return nil, err
