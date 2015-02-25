@@ -27,7 +27,7 @@ func New(c *temperature.Config) (*Temperature, error) {
 		return nil, errors.New("the time step should be positive")
 	}
 
-	model := hotspot.New(c.Floorplan, c.HotSpot.Config, c.HotSpot.Params)
+	model := hotspot.New(&c.HotSpot)
 
 	cc := model.Cores
 	nc := model.Nodes
@@ -96,7 +96,7 @@ func New(c *temperature.Config) (*Temperature, error) {
 			E: E,
 			F: F,
 
-			Qamb: c.AmbientTemp,
+			Qamb: c.Ambience,
 		},
 	}
 

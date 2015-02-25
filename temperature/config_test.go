@@ -12,11 +12,11 @@ func TestLoadConfig(t *testing.T) {
 
 	assert.Success(err, t)
 
-	assert.Equal(config.Floorplan, findFixture("002.flp"), t)
-	assert.Equal(config.HotSpot.Config, findFixture("hotspot.config"), t)
-	assert.Equal(config.HotSpot.Params, "", t)
+	assert.Equal(config.HotSpot.Floorplan, findFixture("002.flp"), t)
+	assert.Equal(config.HotSpot.Configuration, findFixture("hotspot.config"), t)
+	assert.Equal(config.HotSpot.Parameters, "", t)
 	assert.Equal(config.TimeStep, 1e-3, t)
-	assert.Equal(config.AmbientTemp, 318.15, t)
+	assert.Equal(config.Ambience, 318.15, t)
 }
 
 func findFixture(name string) string {
