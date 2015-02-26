@@ -4,10 +4,12 @@ import (
 	"github.com/ready-steady/linear/matrix"
 )
 
-// Compute calculates the temperature profile corresponding to the given power
-// profile. The sc parameter controls the number of samples that the temperature
-// profile will contain; if the power profile contains more samples than needed,
-// it will be truncated accordingly.
+// Compute calculates the temperature profile corresponding to a power profile.
+// The power profile is specified by a matrix capturing the power dissipation at
+// a number of equidistant time moments (see TimeStep in Config). The sc
+// parameter controls the number of samples that the temperature profile will
+// contain; if the power profile contains more samples than needed, it will be
+// accordingly truncated.
 func (t *Temperature) Compute(P []float64, sc uint) []float64 {
 	cc, nc := t.Cores, t.Nodes
 
