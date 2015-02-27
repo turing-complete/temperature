@@ -5,6 +5,8 @@ before_install:
 
 install:
   - go get -d -t ./...
+  - (cd $HOME/gopath/src/github.com/ready-steady/linear/lapack && git submodule init)
+  - (cd $HOME/gopath/src/github.com/ready-steady/linear/lapack && git submodule update)
   - (cd $HOME/gopath/src/github.com/ready-steady/linear/lapack && make install)
 
 notifications:
