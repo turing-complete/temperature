@@ -5,7 +5,7 @@ before_install:
 
 install:
   - go get -d -t ./...
-  - (cd $GOPATH/src/github.com/ready-steady/linear/lapack && make install)
+  - (cd $HOME/gopath/src/github.com/ready-steady/linear/lapack && make install)
 
 notifications:
   email:
