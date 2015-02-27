@@ -6,13 +6,17 @@ before_install:
 install:
   - go get -d -t ./...
 
-  - (cd $HOME/gopath/src/github.com/ready-steady/hotspot && git submodule init)
-  - (cd $HOME/gopath/src/github.com/ready-steady/hotspot && git submodule update)
-  - (cd $HOME/gopath/src/github.com/ready-steady/hotspot && make install)
+  - cd $HOME/gopath/src/github.com/ready-steady/hotspot
+  - git submodule init
+  - git submodule update
+  - make install
+  - cd -
 
-  - (cd $HOME/gopath/src/github.com/ready-steady/linear/lapack && git submodule init)
-  - (cd $HOME/gopath/src/github.com/ready-steady/linear/lapack && git submodule update)
-  - (cd $HOME/gopath/src/github.com/ready-steady/linear/lapack && make install)
+  - cd $HOME/gopath/src/github.com/ready-steady/linear/lapack
+  - git submodule init
+  - git submodule update
+  - make install
+  - cd -
 
 notifications:
   email:
