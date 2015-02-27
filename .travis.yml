@@ -1,0 +1,12 @@
+language: go
+
+before_install:
+  - sudo apt-get install gfortran
+
+install:
+  - go get -d -t ./...
+  - (cd $GOPATH/src/github.com/ready-steady/linear/lapack && make install)
+
+notifications:
+  email:
+    on_success: never
