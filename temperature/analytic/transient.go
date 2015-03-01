@@ -11,7 +11,7 @@ import (
 // contain; if the power profile contains more samples than needed, it will be
 // accordingly truncated.
 func (t *Temperature) Compute(P []float64, ns uint) []float64 {
-	nc, nn := t.Cores, t.Nodes
+	nc, nn := t.nc, t.nn
 
 	S := make([]float64, nn*ns)
 	matrix.Multiply(t.system.F, P, S, nn, nc, ns)

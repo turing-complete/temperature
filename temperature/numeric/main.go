@@ -11,11 +11,10 @@ import (
 
 // Temperature represents an integrator.
 type Temperature struct {
-	Cores uint
-	Nodes uint
+	nc uint
+	nn uint
 
-	system system
-
+	system     system
 	integrator *ode.DormandPrince
 }
 
@@ -51,8 +50,8 @@ func New(c *Config) (*Temperature, error) {
 	}
 
 	temperature := &Temperature{
-		Cores: nc,
-		Nodes: nn,
+		nc: nc,
+		nn: nn,
 
 		system: system{
 			A: A,

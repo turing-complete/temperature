@@ -16,8 +16,8 @@ func TestNew(t *testing.T) {
 
 	temperature := load(nc)
 
-	assert.Equal(temperature.Cores, uint(nc), t)
-	assert.Equal(temperature.Nodes, uint(4*nc+12), t)
+	assert.Equal(temperature.nc, uint(nc), t)
+	assert.Equal(temperature.nn, uint(4*nc+12), t)
 
 	assert.Equal(temperature.system.A, fixtureA, t)
 	assert.Equal(temperature.system.B, fixtureB, t)

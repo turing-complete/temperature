@@ -14,7 +14,7 @@ import (
 func (t *Temperature) Compute(power func(float64, []float64),
 	time []float64) ([]float64, []float64, error) {
 
-	nc, nn := t.Cores, t.Nodes
+	nc, nn := t.nc, t.nn
 
 	A, B := t.system.A, t.system.B
 

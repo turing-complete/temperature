@@ -9,17 +9,24 @@ import (
 )
 
 func TestCompute(t *testing.T) {
-	temperature := load("002")
-	ns := uint(len(fixtureP)) / 2
+	const (
+		nc = 2
+		ns = 440
+	)
 
+	temperature := load(nc)
 	Q := temperature.Compute(fixtureP, ns)
 
 	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
 }
 
 func BenchmarkCompute002(b *testing.B) {
-	temperature := load("002")
-	ns := uint(len(fixtureP)) / 2
+	const (
+		nc = 2
+		ns = 440
+	)
+
+	temperature := load(nc)
 
 	b.ResetTimer()
 
@@ -29,9 +36,12 @@ func BenchmarkCompute002(b *testing.B) {
 }
 
 func BenchmarkCompute032(b *testing.B) {
-	temperature := load("032")
-	nc, ns := uint(32), uint(1000)
+	const (
+		nc = 32
+		ns = 1000
+	)
 
+	temperature := load(nc)
 	P := probability.Sample(uniform.New(0, 1), nc*ns)
 
 	b.ResetTimer()
