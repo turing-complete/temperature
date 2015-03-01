@@ -1,25 +1,20 @@
 package numeric
 
 import (
-	"errors"
-
 	"github.com/ready-steady/linear/matrix"
 )
 
-// Compute calculates the temperature profile corresponding to a power profile
-// and a timeline. The power profile is specified by a function func(time
-// float64, power []float64) evaluating the power dissipation at an arbitrary
-// time moment. The timeline should be an increasing sequence that contains at
-// least two elements with the first one being the initial time.
+// Compute calculates the temperature profile corresponding to a power profile.
+// The power profile is specified by a function func(time float64, power
+// []float64) evaluating the power dissipation at an arbitrary time moment. The
+// time moments for which the temperature profile is computed are specified by
+// the time array; see the corresponding ODE solver for further details.
+//
+// http://godoc.org/github.com/ready-steady/numeric/integration/ode#DormandPrince.Compute
 func (t *Temperature) Compute(power func(float64, []float64),
-	time []float64) ([]float64, error) {
+	time []float64) ([]float64, []float64, error) {
 
 	nc, nn := t.Cores, t.Nodes
-
-	ns := uint(len(time))
-	if ns < 2 {
-		return nil, errors.New("the timeline should have at least two points")
-	}
 
 	A, B := t.system.A, t.system.B
 
@@ -33,10 +28,12 @@ func (t *Temperature) Compute(power func(float64, []float64),
 		}
 	}
 
-	S, _, _, err := t.integrator.Compute(derivative, time, make([]float64, nn))
+	S, time, _, err := t.integrator.Compute(derivative, time, make([]float64, nn))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
+
+	ns := uint(len(time))
 
 	Q := make([]float64, ns*nc)
 	for i := uint(0); i < nc; i++ {
@@ -45,5 +42,5 @@ func (t *Temperature) Compute(power func(float64, []float64),
 		}
 	}
 
-	return Q, nil
+	return Q, time, nil
 }

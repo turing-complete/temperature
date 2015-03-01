@@ -8,25 +8,44 @@ import (
 	"github.com/ready-steady/support/assert"
 )
 
-func TestCompute(t *testing.T) {
-	temperature := load("002")
-	nc, ns, Δt := uint(2), uint(440), 1e-3
+func TestCompute002Fixed(t *testing.T) {
+	const (
+		nc = 2
+		ns = 440
+		Δt = 1e-3
+	)
 
+	temperature := load(nc)
 	power := smooth(fixtureP, nc, ns, Δt)
 	time := time(Δt, ns)
 
-	Q, err := temperature.Compute(power, time)
+	Q, _, _ := temperature.Compute(power, time)
 
-	assert.Success(err, t)
 	assert.EqualWithin(Q, fixtureQ, 2e-10, t)
 }
 
-func BenchmarkCompute002(b *testing.B) {
-	temperature := load("002")
-	nc, ns, Δt := uint(2), uint(440), 1e-3
+func TestCompute002Adaptive(t *testing.T) {
+	const (
+		nc = 2
+		ns = 440
+		Δt = 1e-3
+	)
 
+	temperature := load(nc)
 	power := smooth(fixtureP, nc, ns, Δt)
-	time := time(Δt, ns)
+	Q, time, _ := temperature.Compute(power, []float64{0, ns * Δt})
+
+	assert.EqualWithin(Q, fixtureQTime, 1e-10, t)
+	assert.EqualWithin(time, fixtureTime, 1e-14, t)
+}
+
+func BenchmarkCompute002Adaptive(b *testing.B) { benchmarkComputeAdaptive(2, 1000, 1e-3, b) }
+func BenchmarkCompute032Adaptive(b *testing.B) { benchmarkComputeAdaptive(32, 1000, 1e-3, b) }
+
+func benchmarkComputeAdaptive(nc, ns uint, Δt float64, b *testing.B) {
+	temperature := load(nc)
+	power := smooth(probability.Sample(uniform.New(0, 20), nc*ns), nc, ns, Δt)
+	time := []float64{0, float64(ns) * Δt}
 
 	b.ResetTimer()
 
@@ -35,12 +54,12 @@ func BenchmarkCompute002(b *testing.B) {
 	}
 }
 
-func BenchmarkCompute032(b *testing.B) {
-	temperature := load("032")
-	nc, ns, Δt := uint(32), uint(1000), 1e-3
+func BenchmarkCompute002Fixed(b *testing.B) { benchmarkComputeFixed(2, 1000, 1e-3, b) }
+func BenchmarkCompute032Fixed(b *testing.B) { benchmarkComputeFixed(32, 1000, 1e-3, b) }
 
-	P := probability.Sample(uniform.New(0, 20), nc*ns)
-	power := smooth(P, nc, ns, Δt)
+func benchmarkComputeFixed(nc, ns uint, Δt float64, b *testing.B) {
+	temperature := load(nc)
+	power := smooth(probability.Sample(uniform.New(0, 20), nc*ns), nc, ns, Δt)
 	time := time(Δt, ns)
 
 	b.ResetTimer()
@@ -53,6 +72,9 @@ func BenchmarkCompute032(b *testing.B) {
 func smooth(P []float64, nc, ns uint, Δt float64) func(float64, []float64) {
 	return func(time float64, power []float64) {
 		k := uint(time / Δt)
+		if k >= ns {
+			k = ns - 1
+		}
 		for i := uint(0); i < nc; i++ {
 			power[i] = P[k*nc+i]
 		}

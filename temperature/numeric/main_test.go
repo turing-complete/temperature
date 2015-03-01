@@ -10,18 +10,22 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	temperature := load("002")
+	const (
+		nc = 2
+	)
 
-	assert.Equal(temperature.Cores, uint(2), t)
-	assert.Equal(temperature.Nodes, uint(4*2+12), t)
+	temperature := load(nc)
+
+	assert.Equal(temperature.Cores, uint(nc), t)
+	assert.Equal(temperature.Nodes, uint(4*nc+12), t)
 
 	assert.Equal(temperature.system.A, fixtureA, t)
 	assert.Equal(temperature.system.B, fixtureB, t)
 }
 
-func load(path string) *Temperature {
+func load(nc uint) *Temperature {
 	config := &Config{}
-	fixture.Load(findFixture(fmt.Sprintf("%s.json", path)), config)
+	fixture.Load(findFixture(fmt.Sprintf("%03d.json", nc)), config)
 	temperature, _ := New(config)
 	return temperature
 }
