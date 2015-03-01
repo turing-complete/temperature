@@ -1,8 +1,6 @@
 package numeric
 
 import (
-	"errors"
-
 	"github.com/ready-steady/hotspot"
 	"github.com/ready-steady/numeric/integration/ode"
 )
@@ -18,10 +16,6 @@ type Temperature struct {
 
 // New returns an integrator set up according to the given configuration.
 func New(c *Config) (*Temperature, error) {
-	if c.TimeStep <= 0 {
-		return nil, errors.New("the time step should be positive")
-	}
-
 	model := hotspot.New((*hotspot.Config)(&c.Config))
 	nc, nn := model.Cores, model.Nodes
 
@@ -55,7 +49,6 @@ func New(c *Config) (*Temperature, error) {
 			A: A,
 			B: B,
 
-			Δt:   c.TimeStep,
 			Qamb: c.Ambience,
 		},
 

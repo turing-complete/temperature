@@ -7,6 +7,5 @@ type system struct {
 	// B = C**(-1) * M
 	B []float64
 
-	Δt   float64
 	Qamb float64
 }
