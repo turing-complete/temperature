@@ -33,7 +33,7 @@ func (t *Temperature) Compute(power func(float64, []float64),
 		}
 	}
 
-	S, _, err := t.integrator.Compute(derivative, time, make([]float64, nc))
+	S, _, _, err := t.integrator.Compute(derivative, time, make([]float64, nc))
 	if err != nil {
 		return nil, err
 	}
