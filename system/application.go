@@ -20,12 +20,12 @@ type Task struct {
 
 // Roots returns the IDs of the tasks without parents.
 func (a *Application) Roots() []uint {
-	nt := len(a.Tasks)
+	size := uint(len(a.Tasks))
 	roots := make([]uint, 0, 1)
 
-	for i := 0; i < nt; i++ {
+	for i := uint(0); i < size; i++ {
 		if len(a.Tasks[i].Parents) == 0 {
-			roots = append(roots, uint(i))
+			roots = append(roots, i)
 		}
 	}
 
@@ -34,12 +34,12 @@ func (a *Application) Roots() []uint {
 
 // Leafs returns the IDs of the tasks without children.
 func (a *Application) Leafs() []uint {
-	nt := len(a.Tasks)
-	leafs := make([]uint, 0, nt/2+1)
+	size := uint(len(a.Tasks))
+	leafs := make([]uint, 0, size/2+1)
 
-	for i := 0; i < nt; i++ {
+	for i := uint(0); i < size; i++ {
 		if len(a.Tasks[i].Children) == 0 {
-			leafs = append(leafs, uint(i))
+			leafs = append(leafs, i)
 		}
 	}
 

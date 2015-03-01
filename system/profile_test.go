@@ -7,9 +7,9 @@ import (
 )
 
 func TestNewProfile(t *testing.T) {
-	plat, app, _ := Load(findFixture("002_040"))
+	platform, application, _ := Load(findFixture("002_040"))
 
-	prof := NewProfile(plat, app)
+	profile := NewProfile(platform, application)
 
 	mobility := []float64{
 		0.0000, 0.0000, 0.0000, 0.0445, 0.0000, 0.0140, 0.1145, 0.0000,
@@ -19,5 +19,5 @@ func TestNewProfile(t *testing.T) {
 		0.1490, 0.0340, 0.0225, 0.0520, 0.0280, 0.0435, 0.0380, 0.0380,
 	}
 
-	assert.EqualWithin(prof.Mobility, mobility, 1e-15, t)
+	assert.EqualWithin(profile.Mobility, mobility, 1e-15, t)
 }
