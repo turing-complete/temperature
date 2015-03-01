@@ -10,10 +10,10 @@ import (
 
 func TestCompute(t *testing.T) {
 	temperature := load("002")
-	cc, sc, Δt := uint(2), uint(440), 1e-3
+	nc, ns, Δt := uint(2), uint(440), 1e-3
 
-	power := smooth(fixtureP, cc, sc, Δt)
-	time := time(Δt, sc)
+	power := smooth(fixtureP, nc, ns, Δt)
+	time := time(Δt, ns)
 
 	Q, err := temperature.Compute(power, time)
 
@@ -23,10 +23,10 @@ func TestCompute(t *testing.T) {
 
 func BenchmarkCompute002(b *testing.B) {
 	temperature := load("002")
-	cc, sc, Δt := uint(2), uint(440), 1e-3
+	nc, ns, Δt := uint(2), uint(440), 1e-3
 
-	power := smooth(fixtureP, cc, sc, Δt)
-	time := time(Δt, sc)
+	power := smooth(fixtureP, nc, ns, Δt)
+	time := time(Δt, ns)
 
 	b.ResetTimer()
 
@@ -37,11 +37,11 @@ func BenchmarkCompute002(b *testing.B) {
 
 func BenchmarkCompute032(b *testing.B) {
 	temperature := load("032")
-	cc, sc, Δt := uint(32), uint(1000), 1e-3
+	nc, ns, Δt := uint(32), uint(1000), 1e-3
 
-	P := probability.Sample(uniform.New(0, 20), cc*sc)
-	power := smooth(P, cc, sc, Δt)
-	time := time(Δt, sc)
+	P := probability.Sample(uniform.New(0, 20), nc*ns)
+	power := smooth(P, nc, ns, Δt)
+	time := time(Δt, ns)
 
 	b.ResetTimer()
 
@@ -50,18 +50,18 @@ func BenchmarkCompute032(b *testing.B) {
 	}
 }
 
-func smooth(P []float64, cc, sc uint, Δt float64) func(float64, []float64) {
+func smooth(P []float64, nc, ns uint, Δt float64) func(float64, []float64) {
 	return func(time float64, power []float64) {
 		k := uint(time / Δt)
-		for i := uint(0); i < cc; i++ {
-			power[i] = P[k*cc+i]
+		for i := uint(0); i < nc; i++ {
+			power[i] = P[k*nc+i]
 		}
 	}
 }
 
-func time(Δt float64, sc uint) []float64 {
-	time := make([]float64, sc)
-	for i := uint(0); i < sc; i++ {
+func time(Δt float64, ns uint) []float64 {
+	time := make([]float64, ns)
+	for i := uint(0); i < ns; i++ {
 		time[i] = float64(i) * Δt
 	}
 	return time

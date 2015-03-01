@@ -18,18 +18,18 @@ type Profile struct {
 // the tasks onto the cores is assumed to be unknown at this stage, the profile
 // is based on the average execution time of the tasks across all the cores.
 func NewProfile(platform *Platform, application *Application) *Profile {
-	cc := len(platform.Cores)
-	tc := len(application.Tasks)
+	nc := len(platform.Cores)
+	nt := len(application.Tasks)
 
 	p := &Profile{
-		ASAP:     make([]float64, tc),
-		ALAP:     make([]float64, tc),
-		Mobility: make([]float64, tc),
+		ASAP:     make([]float64, nt),
+		ALAP:     make([]float64, nt),
+		Mobility: make([]float64, nt),
 
-		time: make([]float64, tc),
+		time: make([]float64, nt),
 	}
 
-	for i := 0; i < tc; i++ {
+	for i := 0; i < nt; i++ {
 		if i == 0 {
 			p.ASAP[i] = math.Inf(-1)
 			p.ALAP[i] = math.Inf(1)
@@ -38,10 +38,10 @@ func NewProfile(platform *Platform, application *Application) *Profile {
 			p.ALAP[i] = p.ALAP[0]
 		}
 
-		for j := 0; j < cc; j++ {
+		for j := 0; j < nc; j++ {
 			p.time[i] += platform.Cores[j].Time[application.Tasks[i].Type]
 		}
-		p.time[i] /= float64(cc)
+		p.time[i] /= float64(nc)
 	}
 
 	// Compute ASAP starting from the roots.

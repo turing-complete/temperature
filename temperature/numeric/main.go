@@ -26,17 +26,17 @@ func New(c *Config) (*Temperature, error) {
 	}
 
 	model := hotspot.New((*hotspot.Config)(&c.Config))
-	cc, nc := model.Cores, model.Nodes
+	nc, nn := model.Cores, model.Nodes
 
 	// Reusing model.G to store A and model.C to store B.
 	A := model.G
 	B := model.C
-	for i := uint(0); i < nc; i++ {
+	for i := uint(0); i < nn; i++ {
 		B[i] = 1 / model.C[i]
 	}
-	for i := uint(0); i < nc; i++ {
-		for j := uint(0); j < nc; j++ {
-			A[j*nc+i] = -B[i] * A[j*nc+i]
+	for i := uint(0); i < nn; i++ {
+		for j := uint(0); j < nn; j++ {
+			A[j*nn+i] = -B[i] * A[j*nn+i]
 		}
 	}
 
@@ -51,8 +51,8 @@ func New(c *Config) (*Temperature, error) {
 	}
 
 	temperature := &Temperature{
-		Cores: cc,
-		Nodes: nc,
+		Cores: nc,
+		Nodes: nn,
 
 		system: system{
 			A: A,

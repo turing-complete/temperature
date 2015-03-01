@@ -27,13 +27,13 @@ func TestProcess(t *testing.T) {
 	)
 
 	power, schedule := prepare("002_040")
-	cc, sc := uint(2), uint(schedule.Span/Δt)
+	nc, ns := uint(2), uint(schedule.Span/Δt)
 
 	process := power.Process(schedule)
 
-	P := make([]float64, sc*cc)
-	for i := uint(0); i < sc; i++ {
-		process(Δt*(0.5+float64(i)), P[i*cc:(i+1)*cc])
+	P := make([]float64, ns*nc)
+	for i := uint(0); i < ns; i++ {
+		process(Δt*(0.5+float64(i)), P[i*nc:(i+1)*nc])
 	}
 
 	mismatches := 0
@@ -51,12 +51,12 @@ func BenchmarkCompute(b *testing.B) {
 	)
 
 	power, schedule := prepare("002_040")
-	sc := uint(schedule.Span / Δt)
+	ns := uint(schedule.Span / Δt)
 
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		power.Compute(schedule, Δt, sc)
+		power.Compute(schedule, Δt, ns)
 	}
 }
 

@@ -27,18 +27,18 @@ func (l *List) Compute(priority []float64) *Schedule {
 	cores := l.platform.Cores
 	tasks := l.application.Tasks
 
-	cc := uint(len(cores))
-	tc := uint(len(tasks))
+	nc := uint(len(cores))
+	nt := uint(len(tasks))
 
-	mapping := make([]uint, tc)
-	order := make([]uint, tc)
-	start := make([]float64, tc)
-	finish := make([]float64, tc)
+	mapping := make([]uint, nt)
+	order := make([]uint, nt)
+	start := make([]float64, nt)
+	finish := make([]float64, nt)
 
-	scheduled := make([]bool, tc)
+	scheduled := make([]bool, nt)
 
-	ctime := make([]float64, cc)
-	ttime := make([]float64, tc)
+	ctime := make([]float64, nc)
+	ttime := make([]float64, nt)
 
 	var i, j, k, cid, tid, kid, pid uint
 	var span float64
@@ -47,13 +47,13 @@ func (l *List) Compute(priority []float64) *Schedule {
 	size := uint(len(l.roots))
 
 	// According to the benchmarks, keeping it sorted is not worth it.
-	pool := make([]uint, size, tc)
+	pool := make([]uint, size, nt)
 	copy(pool, l.roots)
 
 	for size > 0 {
 		// Find the earliest available core.
 		cid = 0
-		for i = 1; i < cc; i++ {
+		for i = 1; i < nc; i++ {
 			if ctime[i] < ctime[cid] {
 				cid = i
 			}
@@ -132,19 +132,19 @@ func (l *List) Recompute(schedule *Schedule, delay []float64) *Schedule {
 	cores := l.platform.Cores
 	tasks := l.application.Tasks
 
-	cc := uint(len(l.platform.Cores))
-	tc := uint(len(tasks))
+	nc := uint(len(l.platform.Cores))
+	nt := uint(len(tasks))
 
-	start := make([]float64, tc)
-	finish := make([]float64, tc)
+	start := make([]float64, nt)
+	finish := make([]float64, nt)
 
-	ctime := make([]float64, cc)
-	ttime := make([]float64, tc)
+	ctime := make([]float64, nc)
+	ttime := make([]float64, nt)
 
 	var i, cid, tid, kid uint
 	var span float64
 
-	for ; i < tc; i++ {
+	for ; i < nt; i++ {
 		tid = schedule.Order[i]
 		cid = schedule.Mapping[tid]
 

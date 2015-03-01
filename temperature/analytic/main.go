@@ -27,60 +27,60 @@ func New(c *Config) (*Temperature, error) {
 	}
 
 	model := hotspot.New((*hotspot.Config)(&c.Config))
-	cc, nc := model.Cores, model.Nodes
+	nc, nn := model.Cores, model.Nodes
 
 	// Reusing model.G to store A and model.C to store D.
 	A := model.G
 	D := model.C
-	for i := uint(0); i < nc; i++ {
+	for i := uint(0); i < nn; i++ {
 		D[i] = math.Sqrt(1 / model.C[i])
 	}
-	for i := uint(0); i < nc; i++ {
-		for j := uint(0); j < nc; j++ {
-			A[j*nc+i] = -D[i] * D[j] * A[j*nc+i]
+	for i := uint(0); i < nn; i++ {
+		for j := uint(0); j < nn; j++ {
+			A[j*nn+i] = -D[i] * D[j] * A[j*nn+i]
 		}
 	}
 
 	// Reusing A (which is model.G) to store U.
 	U := A
-	Λ := make([]float64, nc)
-	if err := decomposition.SymEig(A, U, Λ, nc); err != nil {
+	Λ := make([]float64, nn)
+	if err := decomposition.SymEig(A, U, Λ, nn); err != nil {
 		return nil, err
 	}
 
 	Δt := c.TimeStep
 
-	coef := make([]float64, nc)
-	temp := make([]float64, nc*nc)
+	coef := make([]float64, nn)
+	temp := make([]float64, nn*nn)
 
-	for i := uint(0); i < nc; i++ {
+	for i := uint(0); i < nn; i++ {
 		coef[i] = math.Exp(Δt * Λ[i])
 	}
-	for i := uint(0); i < nc; i++ {
-		for j := uint(0); j < nc; j++ {
-			temp[j*nc+i] = coef[i] * U[i*nc+j]
+	for i := uint(0); i < nn; i++ {
+		for j := uint(0); j < nn; j++ {
+			temp[j*nn+i] = coef[i] * U[i*nn+j]
 		}
 	}
 
-	E := make([]float64, nc*nc)
-	matrix.Multiply(U, temp, E, nc, nc, nc)
+	E := make([]float64, nn*nn)
+	matrix.Multiply(U, temp, E, nn, nn, nn)
 
-	// Technically, temp = temp[0 : nc*cc].
-	for i := uint(0); i < nc; i++ {
+	// Technically, temp = temp[0 : nn*nc].
+	for i := uint(0); i < nn; i++ {
 		coef[i] = (coef[i] - 1) / Λ[i]
 	}
-	for i := uint(0); i < nc; i++ {
-		for j := uint(0); j < cc; j++ {
-			temp[j*nc+i] = coef[i] * U[i*nc+j] * D[j]
+	for i := uint(0); i < nn; i++ {
+		for j := uint(0); j < nc; j++ {
+			temp[j*nn+i] = coef[i] * U[i*nn+j] * D[j]
 		}
 	}
 
-	F := make([]float64, nc*cc)
-	matrix.Multiply(U, temp, F, nc, nc, cc)
+	F := make([]float64, nn*nc)
+	matrix.Multiply(U, temp, F, nn, nn, nc)
 
 	temperature := &Temperature{
-		Cores: cc,
-		Nodes: nc,
+		Cores: nc,
+		Nodes: nn,
 
 		system: system{
 			D: D,

@@ -14,34 +14,34 @@ import (
 func (t *Temperature) Compute(power func(float64, []float64),
 	time []float64) ([]float64, error) {
 
-	cc, nc := t.Cores, t.Nodes
+	nc, nn := t.Cores, t.Nodes
 
-	sc := uint(len(time))
-	if sc < 2 {
+	ns := uint(len(time))
+	if ns < 2 {
 		return nil, errors.New("the timeline should have at least two points")
 	}
 
 	A, B := t.system.A, t.system.B
 
-	P := make([]float64, cc)
+	P := make([]float64, nc)
 
 	derivative := func(time float64, S, dS []float64) {
-		matrix.Multiply(A, S, dS, nc, nc, 1)
+		matrix.Multiply(A, S, dS, nn, nn, 1)
 		power(time, P)
-		for i := uint(0); i < cc; i++ {
+		for i := uint(0); i < nc; i++ {
 			dS[i] += B[i] * P[i]
 		}
 	}
 
-	S, _, _, err := t.integrator.Compute(derivative, time, make([]float64, nc))
+	S, _, _, err := t.integrator.Compute(derivative, time, make([]float64, nn))
 	if err != nil {
 		return nil, err
 	}
 
-	Q := make([]float64, sc*cc)
-	for i := uint(0); i < cc; i++ {
-		for j := uint(0); j < sc; j++ {
-			Q[j*cc+i] = S[j*nc+i] + t.system.Qamb
+	Q := make([]float64, ns*nc)
+	for i := uint(0); i < nc; i++ {
+		for j := uint(0); j < ns; j++ {
+			Q[j*nc+i] = S[j*nn+i] + t.system.Qamb
 		}
 	}
 

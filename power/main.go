@@ -22,30 +22,30 @@ func New(platform *system.Platform, application *system.Application) *Power {
 }
 
 // Compute calculates the power profile of a schedule. The sampling interval is
-// specified by the Δt parameter, and the sc parameter controls the number of
+// specified by the Δt parameter, and the ns parameter controls the number of
 // samples that the output matrix will contain; long schedules are truncated.
-func (p *Power) Compute(schedule *time.Schedule, Δt float64, sc uint) []float64 {
+func (p *Power) Compute(schedule *time.Schedule, Δt float64, ns uint) []float64 {
 	cores, tasks := p.platform.Cores, p.application.Tasks
-	cc, tc := uint(len(cores)), uint(len(tasks))
+	nc, nt := uint(len(cores)), uint(len(tasks))
 
-	P := make([]float64, cc*sc)
+	P := make([]float64, nc*ns)
 
-	if count := uint(schedule.Span / Δt); count < sc {
-		sc = count
+	if count := uint(schedule.Span / Δt); count < ns {
+		ns = count
 	}
 
-	for i := uint(0); i < tc; i++ {
+	for i := uint(0); i < nt; i++ {
 		j := schedule.Mapping[i]
 		p := cores[j].Power[tasks[i].Type]
 
 		s := uint(schedule.Start[i] / Δt)
 		f := uint(schedule.Finish[i] / Δt)
-		if f > sc {
-			f = sc
+		if f > ns {
+			f = ns
 		}
 
 		for ; s < f; s++ {
-			P[s*cc+j] = p
+			P[s*nc+j] = p
 		}
 	}
 
@@ -57,12 +57,12 @@ func (p *Power) Compute(schedule *time.Schedule, Δt float64, sc uint) []float64
 // according to the schedule.
 func (p *Power) Process(schedule *time.Schedule) func(float64, []float64) {
 	cores, tasks := p.platform.Cores, p.application.Tasks
-	cc, tc := uint(len(cores)), uint(len(tasks))
+	nc, nt := uint(len(cores)), uint(len(tasks))
 
-	mapping := make([][]uint, cc)
-	for i := uint(0); i < cc; i++ {
-		mapping[i] = make([]uint, 0, tc)
-		for j := uint(0); j < tc; j++ {
+	mapping := make([][]uint, nc)
+	for i := uint(0); i < nc; i++ {
+		mapping[i] = make([]uint, 0, nt)
+		for j := uint(0); j < nt; j++ {
 			if i == schedule.Mapping[j] {
 				mapping[i] = append(mapping[i], j)
 			}
@@ -72,7 +72,7 @@ func (p *Power) Process(schedule *time.Schedule) func(float64, []float64) {
 	start, finish := schedule.Start, schedule.Finish
 
 	return func(time float64, power []float64) {
-		for i := uint(0); i < cc; i++ {
+		for i := uint(0); i < nc; i++ {
 			power[i] = 0
 			for _, j := range mapping[i] {
 				if start[j] <= time && time <= finish[j] {
