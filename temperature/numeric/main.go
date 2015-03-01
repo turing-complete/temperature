@@ -1,5 +1,3 @@
-// Package provides an Runge–Kutta integrator for systems of ordinary
-// differential equations modeling temperature of electronic systems.
 package numeric
 
 import (
