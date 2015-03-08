@@ -2,7 +2,7 @@ package numeric
 
 import (
 	"github.com/ready-steady/hotspot"
-	"github.com/ready-steady/numeric/integration/ode"
+	"github.com/ready-steady/numeric/integration/ode/dopri"
 )
 
 // Temperature represents an integrator.
@@ -11,7 +11,7 @@ type Temperature struct {
 	nn uint
 
 	system     system
-	integrator *ode.DormandPrince
+	integrator *dopri.Integrator
 }
 
 // New returns an integrator set up according to the given configuration.
@@ -31,7 +31,7 @@ func New(c *Config) (*Temperature, error) {
 		}
 	}
 
-	integrator, err := ode.NewDormandPrince(&ode.Config{
+	integrator, err := dopri.New(&dopri.Config{
 		MaxStep:  0,
 		TryStep:  0,
 		AbsError: 1e-3,

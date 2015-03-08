@@ -20,15 +20,15 @@ func (t *Temperature) Compute(power func(float64, []float64),
 
 	P := make([]float64, nc)
 
-	derivative := func(time float64, S, dS []float64) {
-		matrix.Multiply(A, S, dS, nn, nn, 1)
+	dSdt := func(time float64, S, dSdt []float64) {
+		matrix.Multiply(A, S, dSdt, nn, nn, 1)
 		power(time, P)
 		for i := uint(0); i < nc; i++ {
-			dS[i] += B[i] * P[i]
+			dSdt[i] += B[i] * P[i]
 		}
 	}
 
-	S, time, _, err := t.integrator.Compute(derivative, time, make([]float64, nn))
+	S, time, err := t.integrator.Compute(dSdt, make([]float64, nn), time)
 	if err != nil {
 		return nil, nil, err
 	}
