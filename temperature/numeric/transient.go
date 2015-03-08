@@ -17,12 +17,11 @@ func (t *Temperature) Compute(power func(float64, []float64),
 	nc, nn := t.nc, t.nn
 
 	A, B := t.system.A, t.system.B
-
 	P := make([]float64, nc)
 
-	dSdt := func(time float64, S, dSdt []float64) {
+	dSdt := func(t float64, S, dSdt []float64) {
 		matrix.Multiply(A, S, dSdt, nn, nn, 1)
-		power(time, P)
+		power(t, P)
 		for i := uint(0); i < nc; i++ {
 			dSdt[i] += B[i] * P[i]
 		}
@@ -35,10 +34,10 @@ func (t *Temperature) Compute(power func(float64, []float64),
 
 	ns := uint(len(time))
 
-	Q := make([]float64, ns*nc)
+	Q, Qamb := make([]float64, ns*nc), t.system.Qamb
 	for i := uint(0); i < nc; i++ {
 		for j := uint(0); j < ns; j++ {
-			Q[j*nc+i] = S[j*nn+i] + t.system.Qamb
+			Q[j*nc+i] = S[j*nn+i] + Qamb
 		}
 	}
 
