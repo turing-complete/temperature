@@ -3,9 +3,9 @@ package numeric
 import (
 	"testing"
 
+	"github.com/ready-steady/assert"
 	"github.com/ready-steady/probability"
 	"github.com/ready-steady/probability/uniform"
-	"github.com/ready-steady/support/assert"
 )
 
 func TestCompute002Fixed(t *testing.T) {

@@ -5,9 +5,9 @@ import (
 	"path"
 	"testing"
 
+	"github.com/ready-steady/assert"
 	"github.com/ready-steady/simulation/system"
 	"github.com/ready-steady/simulation/time"
-	"github.com/ready-steady/support/assert"
 )
 
 func TestCompute(t *testing.T) {

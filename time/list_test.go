@@ -5,8 +5,8 @@ import (
 	"path"
 	"testing"
 
+	"github.com/ready-steady/assert"
 	"github.com/ready-steady/simulation/system"
-	"github.com/ready-steady/support/assert"
 )
 
 const (

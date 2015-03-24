@@ -5,7 +5,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/ready-steady/support/assert"
+	"github.com/ready-steady/assert"
 )
 
 const (

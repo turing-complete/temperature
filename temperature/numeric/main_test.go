@@ -5,8 +5,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/ready-steady/support/assert"
-	"github.com/ready-steady/support/fixture"
+	"github.com/ready-steady/assert"
+	"github.com/ready-steady/fixture"
 )
 
 func TestNew(t *testing.T) {
