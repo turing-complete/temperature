@@ -2,7 +2,7 @@ package numeric
 
 import (
 	"github.com/ready-steady/hotspot"
-	"github.com/ready-steady/numeric/integration/ode/dopri"
+	"github.com/ready-steady/ode/dopri"
 )
 
 // Temperature represents an integrator.
