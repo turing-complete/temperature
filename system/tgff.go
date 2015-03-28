@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ready-steady/format/tgff"
+	"github.com/ready-steady/tgff"
 )
 
 func loadTGFF(path string) (*Platform, *Application, error) {
