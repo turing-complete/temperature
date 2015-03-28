@@ -7,6 +7,7 @@ import (
 
 	"github.com/ready-steady/assert"
 	"github.com/ready-steady/fixture"
+	"github.com/ready-steady/ode/dopri"
 )
 
 func TestNew(t *testing.T) {
@@ -26,8 +27,15 @@ func TestNew(t *testing.T) {
 func load(nc uint) *Temperature {
 	config := &Config{}
 	fixture.Load(findFixture(fmt.Sprintf("%03d.json", nc)), config)
-	temperature, _ := New(config)
-	return temperature
+
+	integrator, _ := dopri.New(&dopri.Config{
+		MaxStep:  0,
+		TryStep:  0,
+		AbsError: 1e-3,
+		RelError: 1e-3,
+	})
+
+	return New(config, integrator)
 }
 
 func findFixture(name string) string {

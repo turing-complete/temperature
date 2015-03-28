@@ -10,7 +10,7 @@ import (
 // time moments for which the temperature profile is computed are specified by
 // the time array; see the corresponding ODE solver for further details.
 //
-// http://godoc.org/github.com/ready-steady/numeric/integration/ode#DormandPrince.Compute
+// http://godoc.org/github.com/ready-steady/ode#Integrator
 func (t *Temperature) Compute(power func(float64, []float64),
 	time []float64) ([]float64, []float64, error) {
 

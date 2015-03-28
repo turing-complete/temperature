@@ -2,21 +2,21 @@ package numeric
 
 import (
 	"github.com/ready-steady/hotspot"
-	"github.com/ready-steady/ode/dopri"
+	"github.com/ready-steady/ode"
 )
 
-// Temperature represents an integrator.
+// Temperature represents an integrator of a thermal system.
 type Temperature struct {
 	nc uint
 	nn uint
 
 	system     system
-	integrator *dopri.Integrator
+	integrator ode.Integrator
 }
 
-// New returns an integrator set up according to the given configuration.
-func New(c *Config) (*Temperature, error) {
-	model := hotspot.New((*hotspot.Config)(&c.Config))
+// New returns a new integrator.
+func New(config *Config, integrator ode.Integrator) *Temperature {
+	model := hotspot.New((*hotspot.Config)(&config.Config))
 	nc, nn := model.Cores, model.Nodes
 
 	// Reusing model.G to store A and model.C to store B.
@@ -31,17 +31,7 @@ func New(c *Config) (*Temperature, error) {
 		}
 	}
 
-	integrator, err := dopri.New(&dopri.Config{
-		MaxStep:  0,
-		TryStep:  0,
-		AbsError: 1e-3,
-		RelError: 1e-3,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	temperature := &Temperature{
+	return &Temperature{
 		nc: nc,
 		nn: nn,
 
@@ -49,11 +39,9 @@ func New(c *Config) (*Temperature, error) {
 			A: A,
 			B: B,
 
-			Qamb: c.Ambience,
+			Qamb: config.Ambience,
 		},
 
 		integrator: integrator,
 	}
-
-	return temperature, nil
 }

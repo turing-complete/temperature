@@ -8,7 +8,7 @@ import (
 	"github.com/ready-steady/linear/matrix"
 )
 
-// Temperature represents an integrator.
+// Temperature represents an integrator of a thermal system.
 type Temperature struct {
 	nc uint
 	nn uint
@@ -16,7 +16,7 @@ type Temperature struct {
 	system system
 }
 
-// New returns an integrator set up according to the given configuration.
+// New returns a new integrator.
 func New(c *Config) (*Temperature, error) {
 	if c.TimeStep <= 0 {
 		return nil, errors.New("the time step should be positive")
