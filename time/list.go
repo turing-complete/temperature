@@ -20,8 +20,8 @@ func NewList(platform *system.Platform, application *system.Application) *List {
 	}
 }
 
-// Compute constructs a schedule according to the given priority vector.
-// The length of this vector equals to the number of tasks in the system, and
+// Compute constructs a schedule according to the given priority vector. The
+// length of this vector equals to the number of tasks in the system, and
 // smaller values correspond to higher priorities.
 func (l *List) Compute(priority []float64) *Schedule {
 	cores := l.platform.Cores
@@ -145,8 +145,8 @@ func (l *List) Delay(schedule *Schedule, delay []float64) *Schedule {
 	return l.Update(schedule, duration)
 }
 
-// Update constructs a new schedule based on an old one by setting the fixing
-// the execution times of the tasks to new values.
+// Update constructs a new schedule based on an old one by setting the execution
+// times of the tasks to new values.
 func (l *List) Update(schedule *Schedule, duration []float64) *Schedule {
 	tasks := l.application.Tasks
 
