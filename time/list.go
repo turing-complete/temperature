@@ -132,7 +132,7 @@ func (l *List) Delay(schedule *Schedule, delay []float64) *Schedule {
 	cores := l.platform.Cores
 	tasks := l.application.Tasks
 
-	nc := uint(len(l.platform.Cores))
+	nc := uint(len(cores))
 	nt := uint(len(tasks))
 
 	start := make([]float64, nt)
