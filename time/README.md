@@ -1,7 +1,7 @@
 # Time
 
-The package provides algorithms for simulating concurrent applications running
-on multiprocessor platforms.
+The package provides algorithms for simulating applications running on
+multiprocessor platforms.
 
 ## [Documentation][doc]
 

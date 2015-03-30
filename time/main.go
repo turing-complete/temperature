@@ -1,3 +1,3 @@
-// Package time provides algorithms for simulating concurrent applications
-// running on multiprocessor platforms.
+// Package time provides algorithms for simulating applications running on
+// multiprocessor platforms.
 package time
