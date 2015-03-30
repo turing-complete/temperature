@@ -126,8 +126,8 @@ func (l *List) Compute(priority []float64) *Schedule {
 	}
 }
 
-// Delay constructs a new schedule based on an old one by adding a delay to the
-// execution time of the tasks.
+// Delay constructs a new schedule based on an old one by adding delays to the
+// execution times of the tasks.
 func (l *List) Delay(schedule *Schedule, delay []float64) *Schedule {
 	cores := l.platform.Cores
 	tasks := l.application.Tasks
