@@ -62,7 +62,7 @@ func TestListCompute(t *testing.T) {
 	assert.EqualWithin(schedule.Span, span, 1e-15, t)
 }
 
-func TestListRecompute(t *testing.T) {
+func TestListDelay(t *testing.T) {
 	platform, application, _ := system.Load(findFixture("002_040"))
 	prof := system.NewProfile(platform, application)
 
@@ -90,19 +90,19 @@ func TestListRecompute(t *testing.T) {
 		finish[i] = start[i] + (schedule.Finish[i] - schedule.Start[i]) + delay[i]
 	}
 
-	schedule = list.Recompute(schedule, delay)
+	schedule = list.Delay(schedule, delay)
 
 	assert.EqualWithin(schedule.Start, start, 1e-15, t)
 	assert.EqualWithin(schedule.Finish, finish, 2e-15, t)
 }
 
-func TestListRecomputeDummy(t *testing.T) {
+func TestListDelayDummy(t *testing.T) {
 	platform, application, _ := system.Load(findFixture("002_040"))
 	prof := system.NewProfile(platform, application)
 
 	list := NewList(platform, application)
 	sched1 := list.Compute(prof.Mobility)
-	sched2 := list.Recompute(sched1, make([]float64, len(sched1.Start)))
+	sched2 := list.Delay(sched1, make([]float64, len(sched1.Start)))
 
 	assert.Equal(sched2.Start, sched1.Start, t)
 	assert.Equal(sched2.Finish, sched1.Finish, t)
@@ -112,16 +112,16 @@ func BenchmarkListCompute_002_040(b *testing.B) {
 	benchmarkCompute("002_040", b)
 }
 
-func BenchmarkListRecompute_002_040(b *testing.B) {
-	benchmarkRecompute("002_040", b)
+func BenchmarkListDelay_002_040(b *testing.B) {
+	benchmarkDelay("002_040", b)
 }
 
 func BenchmarkListCompute_032_640(b *testing.B) {
 	benchmarkCompute("032_640", b)
 }
 
-func BenchmarkListRecompute_032_640(b *testing.B) {
-	benchmarkRecompute("032_640", b)
+func BenchmarkListDelay_032_640(b *testing.B) {
+	benchmarkDelay("032_640", b)
 }
 
 func benchmarkCompute(name string, b *testing.B) {
@@ -137,7 +137,7 @@ func benchmarkCompute(name string, b *testing.B) {
 	}
 }
 
-func benchmarkRecompute(name string, b *testing.B) {
+func benchmarkDelay(name string, b *testing.B) {
 	platform, application, _ := system.Load(findFixture(name))
 
 	prof := system.NewProfile(platform, application)
@@ -148,7 +148,7 @@ func benchmarkRecompute(name string, b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		list.Recompute(schedule, delay)
+		list.Delay(schedule, delay)
 	}
 }
 
