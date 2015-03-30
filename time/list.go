@@ -132,7 +132,25 @@ func (l *List) Delay(schedule *Schedule, delay []float64) *Schedule {
 	cores := l.platform.Cores
 	tasks := l.application.Tasks
 
-	nc := uint(len(cores))
+	nt := uint(len(tasks))
+
+	duration := make([]float64, nt)
+
+	for i := uint(0); i < nt; i++ {
+		tid := schedule.Order[i]
+		cid := schedule.Mapping[tid]
+		duration[tid] = cores[cid].Time[tasks[tid].Type] + delay[tid]
+	}
+
+	return l.Update(schedule, duration)
+}
+
+// Update constructs a new schedule based on an old one by setting the fixing
+// the execution times of the tasks to new values.
+func (l *List) Update(schedule *Schedule, duration []float64) *Schedule {
+	tasks := l.application.Tasks
+
+	nc := uint(len(l.platform.Cores))
 	nt := uint(len(tasks))
 
 	start := make([]float64, nt)
@@ -141,26 +159,25 @@ func (l *List) Delay(schedule *Schedule, delay []float64) *Schedule {
 	ctime := make([]float64, nc)
 	ttime := make([]float64, nt)
 
-	var i, cid, tid, kid uint
-	var span float64
+	span := 0.0
 
-	for ; i < nt; i++ {
-		tid = schedule.Order[i]
-		cid = schedule.Mapping[tid]
+	for i := uint(0); i < nt; i++ {
+		tid := schedule.Order[i]
+		cid := schedule.Mapping[tid]
 
 		if ctime[cid] > ttime[tid] {
 			start[tid] = ctime[cid]
 		} else {
 			start[tid] = ttime[tid]
 		}
-		finish[tid] = start[tid] + cores[cid].Time[tasks[tid].Type] + delay[tid]
+		finish[tid] = start[tid] + duration[tid]
 
 		ctime[cid] = finish[tid]
 		if span < finish[tid] {
 			span = finish[tid]
 		}
 
-		for _, kid = range tasks[tid].Children {
+		for _, kid := range tasks[tid].Children {
 			if ttime[kid] < finish[tid] {
 				ttime[kid] = finish[tid]
 			}
