@@ -13,5 +13,5 @@ type Config struct {
 	TimeStep float64 // in seconds
 
 	// The temperature of the ambience.
-	Ambience float64 // in Kelvin
+	Ambience float64 // in Celsius or Kelvin
 }
