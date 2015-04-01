@@ -36,7 +36,7 @@
 //
 //     A = U * diag(Λ) * U**T.
 //
-// Assuming a constant level of the power consumption, the solution of the
+// Assuming a constant level of the power consumption, the solution to the
 // system at time t is as follows:
 //
 //     S(t) = E(t) * S(0) + F(t) * P(0)
