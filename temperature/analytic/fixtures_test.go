@@ -1,5 +1,13 @@
 package analytic
 
+import (
+	"path"
+)
+
+func findFixture(name string) string {
+	return path.Join("fixtures", name)
+}
+
 var fixtureD = []float64{
 	5.347899456798773e+01, 5.347899456798773e+01, 9.687303228651606e+01,
 	9.687303228651606e+01, 1.454232047228094e+01, 1.454232047228094e+01,

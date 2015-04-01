@@ -36,14 +36,14 @@
 //
 //     A = U * diag(Λ) * U**T.
 //
-// The solution of the system for a short time interval [0, Δt] is based on the
-// following recurrence:
+// Assuming a constant level of the power consumption, the solution of the
+// system at time t is as follows:
 //
-//     S(t) = E * S(0) + F * P(0)
+//     S(t) = E(t) * S(0) + F(t) * P(0)
 //
 // where
 //
-//     E = exp(A * Δt) = U * diag(exp(λi * Δt)) * U**T and
-//     F = A**(-1) * (exp(A * Δt) - I) * B
-//       = U * diag((exp(λi * Δt) - 1) / λi) * U**T * B.
+//     E(t) = exp(A * t) = U * diag(exp(λi * t)) * U**T and
+//     F(t) = A**(-1) * (exp(A * t) - I) * B
+//          = U * diag((exp(λi * t) - 1) / λi) * U**T * B.
 package analytic
