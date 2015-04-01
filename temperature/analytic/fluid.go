@@ -12,10 +12,7 @@ type Fluid struct {
 	nc uint
 	nn uint
 
-	// D = C**(-½)
 	D []float64
-
-	// A = U * diag(Λ) * U**T
 	U []float64
 	Λ []float64
 
