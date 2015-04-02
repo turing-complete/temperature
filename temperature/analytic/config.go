@@ -6,12 +6,12 @@ import (
 
 // Config represents the configuration of a particular problem.
 type Config struct {
-	// The configuration of the HotSpot model.
+	// The configuration of the thermal RC model.
 	hotspot.Config
 
-	// The sampling interval of temperature analysis.
-	TimeStep float64 // in seconds
-
-	// The temperature of the ambience.
+	// The ambient temperature.
 	Ambience float64 // in Celsius or Kelvin
+
+	// The sampling interval. The parameter is specific to the Fixed integrator.
+	TimeStep float64 // in seconds
 }
