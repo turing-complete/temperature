@@ -32,9 +32,7 @@ func TestFixedCompute(t *testing.T) {
 	)
 
 	temperature := loadFixed(nc)
-	ns := uint(len(fixtureP) / nc)
-
-	Q := temperature.Compute(fixtureP, ns)
+	Q := temperature.Compute(fixtureP)
 
 	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
 }
@@ -45,12 +43,11 @@ func BenchmarkFixedCompute002(b *testing.B) {
 	)
 
 	temperature := loadFixed(nc)
-	ns := uint(len(fixtureP) / nc)
 
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		temperature.Compute(fixtureP, ns)
+		temperature.Compute(fixtureP)
 	}
 }
 
@@ -66,7 +63,7 @@ func BenchmarkFixedCompute032(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		temperature.Compute(P, ns)
+		temperature.Compute(P)
 	}
 }
 
