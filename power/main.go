@@ -74,8 +74,8 @@ func (p *Power) Sample(schedule *time.Schedule, Δt float64, ns uint) []float64 
 		j := schedule.Mapping[i]
 		p := cores[j].Power[tasks[i].Type]
 
-		s := uint(schedule.Start[i] / Δt)
-		f := uint(schedule.Finish[i] / Δt)
+		s := uint(schedule.Start[i]/Δt + 0.5)
+		f := uint(schedule.Finish[i]/Δt + 0.5)
 		if f > ns {
 			f = ns
 		}

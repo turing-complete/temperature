@@ -52,13 +52,7 @@ func TestProgress(t *testing.T) {
 		progress(Δt*(0.5+float64(i)), P[i*nc:(i+1)*nc])
 	}
 
-	mismatches := 0
-	for i := range P {
-		if P[i] != fixtureSample.P[i] {
-			mismatches++
-		}
-	}
-	assert.Equal(mismatches, 17, t)
+	assert.Equal(P, fixtureSample.P, t)
 }
 
 func TestSample(t *testing.T) {
