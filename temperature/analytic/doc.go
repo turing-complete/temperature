@@ -36,8 +36,8 @@
 //
 //     A = U * diag(Λ) * U**T.
 //
-// Assuming a constant level of the power consumption, the solution to the
-// system at time t is as follows:
+// Assuming the power dissipation from time 0 to time t is constant and is equal
+// to P(0), the solution to the system at time t is as follows:
 //
 //     S(t) = E(t) * S(0) + F(t) * P(0)
 //
