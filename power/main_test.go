@@ -10,15 +10,15 @@ import (
 	"github.com/ready-steady/simulation/time"
 )
 
-func TestCompute(t *testing.T) {
+func TestSample(t *testing.T) {
 	const (
 		Δt = 1e-3
 	)
 
 	power, schedule := prepare("002_040")
 
-	assert.Equal(power.Compute(schedule, Δt, 440), fixtureP, t)
-	assert.Equal(power.Compute(schedule, Δt, 42), fixtureP[:2*42], t)
+	assert.Equal(power.Sample(schedule, Δt, 440), fixtureP, t)
+	assert.Equal(power.Sample(schedule, Δt, 42), fixtureP[:2*42], t)
 }
 
 func TestProcess(t *testing.T) {
@@ -45,7 +45,7 @@ func TestProcess(t *testing.T) {
 	assert.Equal(mismatches, 17, t)
 }
 
-func BenchmarkCompute(b *testing.B) {
+func BenchmarkSample(b *testing.B) {
 	const (
 		Δt = 1e-5
 	)
@@ -56,7 +56,7 @@ func BenchmarkCompute(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		power.Compute(schedule, Δt, ns)
+		power.Sample(schedule, Δt, ns)
 	}
 }
 

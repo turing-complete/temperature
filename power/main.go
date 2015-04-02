@@ -13,7 +13,7 @@ type Power struct {
 	application *system.Application
 }
 
-// New returns a power distributor for the given platform and application.
+// New returns a power distributor for a platform and an application.
 func New(platform *system.Platform, application *system.Application) *Power {
 	return &Power{
 		platform:    platform,
@@ -21,10 +21,10 @@ func New(platform *system.Platform, application *system.Application) *Power {
 	}
 }
 
-// Compute calculates the power profile of a schedule. The sampling interval is
-// specified by the Δt parameter, and the ns parameter controls the number of
-// samples that the output matrix will contain; long schedules are truncated.
-func (p *Power) Compute(schedule *time.Schedule, Δt float64, ns uint) []float64 {
+// Sample computes a power profile of a schedule with a sampling interval Δt.
+// The ns parameter controls the number of samples that the output matrix will
+// contain; short schedules are extended while long ones are truncated.
+func (p *Power) Sample(schedule *time.Schedule, Δt float64, ns uint) []float64 {
 	cores, tasks := p.platform.Cores, p.application.Tasks
 	nc, nt := uint(len(cores)), uint(len(tasks))
 
