@@ -129,14 +129,12 @@ func traverse(points []float64, ε float64) ([]float64, []uint) {
 	j := uint(0)
 
 	for i, x := uint(1), points[0]; i < np; i++ {
-		if δ := points[i] - x; δ < ε {
-			index[order[i]] = index[order[i-1]]
-		} else {
+		if δ := points[i] - x; δ > ε {
+			x = points[i]
 			Δ[j] = δ
 			j++
-			x = points[i]
-			index[order[i]] = j
 		}
+		index[order[i]] = j
 	}
 
 	return Δ[:j], index
