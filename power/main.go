@@ -52,10 +52,10 @@ func (p *Power) Sample(schedule *time.Schedule, Δt float64, ns uint) []float64 
 	return P
 }
 
-// Process takes a schedule and returns a function func(time float64, power
+// Progress takes a schedule and returns a function func(time float64, power
 // []float64) that computes the power dissipation at an arbitrary time moment
 // according to the schedule.
-func (p *Power) Process(schedule *time.Schedule) func(float64, []float64) {
+func (p *Power) Progress(schedule *time.Schedule) func(float64, []float64) {
 	cores, tasks := p.platform.Cores, p.application.Tasks
 	nc, nt := uint(len(cores)), uint(len(tasks))
 

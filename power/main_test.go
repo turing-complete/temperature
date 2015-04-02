@@ -21,7 +21,7 @@ func TestSample(t *testing.T) {
 	assert.Equal(power.Sample(schedule, Δt, 42), fixtureP[:2*42], t)
 }
 
-func TestProcess(t *testing.T) {
+func TestProgress(t *testing.T) {
 	const (
 		Δt = 1e-3
 	)
@@ -29,11 +29,11 @@ func TestProcess(t *testing.T) {
 	power, schedule := prepare("002_040")
 	nc, ns := uint(2), uint(schedule.Span/Δt)
 
-	process := power.Process(schedule)
+	progress := power.Progress(schedule)
 
 	P := make([]float64, ns*nc)
 	for i := uint(0); i < ns; i++ {
-		process(Δt*(0.5+float64(i)), P[i*nc:(i+1)*nc])
+		progress(Δt*(0.5+float64(i)), P[i*nc:(i+1)*nc])
 	}
 
 	mismatches := 0
