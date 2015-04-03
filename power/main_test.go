@@ -22,15 +22,15 @@ func TestPartition(t *testing.T) {
 	for i := range points {
 		points[i] = float64(i+1) * schedule.Span / n
 	}
-	P, ΔT, index := power.Partition(schedule, points, ε)
+	P, ΔT, steps := power.Partition(schedule, points, ε)
 
 	assert.Equal(P, fixturePartition.P, t)
 	assert.EqualWithin(ΔT, fixturePartition.ΔT, 1e-15, t)
-	assert.Equal(index, fixturePartition.index, t)
+	assert.Equal(steps, fixturePartition.steps, t)
 
 	Σ := 0.0
 	for i, j := uint(0), uint(0); i < n; i++ {
-		for ; j < index[i]; j++ {
+		for ; j < steps[i]; j++ {
 			Σ += ΔT[j]
 		}
 		assert.EqualWithin(Σ, points[i], 1e-15, t)
@@ -71,10 +71,10 @@ func TestTraverse(t *testing.T) {
 		ε = 1e-14
 	)
 
-	test := func(points, Δ []float64, index []uint) {
+	test := func(points, Δ []float64, steps []uint) {
 		a, b := traverse(points, ε)
 		assert.Equal(a, Δ, t)
-		assert.Equal(b, index, t)
+		assert.Equal(b, steps, t)
 	}
 
 	test(

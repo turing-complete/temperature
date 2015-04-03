@@ -3,7 +3,7 @@ package power
 type fixture struct {
 	P     []float64
 	ΔT    []float64
-	index []uint
+	steps []uint
 }
 
 var fixturePartition = fixture{
@@ -67,7 +67,7 @@ var fixturePartition = fixture{
 		0.011, 0.008, 0.004, 0.004, 0.011, 0.007, 0.003, 0.014, 0.001,
 	},
 
-	index: []uint{
+	steps: []uint{
 		3, 7, 13, 18, 22, 26, 31, 37, 42, 49,
 	},
 }

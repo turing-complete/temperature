@@ -36,8 +36,8 @@ func (p *Power) Partition(schedule *time.Schedule, points []float64,
 	copy(time[nt:], schedule.Finish)
 	copy(time[2*nt:], points)
 
-	ΔT, index := traverse(time, ε)
-	sindex, findex, pindex := index[:nt], index[nt:2*nt], index[2*nt:]
+	ΔT, steps := traverse(time, ε)
+	ssteps, fsteps, psteps := steps[:nt], steps[nt:2*nt], steps[2*nt:]
 
 	ns := uint(len(ΔT))
 
@@ -47,14 +47,14 @@ func (p *Power) Partition(schedule *time.Schedule, points []float64,
 		j := schedule.Mapping[i]
 		p := cores[j].Power[tasks[i].Type]
 
-		s, f := sindex[i], findex[i]
+		s, f := ssteps[i], fsteps[i]
 
 		for ; s < f; s++ {
 			P[s*nc+j] = p
 		}
 	}
 
-	return P, ΔT, pindex
+	return P, ΔT, psteps
 }
 
 // Sample computes a power profile with respect to a sampling interval Δt. The
@@ -124,7 +124,7 @@ func traverse(points []float64, ε float64) ([]float64, []uint) {
 	order, _ := sort.Quick(points)
 
 	Δ := make([]float64, np-1)
-	index := make([]uint, np)
+	steps := make([]uint, np)
 
 	j := uint(0)
 
@@ -134,8 +134,8 @@ func traverse(points []float64, ε float64) ([]float64, []uint) {
 			Δ[j] = δ
 			j++
 		}
-		index[order[i]] = j
+		steps[order[i]] = j
 	}
 
-	return Δ[:j], index
+	return Δ[:j], steps
 }
