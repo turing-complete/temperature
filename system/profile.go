@@ -58,7 +58,7 @@ func NewProfile(platform *Platform, application *Application) *Profile {
 		}
 	}
 
-	// Compute ASAP starting from the leafs.
+	// Compute ALAP starting from the leafs.
 	for _, i := range leafs {
 		p.propagateALAP(application, i, totalASAP)
 	}
