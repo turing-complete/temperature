@@ -5,6 +5,7 @@ import (
 
 	"github.com/ready-steady/assert"
 	"github.com/ready-steady/probability"
+	"github.com/ready-steady/probability/generator"
 	"github.com/ready-steady/probability/uniform"
 )
 
@@ -44,7 +45,8 @@ func BenchmarkCompute032Adaptive(b *testing.B) { benchmarkComputeAdaptive(32, 10
 
 func benchmarkComputeAdaptive(nc, ns uint, Δt float64, b *testing.B) {
 	temperature := load(nc)
-	power := smooth(probability.Sample(uniform.New(0, 20), nc*ns), nc, ns, Δt)
+	power := smooth(probability.Sample(uniform.New(0, 20),
+		generator.New(0), nc*ns), nc, ns, Δt)
 	time := []float64{0, float64(ns) * Δt}
 
 	b.ResetTimer()
@@ -59,7 +61,8 @@ func BenchmarkCompute032Fixed(b *testing.B) { benchmarkComputeFixed(32, 1000, 1e
 
 func benchmarkComputeFixed(nc, ns uint, Δt float64, b *testing.B) {
 	temperature := load(nc)
-	power := smooth(probability.Sample(uniform.New(0, 20), nc*ns), nc, ns, Δt)
+	power := smooth(probability.Sample(uniform.New(0, 20),
+		generator.New(0), nc*ns), nc, ns, Δt)
 	time := time(Δt, ns)
 
 	b.ResetTimer()

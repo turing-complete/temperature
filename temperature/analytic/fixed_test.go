@@ -7,6 +7,7 @@ import (
 	"github.com/ready-steady/assert"
 	"github.com/ready-steady/fixture"
 	"github.com/ready-steady/probability"
+	"github.com/ready-steady/probability/generator"
 	"github.com/ready-steady/probability/uniform"
 )
 
@@ -58,7 +59,7 @@ func BenchmarkFixedCompute032(b *testing.B) {
 	)
 
 	temperature := loadFixed(nc)
-	P := probability.Sample(uniform.New(0, 1), nc*ns)
+	P := probability.Sample(uniform.New(0, 1), generator.New(0), nc*ns)
 
 	b.ResetTimer()
 
