@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/ready-steady/hotspot"
+	"github.com/ready-steady/linear/decomposition"
 	"github.com/ready-steady/linear/matrix"
 )
 
@@ -44,7 +45,7 @@ func NewFixed(config *Config) (*Fixed, error) {
 	// Reusing A (which is model.G) to store U.
 	U := A
 	Λ := make([]float64, nn)
-	if err := matrix.SymmetricEigen(A, U, Λ, nn); err != nil {
+	if err := decomposition.SymmetricEigen(A, U, Λ, nn); err != nil {
 		return nil, err
 	}
 
