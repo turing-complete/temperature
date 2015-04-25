@@ -4,9 +4,6 @@ import (
 	"testing"
 
 	"github.com/ready-steady/assert"
-	"github.com/ready-steady/probability"
-	"github.com/ready-steady/probability/generator"
-	"github.com/ready-steady/probability/uniform"
 )
 
 func TestCompute002Fixed(t *testing.T) {
@@ -18,7 +15,7 @@ func TestCompute002Fixed(t *testing.T) {
 
 	temperature := load(nc)
 	power := smooth(fixtureP, nc, ns, Δt)
-	time := time(Δt, ns)
+	time := sequence(ns, Δt)
 
 	Q, _, _ := temperature.Compute(power, time)
 
@@ -45,8 +42,7 @@ func BenchmarkCompute032Adaptive(b *testing.B) { benchmarkComputeAdaptive(32, 10
 
 func benchmarkComputeAdaptive(nc, ns uint, Δt float64, b *testing.B) {
 	temperature := load(nc)
-	power := smooth(probability.Sample(uniform.New(0, 20),
-		generator.New(0), nc*ns), nc, ns, Δt)
+	power := smooth(random(nc*ns, 0, 20), nc, ns, Δt)
 	time := []float64{0, float64(ns) * Δt}
 
 	b.ResetTimer()
@@ -61,9 +57,8 @@ func BenchmarkCompute032Fixed(b *testing.B) { benchmarkComputeFixed(32, 1000, 1e
 
 func benchmarkComputeFixed(nc, ns uint, Δt float64, b *testing.B) {
 	temperature := load(nc)
-	power := smooth(probability.Sample(uniform.New(0, 20),
-		generator.New(0), nc*ns), nc, ns, Δt)
-	time := time(Δt, ns)
+	power := smooth(random(nc*ns, 0, 20), nc, ns, Δt)
+	time := sequence(ns, Δt)
 
 	b.ResetTimer()
 
@@ -82,12 +77,4 @@ func smooth(P []float64, nc, ns uint, Δt float64) func(float64, []float64) {
 			power[i] = P[k*nc+i]
 		}
 	}
-}
-
-func time(Δt float64, ns uint) []float64 {
-	time := make([]float64, ns)
-	for i := uint(0); i < ns; i++ {
-		time[i] = float64(i) * Δt
-	}
-	return time
 }

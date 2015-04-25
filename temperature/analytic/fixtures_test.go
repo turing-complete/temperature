@@ -1,11 +1,21 @@
 package analytic
 
 import (
+	"math/rand"
 	"path"
 )
 
 func findFixture(name string) string {
 	return path.Join("fixtures", name)
+}
+
+func random(count uint, a, b float64) []float64 {
+	rand.Seed(0)
+	points := make([]float64, count)
+	for i := range points {
+		points[i] = a + (b-a)*rand.Float64()
+	}
+	return points
 }
 
 var fixtureD = []float64{

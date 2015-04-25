@@ -7,9 +7,6 @@ import (
 
 	"github.com/ready-steady/assert"
 	"github.com/ready-steady/fixture"
-	"github.com/ready-steady/probability"
-	"github.com/ready-steady/probability/generator"
-	"github.com/ready-steady/probability/uniform"
 )
 
 func TestFluidNew(t *testing.T) {
@@ -73,7 +70,7 @@ func BenchmarkFluidCompute032(b *testing.B) {
 	)
 
 	temperature, config := loadFluid(nc)
-	P := probability.Sample(uniform.New(0, 1), generator.New(0), nc*ns)
+	P := random(nc*ns, 0, 20)
 
 	time := make([]float64, ns)
 	for i := range time {

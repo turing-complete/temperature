@@ -1,5 +1,26 @@
 package numeric
 
+import (
+	"math/rand"
+)
+
+func random(count uint, a, b float64) []float64 {
+	rand.Seed(0)
+	points := make([]float64, count)
+	for i := range points {
+		points[i] = a + (b-a)*rand.Float64()
+	}
+	return points
+}
+
+func sequence(count uint, Δ float64) []float64 {
+	points := make([]float64, count)
+	for i := range points {
+		points[i] = float64(i) * Δ
+	}
+	return points
+}
+
 var fixtureA = []float64{
 	-7.6695743362410039e+03, +4.2900042900042905e+01, +2.5025025025025025e+04,
 	+0.0000000000000000e+00, +0.0000000000000000e+00, +0.0000000000000000e+00,
