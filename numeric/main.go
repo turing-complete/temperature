@@ -1,8 +1,8 @@
 package numeric
 
 import (
-	"github.com/ready-steady/hotspot"
 	"github.com/ready-steady/ode"
+	"github.com/simulated-reality/hotspot"
 )
 
 // Temperature represents an integrator of a thermal system.

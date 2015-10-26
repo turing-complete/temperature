@@ -1,7 +1,7 @@
 package numeric
 
 import (
-	"github.com/ready-steady/hotspot"
+	"github.com/simulated-reality/hotspot"
 )
 
 // Config represents the configuration of a particular problem.
