@@ -1,18 +1,15 @@
-# Simulation [![Build Status][travis-img]][travis-url]
+# Temperature [![Build Status][travis-img]][travis-url]
 
-The repository hosts five packages:
+The repository hosts two packages:
 
-* [power](power),
-* [system](system),
-* temperature/[analytic](temperature/analytic),
-* temperature/[numeric](temperature/numeric), and
-* [time](time).
+* [analytic](analytic) and
+* [numeric](numeric).
 
 ## Contributing
 
 1. Fork the project.
 2. Implement your idea.
-3. Create a pull request.
+3. Open a pull request.
 
-[travis-img]: https://travis-ci.org/ready-steady/simulation.svg
-[travis-url]: https://travis-ci.org/ready-steady/simulation
+[travis-img]: https://travis-ci.org/simulated-reality/temperature.svg
+[travis-url]: https://travis-ci.org/simulated-reality/temperature
