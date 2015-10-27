@@ -8,8 +8,8 @@ addons:
 
 install:
   - go get -d -t ./...
-  - (cd $HOME/gopath/src/github.com/simulated-reality/hotspot && make install)
-  - (cd $HOME/gopath/src/github.com/ready-steady/lapack && make install)
+  - (cd $GOPATH/src/github.com/simulated-reality/hotspot && make install)
+  - (cd $GOPATH/src/github.com/ready-steady/lapack && make install)
 
 notifications:
   email: false
