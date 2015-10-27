@@ -1,7 +1,7 @@
 # Numeric
 
 The package provides a [Runge–Kutta][1] integrator for systems of ordinary
-differential equations modeling temperature of electronic systems.
+differential equations modeling temperature of multiprocessor systems.
 
 ## [Documentation][doc]
 

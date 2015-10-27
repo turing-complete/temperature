@@ -1,7 +1,7 @@
 # Analytic
 
 The package provides an exponential integrator for systems of ordinary
-differential equations modeling temperature of electronic systems.
+differential equations modeling temperature of multiprocessor systems.
 
 ## [Documentation][doc]
 

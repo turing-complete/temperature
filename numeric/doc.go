@@ -1,5 +1,5 @@
 // Package numeric provides a Runge–Kutta integrator for systems of ordinary
-// differential equations modeling temperature of electronic systems.
+// differential equations modeling temperature of multiprocessor systems.
 //
 // The system is
 //
