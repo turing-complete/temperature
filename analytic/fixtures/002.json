@@ -1,7 +1,6 @@
 {
 	"floorplan": "fixtures/002.flp",
 	"configuration": "fixtures/hotspot.config",
-	"parameters": "",
 	"ambience": 318.15,
 	"timeStep": 1e-3
 }
