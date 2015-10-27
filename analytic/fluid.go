@@ -62,7 +62,7 @@ func NewFluid(config *Config) (*Fluid, error) {
 // Compute calculates the temperature profile corresponding to a power profile.
 // The power profile is specified by a matrix P capturing the power dissipation
 // and a vector ΔT assigning durations to the corresponding power samples.
-func (self *Fluid) Compute(P []float64, ΔT []float64) []float64 {
+func (self *Fluid) Compute(P, ΔT []float64) []float64 {
 	nc, nn, ns := self.nc, self.nn, uint(len(ΔT))
 
 	D, U, Λ, qamb := self.D, self.U, self.Λ, self.qamb
