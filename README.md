@@ -11,5 +11,5 @@ The repository hosts two packages:
 2. Implement your idea.
 3. Open a pull request.
 
-[travis-img]: https://travis-ci.org/simulated-reality/temperature.svg
-[travis-url]: https://travis-ci.org/simulated-reality/temperature
+[travis-img]: https://travis-ci.org/turing-complete/temperature.svg
+[travis-url]: https://travis-ci.org/turing-complete/temperature

@@ -2,7 +2,7 @@ package numeric
 
 import (
 	"github.com/ready-steady/ode"
-	"github.com/simulated-reality/hotspot"
+	"github.com/turing-complete/hotspot"
 )
 
 // Temperature represents an integrator of a thermal system.

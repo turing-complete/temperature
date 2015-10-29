@@ -5,7 +5,7 @@ import (
 
 	"github.com/ready-steady/linear/decomposition"
 	"github.com/ready-steady/linear/matrix"
-	"github.com/simulated-reality/hotspot"
+	"github.com/turing-complete/hotspot"
 )
 
 // Fluid represents an integrator of a thermal system with a fluid time step.

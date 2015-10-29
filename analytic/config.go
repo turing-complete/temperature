@@ -1,7 +1,7 @@
 package analytic
 
 import (
-	"github.com/simulated-reality/hotspot"
+	"github.com/turing-complete/hotspot"
 )
 
 // Config represents the configuration of a particular problem.
