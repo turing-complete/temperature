@@ -11,30 +11,30 @@ import (
 // the time array; see the corresponding ODE solver for further details.
 //
 // http://godoc.org/github.com/ready-steady/ode#Integrator
-func (t *Temperature) Compute(power func(float64, []float64),
+func (self *Temperature) Compute(power func(float64, []float64),
 	time []float64) ([]float64, []float64, error) {
 
-	nc, nn := t.nc, t.nn
+	nc, nn := self.nc, self.nn
 
-	A, B := t.system.A, t.system.B
+	A, B := self.system.A, self.system.B
 	P := make([]float64, nc)
 
-	dSdt := func(t float64, S, dSdt []float64) {
+	dSdt := func(self float64, S, dSdt []float64) {
 		matrix.Multiply(A, S, dSdt, nn, nn, 1)
-		power(t, P)
+		power(self, P)
 		for i := uint(0); i < nc; i++ {
 			dSdt[i] += B[i] * P[i]
 		}
 	}
 
-	S, time, err := t.integrator.Compute(dSdt, make([]float64, nn), time)
+	S, time, err := self.integrator.Compute(dSdt, make([]float64, nn), time)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	ns := uint(len(time))
 
-	Q, Qamb := make([]float64, ns*nc), t.system.Qamb
+	Q, Qamb := make([]float64, ns*nc), self.system.Qamb
 	for i := uint(0); i < nc; i++ {
 		for j := uint(0); j < ns; j++ {
 			Q[j*nc+i] = S[j*nn+i] + Qamb
