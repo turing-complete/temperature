@@ -29,7 +29,7 @@ func NewFluid(config *Config) (*Fluid, error) {
 	A := model.G
 	D := model.C
 	for i := uint(0); i < nn; i++ {
-		D[i] = math.Sqrt(1 / model.C[i])
+		D[i] = math.Sqrt(1.0 / model.C[i])
 	}
 	for i := uint(0); i < nn; i++ {
 		for j := uint(0); j < nn; j++ {
@@ -90,7 +90,7 @@ func (self *Fluid) Compute(P, ΔT []float64) []float64 {
 		matrix.Multiply(U, temp, E, nn, nn, nn)
 
 		for j := uint(0); j < nn; j++ {
-			diag[j] = (diag[j] - 1) / Λ[j]
+			diag[j] = (diag[j] - 1.0) / Λ[j]
 			for k := uint(0); k < nc; k++ {
 				temp[k*nn+j] = diag[j] * U[j*nn+k] * D[k]
 			}

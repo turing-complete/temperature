@@ -23,7 +23,7 @@ type Fixed struct {
 
 // NewFixed returns a new integrator with a fixed time step.
 func NewFixed(config *Config) (*Fixed, error) {
-	if config.TimeStep <= 0 {
+	if config.TimeStep <= 0.0 {
 		return nil, errors.New("the time step should be positive")
 	}
 
@@ -34,7 +34,7 @@ func NewFixed(config *Config) (*Fixed, error) {
 	A := model.G
 	D := model.C
 	for i := uint(0); i < nn; i++ {
-		D[i] = math.Sqrt(1 / model.C[i])
+		D[i] = math.Sqrt(1.0 / model.C[i])
 	}
 	for i := uint(0); i < nn; i++ {
 		for j := uint(0); j < nn; j++ {
@@ -65,7 +65,7 @@ func NewFixed(config *Config) (*Fixed, error) {
 
 	F := make([]float64, nn*nc)
 	for i := uint(0); i < nn; i++ {
-		diag[i] = (diag[i] - 1) / Λ[i]
+		diag[i] = (diag[i] - 1.0) / Λ[i]
 		for j := uint(0); j < nc; j++ {
 			temp[j*nn+i] = diag[i] * U[i*nn+j] * D[j]
 		}
