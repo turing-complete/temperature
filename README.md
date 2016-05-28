@@ -1,11 +1,11 @@
 # Temperature [![Build Status][travis-img]][travis-url]
 
-The repository hosts two packages:
+The repository hosts the following packages:
 
 * [analytic](analytic) and
 * [numeric](numeric).
 
-## Contributing
+## Contribution
 
 1. Fork the project.
 2. Implement your idea.
