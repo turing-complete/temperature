@@ -30,9 +30,8 @@ func NewFixed(config *Config) (*Fixed, error) {
 	model := hotspot.New((*hotspot.Config)(&config.Config))
 	nc, nn := model.Cores, model.Nodes
 
-	// Reusing model.G to store A and model.C to store D.
-	A := model.G
-	D := model.C
+	A := model.G // Reuse model.G to store A.
+	D := model.C // Reuse model.C to store D.
 	for i := uint(0); i < nn; i++ {
 		D[i] = math.Sqrt(1.0 / model.C[i])
 	}
@@ -42,8 +41,7 @@ func NewFixed(config *Config) (*Fixed, error) {
 		}
 	}
 
-	// Reusing A (which is model.G) to store U.
-	U := A
+	U := A // Reuse A (which is model.G) to store U.
 	Λ := make([]float64, nn)
 	if err := decomposition.SymmetricEigen(A, U, Λ, nn); err != nil {
 		return nil, err

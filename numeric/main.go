@@ -19,9 +19,8 @@ func New(config *Config, integrator ode.Integrator) *Temperature {
 	model := hotspot.New((*hotspot.Config)(&config.Config))
 	nc, nn := model.Cores, model.Nodes
 
-	// Reusing model.G to store A and model.C to store B.
-	A := model.G
-	B := model.C
+	A := model.G // Reuse model.G to store A.
+	B := model.C // Reuse model.C to store B.
 	for i := uint(0); i < nn; i++ {
 		B[i] = 1 / model.C[i]
 	}
