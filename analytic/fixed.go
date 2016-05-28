@@ -93,23 +93,65 @@ func (self *Fixed) Compute(P []float64) []float64 {
 	nc, nn := self.nc, self.nn
 	ns := uint(len(P)) / nc
 
-	D, E, F, qamb := self.D, self.E, self.F, self.qamb
+	S := make([]float64, nn*ns)
+	Q := make([]float64, nc*ns)
+	for i, n, q := uint(0), nc*ns, self.qamb; i < n; i++ {
+		Q[i] = q
+	}
+
+	D, E, F := self.D, self.E, self.F
+	matrix.Multiply(F, P, S, nn, nc, ns)
+	for Qi, Si, k := Q[:nc], S[:nn], uint(0); k < nc; k++ {
+		Qi[k] += D[k] * Si[k]
+	}
+	for i := uint(1); i < ns; i++ {
+		Sj := S[(i-1)*nn : i*nn]
+		Si := S[i*nn : (i+1)*nn]
+		Qi := Q[i*nc : (i+1)*nc]
+		matrix.MultiplyAdd(E, Sj, Si, Si, nn, nn, 1)
+		for k := uint(0); k < nc; k++ {
+			Qi[k] += D[k] * Si[k]
+		}
+	}
+
+	return Q
+}
+
+// ComputeWithLeakage calculates the temperature profile and the total power
+// profile corresponding to a dynamic power profile taking into account the
+// leakage power.
+//
+// The dynamic power profile is specified by a matrix P containing power samples
+// at a number of equidistant time moments (see TimeStep in Config). The dynamic
+// power profile is overwritten with the total power profile.
+func (self *Fixed) ComputeWithLeakage(P []float64, leak func([]float64, []float64)) []float64 {
+	nc, nn := self.nc, self.nn
+	ns := uint(len(P)) / nc
 
 	S := make([]float64, nn*ns)
 	Q := make([]float64, nc*ns)
+	for i, n, q := uint(0), nc*ns, self.qamb; i < n; i++ {
+		Q[i] = q
+	}
 
-	matrix.Multiply(F, P, S, nn, nc, ns)
+	D, E, F := self.D, self.E, self.F
+	leak(Q[:nc], P[:nc]) // Use index 0 as if -1.
+	matrix.Multiply(F, P[:nc], S[:nn], nn, nc, 1)
+	for Qi, Si, k := Q[:nc], S[:nn], uint(0); k < nc; k++ {
+		Qi[k] += D[k] * Si[k]
+	}
 	for i := uint(1); i < ns; i++ {
-		Si := S[i*nn : (i+1)*nn]
 		Sj := S[(i-1)*nn : i*nn]
 		Qj := Q[(i-1)*nc : i*nc]
+		Si := S[i*nn : (i+1)*nn]
+		Qi := Q[i*nc : (i+1)*nc]
+		Pi := P[i*nc : (i+1)*nc]
+		leak(Qj, Pi)
+		matrix.Multiply(F, Pi, Si, nn, nc, 1)
 		matrix.MultiplyAdd(E, Sj, Si, Si, nn, nn, 1)
 		for k := uint(0); k < nc; k++ {
-			Qj[k] = D[k]*Sj[k] + qamb
+			Qi[k] += D[k] * Si[k]
 		}
-	}
-	for Qj, Sj, k := Q[(ns-1)*nc:], S[(ns-1)*nn:], uint(0); k < nc; k++ {
-		Qj[k] = D[k]*Sj[k] + qamb
 	}
 
 	return Q

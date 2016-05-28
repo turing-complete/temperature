@@ -35,6 +35,18 @@ func TestFixedCompute(t *testing.T) {
 	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
 }
 
+func TestFixedComputeWithLeakage(t *testing.T) {
+	const (
+		nc = 2
+	)
+
+	temperature, P := loadFixed(nc)
+	noop := func([]float64, []float64) {}
+	Q := temperature.ComputeWithLeakage(P, noop)
+
+	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
+}
+
 func BenchmarkFixedCompute002(b *testing.B) {
 	const (
 		nc = 2
@@ -46,6 +58,21 @@ func BenchmarkFixedCompute002(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		temperature.Compute(P)
+	}
+}
+
+func BenchmarkFixedComputeWithLeakage002(b *testing.B) {
+	const (
+		nc = 2
+	)
+
+	temperature, P := loadFixed(nc)
+	noop := func([]float64, []float64) {}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		temperature.ComputeWithLeakage(P, noop)
 	}
 }
 
