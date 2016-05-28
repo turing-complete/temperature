@@ -14,7 +14,7 @@ func TestFluidNew(t *testing.T) {
 		nc = 2
 	)
 
-	temperature, _ := loadFluid(nc)
+	temperature, _, _ := loadFluid(nc)
 
 	assert.Equal(temperature.nc, uint(nc), t)
 	assert.Equal(temperature.nn, uint(4*nc+12), t)
@@ -30,15 +30,15 @@ func TestFluidCompute(t *testing.T) {
 		nc = 2
 	)
 
-	temperature, config := loadFluid(nc)
-	ns := uint(len(fixtureP) / nc)
+	temperature, config, P := loadFluid(nc)
+	ns := uint(len(P) / nc)
 
 	time := make([]float64, ns)
 	for i := range time {
 		time[i] = config.TimeStep
 	}
 
-	Q := temperature.Compute(fixtureP, time)
+	Q := temperature.Compute(P, time)
 
 	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
 }
@@ -48,8 +48,8 @@ func BenchmarkFluidCompute002(b *testing.B) {
 		nc = 2
 	)
 
-	temperature, config := loadFluid(nc)
-	ns := uint(len(fixtureP) / nc)
+	temperature, config, P := loadFluid(nc)
+	ns := uint(len(P) / nc)
 
 	time := make([]float64, ns)
 	for i := range time {
@@ -59,7 +59,7 @@ func BenchmarkFluidCompute002(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		temperature.Compute(fixtureP, time)
+		temperature.Compute(P, time)
 	}
 }
 
@@ -69,7 +69,7 @@ func BenchmarkFluidCompute032(b *testing.B) {
 		ns = 1000
 	)
 
-	temperature, config := loadFluid(nc)
+	temperature, config, _ := loadFluid(nc)
 	P := random(nc*ns, 0, 20)
 
 	time := make([]float64, ns)
@@ -94,9 +94,9 @@ func abs(A []float64) []float64 {
 	return B
 }
 
-func loadFluid(nc uint) (*Fluid, *Config) {
+func loadFluid(nc uint) (*Fluid, *Config, []float64) {
 	config := &Config{}
 	fixture.Load(findFixture(fmt.Sprintf("%03d.json", nc)), config)
 	temperature, _ := NewFluid(config)
-	return temperature, config
+	return temperature, config, append([]float64(nil), fixtureP...)
 }

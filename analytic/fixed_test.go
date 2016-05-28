@@ -13,7 +13,7 @@ func TestFixedNew(t *testing.T) {
 		nc = 2
 	)
 
-	temperature := loadFixed(nc)
+	temperature, _ := loadFixed(nc)
 
 	assert.Equal(temperature.nc, uint(nc), t)
 	assert.Equal(temperature.nn, uint(4*nc+12), t)
@@ -29,8 +29,8 @@ func TestFixedCompute(t *testing.T) {
 		nc = 2
 	)
 
-	temperature := loadFixed(nc)
-	Q := temperature.Compute(fixtureP)
+	temperature, P := loadFixed(nc)
+	Q := temperature.Compute(P)
 
 	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
 }
@@ -40,12 +40,12 @@ func BenchmarkFixedCompute002(b *testing.B) {
 		nc = 2
 	)
 
-	temperature := loadFixed(nc)
+	temperature, P := loadFixed(nc)
 
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		temperature.Compute(fixtureP)
+		temperature.Compute(P)
 	}
 }
 
@@ -55,7 +55,7 @@ func BenchmarkFixedCompute032(b *testing.B) {
 		ns = 1000
 	)
 
-	temperature := loadFixed(nc)
+	temperature, _ := loadFixed(nc)
 	P := random(nc*ns, 0, 20)
 
 	b.ResetTimer()
@@ -65,9 +65,9 @@ func BenchmarkFixedCompute032(b *testing.B) {
 	}
 }
 
-func loadFixed(nc uint) *Fixed {
+func loadFixed(nc uint) (*Fixed, []float64) {
 	config := &Config{}
 	fixture.Load(findFixture(fmt.Sprintf("%03d.json", nc)), config)
 	temperature, _ := NewFixed(config)
-	return temperature
+	return temperature, append([]float64(nil), fixtureP...)
 }
