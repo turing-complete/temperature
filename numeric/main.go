@@ -5,7 +5,7 @@ import (
 	"github.com/turing-complete/hotspot"
 )
 
-// Temperature represents an integrator of a thermal system.
+// Temperature is an integrator of a thermal system.
 type Temperature struct {
 	nc uint
 	nn uint

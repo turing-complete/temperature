@@ -8,7 +8,7 @@ import (
 	"github.com/turing-complete/hotspot"
 )
 
-// Fluid represents an integrator of a thermal system with a fluid time step.
+// Fluid is an integrator of a thermal system with a fluid time step.
 type Fluid struct {
 	nc uint
 	nn uint
@@ -20,7 +20,7 @@ type Fluid struct {
 	qamb float64
 }
 
-// NewFluid returns a new integrator with a fluid time step.
+// NewFluid returns a new integrator.
 func NewFluid(config *Config) (*Fluid, error) {
 	model := hotspot.New((*hotspot.Config)(&config.Config))
 	nc, nn := model.Cores, model.Nodes

@@ -9,7 +9,7 @@ import (
 	"github.com/turing-complete/hotspot"
 )
 
-// Fixed represents an integrator of a thermal system with a fixed time step.
+// Fixed is an integrator of a thermal system with a fixed time step.
 type Fixed struct {
 	nc uint
 	nn uint
@@ -21,7 +21,7 @@ type Fixed struct {
 	qamb float64
 }
 
-// NewFixed returns a new integrator with a fixed time step.
+// NewFixed returns a new integrator.
 func NewFixed(config *Config) (*Fixed, error) {
 	if config.TimeStep <= 0.0 {
 		return nil, errors.New("the time step should be positive")

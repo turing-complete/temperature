@@ -4,7 +4,7 @@ import (
 	"github.com/turing-complete/hotspot"
 )
 
-// Config represents the configuration of a particular problem.
+// Config is the configuration of a problem.
 type Config struct {
 	// The configuration of the HotSpot model.
 	hotspot.Config
