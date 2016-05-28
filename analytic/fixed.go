@@ -101,8 +101,12 @@ func (self *Fixed) Compute(P []float64) []float64 {
 
 	D, E, F := self.D, self.E, self.F
 	matrix.Multiply(F, P, S, nn, nc, ns)
-	for Qi, Si, k := Q[:nc], S[:nn], uint(0); k < nc; k++ {
-		Qi[k] += D[k] * Si[k]
+	{
+		Qi := Q[:nc]
+		Si := S[:nn]
+		for k := uint(0); k < nc; k++ {
+			Qi[k] += D[k] * Si[k]
+		}
 	}
 	for i := uint(1); i < ns; i++ {
 		Sj := S[(i-1)*nn : i*nn]
@@ -135,10 +139,15 @@ func (self *Fixed) ComputeWithLeakage(P []float64, leak func([]float64, []float6
 	}
 
 	D, E, F := self.D, self.E, self.F
-	leak(Q[:nc], P[:nc]) // Use index 0 as if -1.
-	matrix.Multiply(F, P[:nc], S[:nn], nn, nc, 1)
-	for Qi, Si, k := Q[:nc], S[:nn], uint(0); k < nc; k++ {
-		Qi[k] += D[k] * Si[k]
+	{
+		Qi := Q[:nc]
+		Si := S[:nn]
+		Pi := P[:nc]
+		leak(Qi, Pi) // Use index 0 as if -1.
+		matrix.Multiply(F, Pi, Si, nn, nc, 1)
+		for k := uint(0); k < nc; k++ {
+			Qi[k] += D[k] * Si[k]
+		}
 	}
 	for i := uint(1); i < ns; i++ {
 		Sj := S[(i-1)*nn : i*nn]
