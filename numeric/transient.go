@@ -5,6 +5,7 @@ import (
 )
 
 // Compute calculates the temperature profile corresponding to a power profile.
+//
 // The power profile is specified by a function func(time float64, power
 // []float64) evaluating the power dissipation at an arbitrary time moment. The
 // time moments for which the temperature profile is computed are specified by

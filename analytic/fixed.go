@@ -88,8 +88,9 @@ func NewFixed(config *Config) (*Fixed, error) {
 }
 
 // Compute calculates the temperature profile corresponding to a power profile.
-// The power profile is specified by a matrix P capturing the power dissipation
-// at a number of equidistant time moments according to TimeStep in Config.
+//
+// The power profile is specified by a matrix P containing power samples at a
+// number of equidistant time moments (see TimeStep in Config).
 func (self *Fixed) Compute(P []float64) []float64 {
 	nc, nn := self.nc, self.nn
 	ns := uint(len(P)) / nc
@@ -97,19 +98,20 @@ func (self *Fixed) Compute(P []float64) []float64 {
 	D, E, F, qamb := self.D, self.E, self.F, self.qamb
 
 	S := make([]float64, nn*ns)
-	matrix.Multiply(F, P, S, nn, nc, ns)
-
-	for i, j, k := uint(1), uint(0), nn; i < ns; i++ {
-		matrix.MultiplyAdd(E, S[j:k], S[k:k+nn], S[k:k+nn], nn, nn, 1)
-		j += nn
-		k += nn
-	}
-
 	Q := make([]float64, nc*ns)
-	for i := uint(0); i < nc; i++ {
-		for j := uint(0); j < ns; j++ {
-			Q[j*nc+i] = D[i]*S[j*nn+i] + qamb
+
+	matrix.Multiply(F, P, S, nn, nc, ns)
+	for i := uint(1); i < ns; i++ {
+		Si := S[i*nn : (i+1)*nn]
+		Sj := S[(i-1)*nn : i*nn]
+		Qj := Q[(i-1)*nc : i*nc]
+		matrix.MultiplyAdd(E, Sj, Si, Si, nn, nn, 1)
+		for k := uint(0); k < nc; k++ {
+			Qj[k] = D[k]*Sj[k] + qamb
 		}
+	}
+	for Qj, Sj, k := Q[(ns-1)*nc:], S[(ns-1)*nn:], uint(0); k < nc; k++ {
+		Qj[k] = D[k]*Sj[k] + qamb
 	}
 
 	return Q
