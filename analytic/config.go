@@ -4,9 +4,9 @@ import (
 	"github.com/turing-complete/hotspot"
 )
 
-// Config is the configuration of a problem.
+// Config is a configuration of temperature analysis.
 type Config struct {
-	// The configuration of the thermal RC model.
+	// The thermal RC model.
 	hotspot.Config
 
 	// The ambient temperature.
