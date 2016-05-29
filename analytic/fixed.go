@@ -121,14 +121,14 @@ func (self *Fixed) Compute(P []float64) []float64 {
 	return Q
 }
 
-// ComputeWithLeakage calculates the temperature profile and the total power
+// ComputeWithStatic calculates the temperature profile and the total power
 // profile corresponding to a dynamic power profile taking into account the
 // leakage power.
 //
 // The dynamic power profile is specified by a matrix P containing power samples
 // at a number of equidistant time moments (see TimeStep in Config). The dynamic
 // power profile is overwritten with the total power profile.
-func (self *Fixed) ComputeWithLeakage(P []float64, leak func([]float64, []float64)) []float64 {
+func (self *Fixed) ComputeWithStatic(P []float64, leak func([]float64, []float64)) []float64 {
 	nc, nn := self.nc, self.nn
 	ns := uint(len(P)) / nc
 
