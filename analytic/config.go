@@ -10,7 +10,7 @@ type Config struct {
 	hotspot.Config
 
 	// The ambient temperature.
-	Ambience float64 // in Celsius or Kelvin
+	Ambience float64 // in Kelvin
 
 	// The sampling interval. The parameter is specific to the Fixed integrator.
 	TimeStep float64 // in seconds

@@ -10,5 +10,5 @@ type Config struct {
 	hotspot.Config
 
 	// The temperature of the ambience.
-	Ambience float64 // in Celsius or Kelvin
+	Ambience float64 // in Kelvin
 }
