@@ -7,4 +7,4 @@ differential equations modeling temperature of multiprocessor systems.
 
 [1]: https://en.wikipedia.org/wiki/Dormand–Prince_method
 
-[doc]: http://godoc.org/github.com/ready-steady/simulation/temperature/numeric
+[doc]: http://godoc.org/github.com/turing-complete/temperature/numeric

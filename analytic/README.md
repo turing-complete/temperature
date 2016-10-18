@@ -12,4 +12,4 @@ differential equations modeling temperature of multiprocessor systems.
 
 [1]: http://dx.doi.org/10.1017/S0962492910000048
 
-[doc]: http://godoc.org/github.com/ready-steady/simulation/temperature/analytic
+[doc]: http://godoc.org/github.com/turing-complete/temperature/analytic
