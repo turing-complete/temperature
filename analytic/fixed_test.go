@@ -18,10 +18,10 @@ func TestFixedNew(t *testing.T) {
 	assert.Equal(temperature.nc, uint(nc), t)
 	assert.Equal(temperature.nn, uint(4*nc+12), t)
 
-	assert.EqualWithin(temperature.D, fixtureD, 1e-14, t)
+	assert.Close(temperature.D, fixtureD, 1e-14, t)
 
-	assert.EqualWithin(temperature.E, fixtureE, 1e-9, t)
-	assert.EqualWithin(temperature.F, fixtureF, 1e-9, t)
+	assert.Close(temperature.E, fixtureE, 1e-9, t)
+	assert.Close(temperature.F, fixtureF, 1e-9, t)
 }
 
 func TestFixedCompute(t *testing.T) {
@@ -32,7 +32,7 @@ func TestFixedCompute(t *testing.T) {
 	temperature, P := loadFixed(nc)
 	Q := temperature.Compute(P)
 
-	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
+	assert.Close(Q, fixtureQ, 1e-12, t)
 }
 
 func TestFixedComputeWithStatic(t *testing.T) {
@@ -44,7 +44,7 @@ func TestFixedComputeWithStatic(t *testing.T) {
 	noop := func([]float64, []float64) {}
 	Q := temperature.ComputeWithStatic(P, noop)
 
-	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
+	assert.Close(Q, fixtureQ, 1e-12, t)
 }
 
 func BenchmarkFixedCompute002(b *testing.B) {

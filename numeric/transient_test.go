@@ -19,7 +19,7 @@ func TestCompute002Fixed(t *testing.T) {
 
 	Q, _, _ := temperature.Compute(power, time)
 
-	assert.EqualWithin(Q, fixtureQ, 2e-10, t)
+	assert.Close(Q, fixtureQ, 2e-10, t)
 }
 
 func TestCompute002Adaptive(t *testing.T) {
@@ -33,8 +33,8 @@ func TestCompute002Adaptive(t *testing.T) {
 	power := smooth(fixtureP, nc, ns, Δt)
 	Q, time, _ := temperature.Compute(power, []float64{0, ns * Δt})
 
-	assert.EqualWithin(Q, fixtureQTime, 1e-10, t)
-	assert.EqualWithin(time, fixtureTime, 1e-14, t)
+	assert.Close(Q, fixtureQTime, 1e-10, t)
+	assert.Close(time, fixtureTime, 1e-14, t)
 }
 
 func BenchmarkCompute002Adaptive(b *testing.B) { benchmarkComputeAdaptive(2, 1000, 1e-3, b) }

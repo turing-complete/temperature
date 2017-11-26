@@ -19,10 +19,10 @@ func TestFluidNew(t *testing.T) {
 	assert.Equal(temperature.nc, uint(nc), t)
 	assert.Equal(temperature.nn, uint(4*nc+12), t)
 
-	assert.EqualWithin(temperature.D, fixtureD, 1e-14, t)
+	assert.Close(temperature.D, fixtureD, 1e-14, t)
 
-	assert.EqualWithin(abs(temperature.U), abs(fixtureU), 1e-9, t)
-	assert.EqualWithin(temperature.Λ, fixtureΛ, 1e-9, t)
+	assert.Close(abs(temperature.U), abs(fixtureU), 1e-9, t)
+	assert.Close(temperature.Λ, fixtureΛ, 1e-9, t)
 }
 
 func TestFluidCompute(t *testing.T) {
@@ -40,7 +40,7 @@ func TestFluidCompute(t *testing.T) {
 
 	Q := temperature.Compute(P, time)
 
-	assert.EqualWithin(Q, fixtureQ, 1e-12, t)
+	assert.Close(Q, fixtureQ, 1e-12, t)
 }
 
 func BenchmarkFluidCompute002(b *testing.B) {
